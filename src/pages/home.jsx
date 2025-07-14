@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/navbar";
 import veryCloseCarving from "../assets/images/headerimages/veryclosecarving.png";
+import korowai from "../assets/images/headerimages/korowai.png";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -33,6 +34,13 @@ function Home() {
         </h1>
       </div>
 
+      <div className="h-[500px] flex flex-col overflow-hidden">
+        <img src={korowai} alt="" className="object-cover w-1/2" />
+        <div className="w-1/2">
+          <p className="text-black">hello</p>
+        </div>
+      </div>
+
       {/* Content below */}
       <h1 className="text-2xl font-bold mb-4">Latest Posts</h1>
       {posts.map((post) => (
@@ -44,5 +52,4 @@ function Home() {
     </div>
   );
 }
-
 export default Home;
