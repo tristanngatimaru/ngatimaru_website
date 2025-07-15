@@ -1,37 +1,28 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 import Navbar from "../components/navbar";
 import veryCloseCarving from "../assets/images/headerimages/veryclosecarving.png";
 import korowai from "../assets/images/headerimages/korowai.png";
 import arrow from "../assets/images/icons/arrow.png";
+import arrowBlack from "../assets/images/icons/arrow_Black.png";
+import Posts from "../components/posts";
 
 function Home() {
-  const [posts, setPosts] = useState([]);
   const [isStartUp, setStartUp] = useState(false);
   const [isAppear, setAppear] = useState(false);
-  const [isButton, setButton] = useState(false);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => setStartUp(true), 500);
     const appearTimeout = setTimeout(() => setAppear(true), 2000);
-    const buttonTimeout = setTimeout(() => setButton(true), 2000);
 
     return () => {
       clearTimeout(timeoutId);
       clearTimeout(appearTimeout);
-      clearTimeout(buttonTimeout);
     };
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("http://ngatimaruwebsitevite.local/wp-json/wp/v2/posts")
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.error("Failed to fetch posts:", err));
-  }, []);
-
   return (
-    <div className="w-screen overflow-hidden">
+    <div className=" overflow-hidden">
       <div
         className={`relative w-screen h-full overflow-hidden transition-all ease-in-out duration-500 ${
           isStartUp ? "opacity-100" : "opacity-0"
@@ -100,22 +91,27 @@ function Home() {
           </div>
         </div>
       </div>
-
-      <div className="h-[500px] flex flex-col overflow-hidden">
-        <img src={korowai} alt="" className="object-cover w-1/2" />
-        <div className="w-1/2">
-          <p className="text-black">hello</p>
+      <div className="h-[500px] flex flex-row overflow-hidden">
+        <img src={korowai} alt="" className="object-cover w-1/2 h-full" />
+        <div className="w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center">
+          <p className="font-roboto-light text-3xl">Nau mai, haere mai</p>
+          <p className="font-roboto-light text-3xl mt-10">
+            Mai i Ngā Kuri-a-Whārei ki Tīkapa Moana, ko Hauraki te rohe whenua,
+            ko Marutūāhu te tangata, ko Ngāti Maru te iwi. Tātou te hunga ora –
+            hui e, tāiki e!
+          </p>
+          <p className="font-roboto-light text-3xl mt-15 ">Full Mihi</p>
+          <button className="hover:outline-black outline-transparent outline-2 rounded-full p-10 ease-in-out duration-200">
+            <img
+              src={arrowBlack}
+              alt=""
+              className="w-10 hover:scale-110 ease-in-out duration-200"
+            />
+          </button>
         </div>
       </div>
-
-      {/* Content below */}
-      <h1 className="text-2xl font-bold mb-4">Latest Posts</h1>
-      {posts.map((post) => (
-        <div key={post.id} className="mb-6">
-          <h2 className="text-xl font-semibold">{post.title.rendered}</h2>
-          <div dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} />
-        </div>
-      ))}
+      d
+      <Posts />
     </div>
   );
 }

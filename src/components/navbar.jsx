@@ -35,7 +35,10 @@ function Navbar() {
         />
 
         <nav className="w-full flex items-center justify-between ">
-          <a href="" className="font-roboto-light text-gray-300">
+          <a
+            href=""
+            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+          >
             <div className="items-center flex flex-col">
               {/* Top text container */}
               <div className="overflow-hidden h-6 w-full flex justify-center">
@@ -58,7 +61,10 @@ function Navbar() {
               </div>
             </div>
           </a>
-          <a href="" className="font-roboto-light text-gray-300">
+          <a
+            href=""
+            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+          >
             <div className="items-center flex flex-col">
               {/* Top text container */}
               <div className="overflow-hidden h-6 w-full flex justify-center">
@@ -81,7 +87,10 @@ function Navbar() {
               </div>
             </div>
           </a>
-          <a href="" className="font-roboto-light text-gray-300">
+          <a
+            href=""
+            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+          >
             <div className="items-center flex flex-col">
               {/* Top text container */}
               <div className="overflow-hidden h-6 w-full flex justify-center">
@@ -104,7 +113,10 @@ function Navbar() {
               </div>
             </div>
           </a>
-          <a href="" className="font-roboto-light text-gray-300">
+          <a
+            href=""
+            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+          >
             <div className="items-center flex flex-col">
               {/* Top text container */}
               <div className="overflow-hidden h-6 w-full flex justify-center">
@@ -127,7 +139,10 @@ function Navbar() {
               </div>
             </div>
           </a>
-          <a href="" className="font-roboto-light text-gray-300">
+          <a
+            href=""
+            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+          >
             <div className="items-center flex flex-col">
               {/* Top text container */}
               <div className="overflow-hidden h-6 w-full flex justify-center">
@@ -150,7 +165,10 @@ function Navbar() {
               </div>
             </div>
           </a>
-          <a href="" className="font-roboto-light text-gray-300 hidden">
+          <a
+            href=""
+            className="font-roboto-light text-gray-300 hidden hover:scale-110 ease-in-out duration-200"
+          >
             <div className="items-center flex flex-col">
               {/* Top text container */}
               <div className="overflow-hidden h-6 w-full flex justify-center">
@@ -173,7 +191,10 @@ function Navbar() {
               </div>
             </div>
           </a>
-          <a href="" className="font-roboto-light text-gray-300">
+          <a
+            href=""
+            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+          >
             <div className="items-center flex flex-col">
               {/* Top text container */}
               <div className="overflow-hidden h-6 w-full flex justify-center">
