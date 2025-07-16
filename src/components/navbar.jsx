@@ -22,7 +22,7 @@ function Navbar() {
 
   return (
     <div
-      className={`w-full items-center flex flex-col transition-all ease-in-out duration-500
+      className={`w-full items-center hidden flex-col transition-all ease-in-out duration-500 lg:flex 
     ${isLoaded ? "opacity-100" : "opacity-0"}`}
     >
       <div className="w-[1000px] flex flex-col items-center">
