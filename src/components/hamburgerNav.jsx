@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, useAnimation } from "framer-motion";
 
 export default function HamburgerNav() {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   //line in nav bar should appear on refresh
@@ -61,9 +62,9 @@ function Navbar() {
               </div>
             </div>
           </a>
-          <a
-            href=""
-            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+          <Link
+            to="/about"
+            className="block font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200 cursor-pointer"
           >
             <div className="items-center flex flex-col">
               {/* Top text container */}
@@ -86,7 +87,7 @@ function Navbar() {
                 </h3>
               </div>
             </div>
-          </a>
+          </Link>
           <a
             href=""
             className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"

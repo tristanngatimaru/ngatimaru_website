@@ -76,7 +76,7 @@ function Home() {
       clearTimeout(timeoutId);
       clearTimeout(appearTimeout);
     };
-  }, []);
+  });
 
   return (
     <div className="">
@@ -152,7 +152,7 @@ function Home() {
       <FadeInSection>
         <div
           ref={targetRef}
-          className="h-[500px] flex flex-row overflow-hidden"
+          className="h-[500px] pt-20 lg:pt-0 flex flex-row overflow-hidden"
         >
           <img
             src={korowai}
@@ -160,7 +160,7 @@ function Home() {
             className={`object-cover w-1/2 h-full lg:block hidden`}
           />
           <div
-            className={`w-full lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center `}
+            className={`w-screen lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center `}
           >
             <p className="font-roboto-light text-3xl pb-10">
               Nau mai, haere mai
@@ -183,10 +183,10 @@ function Home() {
         </div>
         <div
           className={` transition-all duration-700 ease-in-out overflow-hidden ${
-            isExpanded ? "max-h-[200vh]" : "max-h-0"
+            isExpanded ? "max-h-[400vh]" : "max-h-0"
           }`}
         >
-          <div className="p-4 flex flex-col gap-12 px-40 py-20 items-center">
+          <div className="p-4 flex flex-col gap-12 px-10 lg:px-40 py-20 items-center">
             <p className="text-center text-2xl font-roboto-light">
               Tènei te raukawakawa, i waiwai i roto i Te Puna Wai-ora-o-Tàne kia
               pata pata kei runga i to tinana; ànei te rau kawakawa; unuhia te
@@ -231,7 +231,7 @@ function Home() {
       <FadeInSection>
         <Posts />
       </FadeInSection>
-      hello how are you
+
       <Footer />
     </div>
   );
