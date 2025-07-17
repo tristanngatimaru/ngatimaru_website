@@ -31,6 +31,7 @@ function FadeInSection({ children }) {
 
     return () => {
       if (ref.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.unobserve(ref.current);
       }
     };
@@ -101,7 +102,7 @@ function Home() {
         <div className="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pt-28">
           <div className="overflow-hidden h-[80px] w-full flex justify-center">
             <h1
-              className={`transition-all duration-1000 ease-in-out text-7xl font-roboto-thin text-white text-center ${
+              className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center ${
                 isAppear ? "translate-y-0" : "translate-y-20"
               }`}
             >
@@ -165,7 +166,7 @@ function Home() {
             <p className="font-roboto-light text-3xl pb-10">
               Nau mai, haere mai
             </p>
-            <p className="font-roboto-light text-3xl ">
+            <p className="font-roboto-light text-xl md:text-3xl ">
               Mai i Ngā Kuri-a-Whārei ki Tīkapa Moana, ko Hauraki te rohe
               whenua, ko Marutūāhu te tangata, ko Ngāti Maru te iwi. Tātou te
               hunga ora – hui e, tāiki e!
