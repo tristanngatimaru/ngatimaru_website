@@ -51,6 +51,7 @@ function FadeInSection({ children }) {
 function Home() {
   const [isStartUp, setStartUp] = useState(false);
   const [isAppear, setAppear] = useState(false);
+  const isMobile = window.innerWidth < 1024;
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -66,7 +67,10 @@ function Home() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => setStartUp(true), 500);
-    const appearTimeout = setTimeout(() => setAppear(true), 2000);
+    const appearTimeout = setTimeout(
+      () => setAppear(true),
+      isMobile ? 500 : 2000
+    );
 
     return () => {
       clearTimeout(timeoutId);
@@ -75,7 +79,7 @@ function Home() {
   }, []);
 
   return (
-    <div className=" overflow-hidden">
+    <div className="">
       <HamburgerNav />
       <div
         className={`relative w-full h-full overflow-hidden transition-all ease-in-out duration-500 ${
@@ -150,9 +154,13 @@ function Home() {
           ref={targetRef}
           className="h-[500px] flex flex-row overflow-hidden"
         >
-          <img src={korowai} alt="" className={`object-cover w-1/2 h-full `} />
+          <img
+            src={korowai}
+            alt=""
+            className={`object-cover w-1/2 h-full lg:block hidden`}
+          />
           <div
-            className={`w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center `}
+            className={`w-full lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center `}
           >
             <p className="font-roboto-light text-3xl pb-10">
               Nau mai, haere mai
