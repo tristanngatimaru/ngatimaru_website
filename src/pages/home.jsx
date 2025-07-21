@@ -10,6 +10,7 @@ import Footer from "../components/footer";
 import HamburgerNav from "../components/hamburgerNav";
 import Content from "../components/sitecontent/content";
 import FadeInOnLoad from "../components/loadonstartanimation";
+import AppearRefresh from "../components/appearrefresh";
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -97,15 +98,16 @@ function Home() {
           </div>
 
           {/* Centered title text */}
+
           <div className="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pt-28">
             <div className="overflow-hidden h-[80px] w-full flex justify-center">
-              <h1
-                className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center ${
-                  isAppear ? "translate-y-0" : "translate-y-20"
-                }`}
-              >
-                {Content.home.header}
-              </h1>
+              <AppearRefresh delay={2000}>
+                <h1
+                  className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center `}
+                >
+                  {Content.home.header}
+                </h1>
+              </AppearRefresh>
             </div>
 
             {/* Space between title and buttons */}
@@ -116,12 +118,14 @@ function Home() {
                 <div
                   className={`
       transition-all duration-1000 ease-in-out
-      ${isAppear ? "translate-y-0" : "translate-y-20"}
+      
     `}
                 >
-                  <button className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out">
-                    REGISTER
-                  </button>
+                  <AppearRefresh delay={2200}>
+                    <button className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out">
+                      REGISTER
+                    </button>
+                  </AppearRefresh>
                 </div>
               </div>
 
@@ -137,12 +141,14 @@ function Home() {
         
       `}
                 >
-                  <button
-                    onClick={handleScroll}
-                    className="hover:scale-110 active:scale-95 ease-in-out duration-200 hover:outline-white outline-transparent outline-2 rounded-full p-3"
-                  >
-                    <img src={arrow} alt="" className="w-10" />
-                  </button>
+                  <AppearRefresh delay={2400}>
+                    <button
+                      onClick={handleScroll}
+                      className="hover:scale-110 active:scale-95 ease-in-out duration-200 hover:outline-white outline-transparent outline-2 rounded-full p-3"
+                    >
+                      <img src={arrow} alt="" className="w-10" />
+                    </button>
+                  </AppearRefresh>
                 </div>
               </div>
             </div>

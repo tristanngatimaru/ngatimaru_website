@@ -7,22 +7,13 @@ import David from "../assets/images/aboutus/davidtaipari.png";
 import Waati from "../assets/images/aboutus/waatingamani.png";
 import Paul from "../assets/images/aboutus/paulmajourey.png";
 import Footer from "../components/footer";
-import { useState, useEffect } from "react";
 import FadeInSection from "../components/fadeinanimation";
 import FaceCard from "../components/facecard";
 import FadeInOnLoad from "../components/loadonstartanimation";
+import AppearRefresh from "../components/appearrefresh";
 
 // src/pages/about.jsx
 function About() {
-  const [isAppear, setAppear] = useState(false);
-
-  useEffect(() => {
-    const appearTimeout = setTimeout(() => setAppear(true));
-
-    return () => {
-      clearTimeout(appearTimeout);
-    };
-  });
   return (
     <div className="w-full">
       <FadeInOnLoad delay={500} mobileDelay={200}>
@@ -36,22 +27,24 @@ function About() {
           />
           <div className="absolute flex flex-col w-full top-1/4 ">
             <div className="overflow-hidden h-[80px] w-full flex justify-center">
-              <h1
-                className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center ${
-                  isAppear ? "translate-y-0" : "translate-y-20"
-                }`}
-              >
-                {Content.about.header}
-              </h1>
+              <AppearRefresh delay={2000}>
+                <div
+                  className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center 
+                `}
+                >
+                  {Content.about.header}
+                </div>
+              </AppearRefresh>
             </div>
             <div className="overflow-hidden h-[80px] w-full flex justify-center">
-              <h1
-                className={`transition-all duration-1000 ease-in-out text-xl sm:text-2xl md:text-3xl lg:text-4xl font-roboto-thin text-white text-center ${
-                  isAppear ? "translate-y-0" : "translate-y-20"
-                }`}
-              >
-                {Content.about.headerenglish}
-              </h1>
+              <AppearRefresh delay={2500}>
+                <div
+                  className={`transition-all duration-1000 ease-in-out text-xl sm:text-2xl md:text-3xl lg:text-4xl font-roboto-thin text-white text-center 
+                `}
+                >
+                  {Content.about.headerenglish}
+                </div>
+              </AppearRefresh>
             </div>
           </div>
         </div>
