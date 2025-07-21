@@ -36,8 +36,8 @@ function Navbar() {
         />
 
         <nav className="w-full flex items-center justify-between ">
-          <a
-            href=""
+          <Link
+            to="/"
             className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
           >
             <div className="items-center flex flex-col">
@@ -61,7 +61,7 @@ function Navbar() {
                 </h3>
               </div>
             </div>
-          </a>
+          </Link>
           <Link
             to="/about"
             className="block font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200 cursor-pointer"

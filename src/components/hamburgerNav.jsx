@@ -49,7 +49,7 @@ export default function HamburgerNav() {
           initial={{ opacity: 0 }}
           onClick={handleClick}
           animate={{ opacity: showMenu ? 0.7 : 0 }}
-          className={`fixed top-10 right-10 z-40 w-16 h-16 bg-gray-300 rounded-full shadow-lg cursor-pointer transition-opacity  `}
+          className={`fixed top-10 right-10 z-40 w-16 h-16 bg-gray-300  rounded-full shadow-lg cursor-pointer transition-opacity  `}
           style={{
             transformOrigin: "center",
             pointerEvents: showMenu ? "auto" : "none",
@@ -193,7 +193,7 @@ export default function HamburgerNav() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.3 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black z-30"
+          className="fixed inset-0 bg-black z-30 "
         />
       )}
     </>
