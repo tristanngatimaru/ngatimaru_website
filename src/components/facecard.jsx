@@ -18,19 +18,19 @@ export default function FaceCard({
 
   return (
     <div
-      className={`group relative w-full h-full overflow-hidden ${className}`}
+      className={`group relative w-full h-[500px] overflow-hidden ${className}`}
     >
       {/* Image */}
       <div className="relative w-full h-full">
         <img
           src={imageSrc}
           alt={name}
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center group-hover:scale-150 duration-1000 ease-in-out"
         />
 
         {/* Hover overlay for lg and up */}
         <div
-          className={`hidden lg:flex absolute top-0 left-0 h-full w-full flex-col justify-center items-center text-center p-4 transition-transform duration-500 ease-in-out ${directionClass}`}
+          className={`hidden lg:flex absolute top-0 left-0 h-full w-full flex-col justify-center items-center text-center p-4 transition-transform duration-500 ease-in-out  ${directionClass}`}
         >
           <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60"></div>
 

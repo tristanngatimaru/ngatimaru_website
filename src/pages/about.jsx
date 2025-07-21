@@ -11,6 +11,7 @@ import FadeInSection from "../components/fadeinanimation";
 import FaceCard from "../components/facecard";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
+import Island from "../assets/images/headerimages/beachisland.png";
 
 // src/pages/about.jsx
 function About() {
@@ -151,7 +152,7 @@ function About() {
           <div className="row-span-2 col-start-3 row-start-4 hidden lg:block">
             <FadeInSection>
               <img
-                src={Flowers}
+                src={Island}
                 alt=""
                 className="h-full object-cover overflow-hidden object-center"
               />
