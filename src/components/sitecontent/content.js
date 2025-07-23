@@ -23,7 +23,10 @@ const content = {
       "Craig Reidy | Wati Ngamane | Pat Corcoran | Dawn Wihongi | Phillip Hikairo | Kathy Ngamane | Paul Majurey",
   },
   fishingPermit: {},
-  documents: {},
+  documents: {
+    header: "Ngā Tuhinga",
+    headerenglish: "Documents",
+  },
   store: {},
   register: {},
 };

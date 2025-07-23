@@ -185,7 +185,7 @@ function Home() {
             </div>
           </div>
           <div
-            className={` transition-all duration-700 ease-in-out overflow-hidden ${
+            className={` transition-all duration-700 ease-in-out overflow-hidden bg-gray-200 shadow-inner ${
               isExpanded ? "max-h-[400vh]" : "max-h-0"
             }`}
           >

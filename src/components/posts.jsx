@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Arrow from "../assets/images/icons/arrow.png";
-import Blog from "../blog";
+
+import { Link } from "react-router-dom";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -43,16 +44,14 @@ function Posts() {
                 <h2 className="text-3xl font-roboto-light text-white mb-3 uppercase">
                   {post.title.rendered}
                 </h2>
-
-                <button
-                  onClick={Blog}
-                  className="flex items-center gap-10 hover:scale-110 hover:translate-x-5 ease-in-out duration-200 cursor-pointer"
-                >
-                  <h2 className="text-2xl font-roboto-light text-white">
-                    READ MORE
-                  </h2>
-                  <img src={Arrow} alt="" className="w-[40px] -rotate-90" />
-                </button>
+                <Link to={`/post/${post.id}`}>
+                  <div className="flex items-center gap-10 hover:scale-110 hover:translate-x-5 ease-in-out duration-200 cursor-pointer">
+                    <h2 className="text-2xl font-roboto-light text-white">
+                      READ MORE
+                    </h2>
+                    <img src={Arrow} alt="" className="w-[40px] -rotate-90" />
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
