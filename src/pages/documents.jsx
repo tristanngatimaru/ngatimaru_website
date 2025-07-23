@@ -7,6 +7,7 @@ import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import { useState, useEffect } from "react";
 import Download from "../assets/images/icons/download.png";
+import Sitelink from "../components/sitecontent/siteLink";
 
 function decodeHtml(html) {
   const txt = document.createElement("textarea");
@@ -20,7 +21,7 @@ const Documents = () => {
 
   useEffect(() => {
     fetch(
-      "http://ngatimaruwebsitevite.local/wp-json/wp/v2/media?per_page=100&mime_type=application/pdf"
+      `${Sitelink.website.API_WP_LINK}/wp-json/wp/v2/media?per_page=100&mime_type=application/pdf`
     )
       .then((res) => res.json())
       .then((data) => {

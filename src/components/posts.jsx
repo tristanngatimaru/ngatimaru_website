@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Arrow from "../assets/images/icons/arrow.png";
 import { Link } from "react-router-dom";
+import Sitelink from "./sitecontent/siteLink";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -10,7 +11,7 @@ function Posts() {
   useEffect(() => {
     axios
       .get(
-        "http://ngatimaruwebsitevite.local/wp-json/wp/v2/posts?_embed&per_page=2&order=desc&orderby=date"
+        `${Sitelink.website.API_WP_LINK}/wp-json/wp/v2/posts?_embed&per_page=2&order=desc&orderby=date`
       )
       .then((res) => {
         setPosts(res.data);

@@ -4,9 +4,8 @@ import FadeInOnLoad from "../../components/loadonstartanimation";
 import HamburgerNav from "../../components/hamburgerNav";
 import AppearRefresh from "../../components/appearrefresh";
 import Navbar from "../../components/navbar";
-import Header from "../../assets/images/headerimages/korowai.png"; // <-- Fix this path if incorrect
-import Content from "../../components/sitecontent/content"; // <-- Fix this path if incorrect
 import Footer from "../../components/footer";
+import Sitelink from "../../components/sitecontent/siteLink";
 
 const SinglePost = () => {
   const { id } = useParams(); // get post ID from URL
@@ -16,7 +15,7 @@ const SinglePost = () => {
 
   useEffect(() => {
     // Fetch post data with embedded featured media
-    const apiUrl = `http://ngatimaruwebsitevite.local/wp-json/wp/v2/posts/${id}?_embed`;
+    const apiUrl = `${Sitelink.website.API_WP_LINK}/wp-json/wp/v2/posts/${id}?_embed`;
 
     fetch(apiUrl)
       .then((res) => res.json())
@@ -30,7 +29,7 @@ const SinglePost = () => {
       });
 
     // Fetch attached media (images) for this post
-    const mediaApi = `http://ngatimaruwebsitevite.local/wp-json/wp/v2/media?parent=${id}`;
+    const mediaApi = `${Sitelink.website.API_WP_LINK}/wp-json/wp/v2/media?parent=${id}`;
 
     fetch(mediaApi)
       .then((res) => res.json())
