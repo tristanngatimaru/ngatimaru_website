@@ -1,3 +1,9 @@
+//all text that is not found on blogs/posts you will see on the site is found here
+//you can easily change the content anywhere in the site just from doing it here, for it to work "" MUST BE THERE as well as a comma at the end after the quotes.
+//if there are any issues with syntax or if something goes red, copy/paste the code into chatgpt and it will correct whatever might be wrong.
+
+import MataiWhetu from "../../pages/bookingMataiWhetu";
+
 //Home
 const content = {
   home: {
@@ -12,6 +18,7 @@ const content = {
     fullMihi3:
       "Ko te kupu tuatahi, ki to tàtou kaihanga, nàna nei te kàkano i ruia mai i Rangiàtea, arà, nàna nei tàtou katoa. Ngà mihi maioha ki Te Whare Kàhui Àriki, ki tò tàtou Kìngi, Tùheitia, e noho nei i te taumata tapu ò òna tùpuna, ò tòna whaea. Ki a koutou rà rire, rire, hau, pai màrire. Ki ò tàtou tini aitua, ki a ràtou mà kua huri ki tua o te àrai, ki Te Pùtahitanga o Rehua, hàere koutou, hàere koutou, hàere atu rà. Ràtou te hunga wairua, ràtou ki a ràtou, tàtou te hunga ora, tàtou nei ki a tàtou, tàtou te hunga oranga pùmautanga, tau atu rà, tau mai nei, e tau ana nei i runga i te pepehà e paiheretia e tàtou.",
   },
+
   about: {
     header: "KO WAI MĀTAU",
     headerenglish: "ABOUT US",
@@ -22,24 +29,30 @@ const content = {
     trustees:
       "Craig Reidy | Wati Ngamane | Pat Corcoran | Dawn Wihongi | Phillip Hikairo | Kathy Ngamane | Paul Majurey",
   },
-  fishingPermit: {},
-  documents: {
-    header: "Ngā Tuhinga",
-    headerenglish: "Documents",
+
+  mataiwhetu: {
+    header: "RĀHITA MĀTAI WHETŪ",
+    headerenglish: "BOOKING MĀTAI WHETŪ",
   },
-  store: {},
-  register: {},
+
+  fishingPermit: {
+    header: "RIHITI HĪ IKA",
+    headerenglish: "FISHING PERMIT",
+  },
+  documents: {
+    header: "NGĀ TUHINGA",
+    headerenglish: "DOCUMENTS",
+  },
+
+  store: {
+    header: "TOA",
+    headerenglish: "STORE",
+  },
+
+  register: {
+    header: "RĒHITA",
+    headerenglish: "REGISTER",
+  },
 };
 
 export default content;
-//About
-
-//Booking Matai Whetu
-
-//Fishing Permit
-
-//Documents
-
-//Store
-
-//Register

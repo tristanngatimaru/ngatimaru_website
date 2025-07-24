@@ -2,15 +2,13 @@ import { useState, useEffect, useRef } from "react";
 
 import Navbar from "../components/navbar";
 import veryCloseCarving from "../assets/images/headerimages/veryclosecarving.png";
-import korowai from "../assets/images/headerimages/korowai.png";
-import arrow from "../assets/images/icons/arrow.png";
-import arrowBlack from "../assets/images/icons/arrow_Black.png";
 import Posts from "../components/posts";
 import Footer from "../components/footer";
 import HamburgerNav from "../components/hamburgerNav";
 import Content from "../components/sitecontent/content";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
+import { Images, Icons } from "../components/sitecontent/images";
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -146,7 +144,7 @@ function Home() {
                       onClick={handleScroll}
                       className="hover:scale-110 active:scale-95 ease-in-out duration-200 hover:outline-white outline-transparent outline-2 rounded-full p-3"
                     >
-                      <img src={arrow} alt="" className="w-10" />
+                      <img src={Icons.Arrow} alt="" className="w-10" />
                     </button>
                   </AppearRefresh>
                 </div>
@@ -160,7 +158,7 @@ function Home() {
             className="h-[500px] pt-20 lg:pt-0 flex flex-row overflow-hidden"
           >
             <img
-              src={korowai}
+              src={Images.Korowai}
               alt=""
               className={`object-cover w-1/2 h-full lg:block hidden`}
             />
@@ -180,7 +178,7 @@ function Home() {
                   isExpanded ? "rotate-180" : "rotate-0"
                 }`}
               >
-                <img src={arrowBlack} alt="" className="w-10 " />
+                <img src={Icons.BlackArrow} alt="" className="w-10 " />
               </button>
             </div>
           </div>
@@ -205,7 +203,7 @@ function Home() {
                   onClick={expandMihi}
                   className={`hover:outline-black hover:scale-110 ease-in-out duration-200  outline-transparent outline-2 rounded-full p-3 rotate-180 active:scale-95`}
                 >
-                  <img src={arrowBlack} alt="" className="w-10 " />
+                  <img src={Icons.BlackArrow} alt="" className="w-10 " />
                 </button>
               </div>
             </div>

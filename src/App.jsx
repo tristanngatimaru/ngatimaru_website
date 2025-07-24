@@ -3,6 +3,9 @@ import Home from "./pages/home";
 import About from "./pages/about"; // Example other page
 import Documents from "./pages/documents";
 import SinglePost from "./pages/blogPosts/SinglePost";
+import MataiWhetu from "./pages/bookingMataiWhetu";
+import Fishing from "./pages/fishingPermits";
+import Register from "./pages/register";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/post/:id" element={<SinglePost />} />
           <Route path="/documents" element={<Documents />} />
+          <Route path="/bookingmataiwhetu" element={<MataiWhetu />} />
+          <Route path="/fishingpermit" element={<Fishing />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>

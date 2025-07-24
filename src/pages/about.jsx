@@ -1,65 +1,29 @@
-import HamburgerNav from "../components/hamburgerNav";
-import Navbar from "../components/navbar";
-import Header from "../assets/images/headerimages/carvingcloseup.png";
-import Flowers from "../assets/images/headerimages/pohutakawaflowers.png";
 import Content from "../components/sitecontent/content";
-import David from "../assets/images/aboutus/davidtaipari.png";
-import Waati from "../assets/images/aboutus/waatingamani.png";
-import Paul from "../assets/images/aboutus/paulmajourey.png";
 import Footer from "../components/footer";
 import FadeInSection from "../components/fadeinanimation";
 import FaceCard from "../components/facecard";
 import FadeInOnLoad from "../components/loadonstartanimation";
-import AppearRefresh from "../components/appearrefresh";
-import Island from "../assets/images/headerimages/beachisland.png";
+import HeroHeader from "../components/header";
+import content from "../components/sitecontent/content";
+import { Images, Icons, Cards } from "../components/sitecontent/images";
 
 // src/pages/about.jsx
 function About() {
   return (
     <div className="w-full">
       <FadeInOnLoad delay={500} mobileDelay={200}>
-        <HamburgerNav />
-
-        <div>
-          <img
-            src={Header}
-            alt=""
-            className="w-full h-[500px] object-center object-cover overflow-hidden"
-          />
-          <div className="absolute flex flex-col w-full top-1/4 ">
-            <div className="overflow-hidden h-[80px] w-full flex justify-center">
-              <AppearRefresh delay={2000}>
-                <div
-                  className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center 
-                `}
-                >
-                  {Content.about.header}
-                </div>
-              </AppearRefresh>
-            </div>
-            <div className="overflow-hidden h-[80px] w-full flex justify-center">
-              <AppearRefresh delay={2500}>
-                <div
-                  className={`transition-all duration-1000 ease-in-out text-xl sm:text-2xl md:text-3xl lg:text-4xl font-roboto-thin text-white text-center 
-                `}
-                >
-                  {Content.about.headerenglish}
-                </div>
-              </AppearRefresh>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute top-0 left-0 w-full z-50 pt-10">
-          <Navbar />
-        </div>
+        <HeroHeader
+          image={Images.CarvingUpClose}
+          title={content.about.header}
+          subtitle={content.about.headerenglish}
+        />
 
         {/* page content below */}
 
-        <div className="lg:grid flex flex-col lg:grid-cols-3 grid-cols-2 grid-rows-[500px_auto_auto_auto_500px] md:grid-rows-[700px_auto_auto_auto_700px]">
-          <FadeInSection className="row-span-2">
+        <div className=" lg:grid flex flex-col lg:grid-cols-3 grid-cols-2 grid-rows-[500px_auto_auto_auto_500px] md:grid-rows-[700px_auto_auto_auto_700px]">
+          <FadeInSection delay={400} className="row-span-2">
             <img
-              src={Flowers}
+              src={Images.Pohutakawa}
               alt=""
               className="h-full object-cover overflow-hidden object-center hidden lg:block"
             />
@@ -68,7 +32,7 @@ function About() {
             <div>
               <FadeInSection>
                 <img
-                  src={Flowers}
+                  src={Images.Pohutakawa}
                   alt=""
                   className="h-full w-80 object-cover overflow-hidden object-center block lg:hidden"
                 />
@@ -76,7 +40,7 @@ function About() {
             </div>
 
             <div className="p-10">
-              <FadeInSection delay={400}>
+              <FadeInSection>
                 {" "}
                 <p className="font-roboto-bold text-xl lg:text-3xl pb-20 align-middle text-right">
                   {Content.about.Quote}
@@ -92,7 +56,7 @@ function About() {
           <div className="row-start-3 ">
             <FadeInSection>
               <FaceCard
-                imageSrc={Waati}
+                imageSrc={Cards.Waati}
                 name="Waati Ngamane"
                 title="Chairperson & Treaty Negotiator"
                 description=""
@@ -104,7 +68,7 @@ function About() {
           <div className="row-start-3 ">
             <FadeInSection delay={200}>
               <FaceCard
-                imageSrc={David}
+                imageSrc={Cards.David}
                 name="David Taipari"
                 title="General Manager"
                 description=""
@@ -116,7 +80,7 @@ function About() {
           <div className="row-start-3 ">
             <FadeInSection delay={400}>
               <FaceCard
-                imageSrc={Paul}
+                imageSrc={Cards.Paul}
                 name="Paul Majurey"
                 title="Treaty Negotiator"
                 description=""
@@ -141,7 +105,7 @@ function About() {
             <div>
               <FadeInSection>
                 <img
-                  src={Flowers}
+                  src={Images.Pohutakawa}
                   alt=""
                   className="h-full w-80 object-cover overflow-hidden object-center block lg:hidden"
                 />
@@ -152,7 +116,7 @@ function About() {
           <div className="row-span-2 col-start-3 row-start-4 hidden lg:block">
             <FadeInSection>
               <img
-                src={Island}
+                src={Images.BeachIsland}
                 alt=""
                 className="h-full object-cover overflow-hidden object-center"
               />

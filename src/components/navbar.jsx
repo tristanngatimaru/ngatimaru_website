@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Documents from "../pages/documents";
+import MataiWhetu from "../pages/bookingMataiWhetu";
 
 function Navbar() {
   //line in nav bar should appear on refresh
@@ -89,8 +90,8 @@ function Navbar() {
               </div>
             </div>
           </Link>
-          <a
-            href=""
+          <Link
+            to="/bookingmataiwhetu"
             className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
           >
             <div className="items-center flex flex-col">
@@ -114,8 +115,9 @@ function Navbar() {
                 </h3>
               </div>
             </div>
-          </a>
-          <a
+          </Link>
+          <Link
+            to="/fishingpermit"
             href=""
             className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
           >
@@ -140,7 +142,7 @@ function Navbar() {
                 </h3>
               </div>
             </div>
-          </a>
+          </Link>
           <Link
             to="/Documents"
             href=""
@@ -168,7 +170,8 @@ function Navbar() {
               </div>
             </div>
           </Link>
-          <a
+          <Link
+            to="/store"
             href=""
             className="font-roboto-light text-gray-300 hidden hover:scale-110 ease-in-out duration-200"
           >
@@ -193,8 +196,9 @@ function Navbar() {
                 </h3>
               </div>
             </div>
-          </a>
-          <a
+          </Link>
+          <Link
+            to="/register"
             href=""
             className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
           >
@@ -219,7 +223,7 @@ function Navbar() {
                 </h3>
               </div>
             </div>
-          </a>
+          </Link>
         </nav>
       </div>
     </div>

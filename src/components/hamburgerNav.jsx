@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, useAnimation } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function HamburgerNav() {
   const buttonControls = useAnimation();
@@ -63,74 +64,74 @@ export default function HamburgerNav() {
         >
           <ul class="font-roboto-light pl-10 pt-40 space-y-8 w-full flex flex-col gap-2">
             <li>
-              <a href="" class="block group ">
+              <Link to="/" href="" class="block group ">
                 <h2 class="text-2xl font-roboto-regular absolute w-full bg-white z-10">
                   KAINGA
                 </h2>
                 <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   HOME
                 </h2>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" class="block group">
+              <Link to="/about" href="" class="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   KO WAI
                 </h2>
                 <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   ABOUT US
                 </h2>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" class="block group">
+              <Link to="/bookingmataiwhetu" href="" class="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   RĀHITA MATAI WHETŪ
                 </h2>
                 <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   BOOKING MATAI WHETŪ
                 </h2>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" class="block group">
+              <Link to="/fishingpermit" href="" class="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   RIHITI HĪ IKA
                 </h2>
                 <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   FISHING PERMIT
                 </h2>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" class="block group">
+              <Link to="/documents" href="" class="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   NGĀ TUHINGA
                 </h2>
                 <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   DOCUMENTS
                 </h2>
-              </a>
+              </Link>
             </li>
             <li className="hidden">
-              <a href="" className="block group">
+              <Link to="/store" href="" className="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   TOA
                 </h2>
                 <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   STORE
                 </h2>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" class="block group">
+              <Link to="/register" href="" class="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   RĀHITA
                 </h2>
                 <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   REGISTER
                 </h2>
-              </a>
+              </Link>
             </li>
           </ul>
         </motion.div>

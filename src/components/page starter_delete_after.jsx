@@ -1,24 +1,21 @@
-import HamburgerNav from "./hamburgerNav";
-import Navbar from "./navbar";
-import Header from "../assets/images/headerimages/carvingcloseup.png";
+import Footer from "../components/footer";
+import HeroHeader from "../components/header";
+import content from "../components/sitecontent/content";
+import { Images } from "../components/sitecontent/images";
+import FormComponent from "../components/formcomponent";
 // src/pages/about.jsx
-function About() {
+function MataiWhetu() {
   return (
     <div className="w-full">
-      <HamburgerNav />
-
-      <div>
-        <img
-          src={Header}
-          alt=""
-          className="w-full h-[500px] object-center object-cover overflow-hidden"
-        />
-      </div>
-
-      <div className="absolute top-0 left-0 w-full z-50 pt-10">
-        <Navbar />
-      </div>
+      <HeroHeader
+        image={Images.MataiWhetu}
+        subtitle={content.mataiwhetu.header}
+        title={content.mataiwhetu.headerenglish}
+      />
+      <FormComponent />
+      <Footer />
     </div>
   );
 }
-export default About;
+
+export default MataiWhetu;

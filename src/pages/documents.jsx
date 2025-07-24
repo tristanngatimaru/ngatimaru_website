@@ -1,13 +1,12 @@
 import HamburgerNav from "../components/hamburgerNav";
 import Navbar from "../components/navbar";
-import Header from "../assets/images/headerimages/korowai.png";
 import Content from "../components/sitecontent/content";
 import Footer from "../components/footer";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import { useState, useEffect } from "react";
-import Download from "../assets/images/icons/download.png";
 import Sitelink from "../components/sitecontent/siteLink";
+import { Images, Icons } from "../components/sitecontent/images";
 
 function decodeHtml(html) {
   const txt = document.createElement("textarea");
@@ -61,7 +60,7 @@ const Documents = () => {
 
         <div>
           <img
-            src={Header}
+            src={Images.Korowai}
             alt=""
             className="w-full h-[500px] object-center object-cover overflow-hidden"
           />
@@ -123,7 +122,7 @@ const Documents = () => {
                           className="hover:scale-105 ease-in-out duration-200 pl-5"
                         >
                           <img
-                            src={Download}
+                            src={Icons.Download}
                             alt=""
                             className="min-w-[40px] max-w-[40px]"
                           />
