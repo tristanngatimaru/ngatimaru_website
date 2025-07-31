@@ -14,12 +14,15 @@ const Acknowledgements = ({
       formData.acknowledgesNoFood &&
       formData.acknowledgesSmokingArea;
 
-    handleChange("agreedToTerms")(allChecked);
+    if (formData.agreedToTerms !== allChecked) {
+      handleChange("agreedToTerms")(allChecked); // ✅ only update when value actually changes
+    }
   }, [
     formData.acknowledgesNoAlcohol,
     formData.acknowledgesNoPhotos,
     formData.acknowledgesNoFood,
     formData.acknowledgesSmokingArea,
+    formData.agreedToTerms,
     handleChange,
   ]);
 
