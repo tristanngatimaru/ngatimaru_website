@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchBlogPosts } from "../api/strapi";
+import { fetchCollection } from "../api/strapi";
 import { shapePostData } from "../hooks/strapifields";
 import Footer from "../components/footer";
 import HeroHeader from "../components/header";
@@ -9,7 +9,12 @@ function Fishing() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchBlogPosts()
+    fetchCollection("blog-posts", [
+      "HeroMainImage",
+      "SecondaryImage",
+      "ThirdImage",
+      "ExtraMediaContent",
+    ])
       .then((data) => {
         const shaped = data.map(shapePostData);
         setPosts(shaped);
@@ -24,7 +29,7 @@ function Fishing() {
     <div className="w-full">
       <HeroHeader />
 
-      <div className="px-10 py-20">
+      <div className="px-10 py-20 flex flex-col">
         <h1 className="text-3xl font-bold mb-6">Fishing Blog Posts</h1>
 
         {error && <p className="text-red-600">{error}</p>}
@@ -35,10 +40,9 @@ function Fishing() {
           <ul>
             {posts.map((post) => (
               <li key={post.id} className="mb-10">
-                <h2 className="text-xl font-semibold">
+                <h2 className="text-3xl font-roboto-regular align-middle">
                   {post.title || "No Titles"}
                 </h2>
-                <p className="text-gray-700 mb-2">{post.excerpt}</p>
 
                 {/* Split content into paragraphs */}
                 {post.content && (
@@ -46,6 +50,9 @@ function Fishing() {
                     {post.content.split("\n\n").map((paragraph, i) => (
                       <div key={i} className="mb-4">
                         <p className="text-gray-700">{paragraph}</p>
+                        <p className="text-gray-700 font-roboto-bold items-center justify-center">
+                          {post.excerpt}
+                        </p>
 
                         {/* Insert images after certain paragraphs */}
                         {i === 0 && post.heroMainImage && (
