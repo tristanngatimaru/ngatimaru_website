@@ -21,7 +21,7 @@ const BookingSummary = ({ formData }) => {
         </li>
         <li>
           <strong>Details:</strong>{" "}
-          {formData.organisationDetails || "Not provided"}
+          {formData.detailsOfWhanauOrOrganisation || "Not provided"}
         </li>
         <li>
           <strong>Will a pōwhiri be required?:</strong>{" "}
@@ -33,16 +33,16 @@ const BookingSummary = ({ formData }) => {
           <ul className="ml-4 mt-1 space-y-1 text-sm">
             <li>
               <strong>Name:</strong>{" "}
-              {`${formData.responsibleFirstName} ${formData.responsibleLastName}`.trim() ||
+              {`${formData.firstNameResponsible} ${formData.lastNameResponsible}`.trim() ||
                 "Not provided"}
             </li>
             <li>
               <strong>Phone:</strong>{" "}
-              {formData.responsiblePhone || "Not provided"}
+              {formData.phoneResponsible || "Not provided"}
             </li>
             <li>
               <strong>Email:</strong>{" "}
-              {formData.responsibleEmail || "Not provided"}
+              {formData.emailResponsible || "Not provided"}
             </li>
           </ul>
         </li>
@@ -61,12 +61,12 @@ const BookingSummary = ({ formData }) => {
         <hr />
         <li>
           <strong>Wharenui Contact:</strong>{" "}
-          {`${formData.wharenuiFirstName} ${formData.wharenuiLastName}`.trim() ||
+          {`${formData.firstNameWharenui} ${formData.lastNameWharenui}`.trim() ||
             "Not provided"}
         </li>
         <li>
           <strong>Wharekai Contact:</strong>{" "}
-          {`${formData.wharekaiFirstName} ${formData.wharekaiLastName}`.trim() ||
+          {`${formData.firstNameWharekai} ${formData.lastNameWharekai}`.trim() ||
             "Not provided"}
         </li>
         <li>

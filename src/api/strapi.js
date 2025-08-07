@@ -26,3 +26,51 @@ export async function fetchPostById(id) {
   if (json.data.length === 0) throw new Error(`No post found with id ${id}`);
   return json.data[0];
 }
+
+// strapi.js
+
+export async function fetchGroupedDocuments() {
+  try {
+    const res = await fetch(
+      `${STRAPI_URL}/api/document-page?populate=Documentation`
+    );
+    const data = await res.json();
+
+    const rawData = data.data;
+    if (!rawData || !Array.isArray(rawData.Documentation)) {
+      console.error("Invalid documentation data");
+      return {};
+    }
+
+    const docs = rawData.Documentation.map((doc) => {
+      let category = "Uncategorized";
+      const splitName = doc.name.split(" _ ");
+
+      if (splitName.length > 1) {
+        category = splitName[1].trim().replace(/\.pdf$/i, "");
+      }
+
+      const rawName = splitName[0].trim();
+      const nameWithoutExt = rawName.replace(/\.pdf$/i, "");
+
+      return {
+        id: doc.id,
+        name: nameWithoutExt,
+        url: doc.url ? `${STRAPI_URL}${doc.url}` : null,
+        category,
+      };
+    });
+
+    const grouped = docs.reduce((acc, doc) => {
+      if (!doc.url) return acc;
+      if (!acc[doc.category]) acc[doc.category] = [];
+      acc[doc.category].push(doc);
+      return acc;
+    }, {});
+
+    return grouped;
+  } catch (err) {
+    console.error("Error fetching documents:", err);
+    return {};
+  }
+}

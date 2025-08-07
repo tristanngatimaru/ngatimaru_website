@@ -1,6 +1,3 @@
-this code i'm going to put in, is it too much in one file, should i be refactoring this or putting more parts into components??
-
-
 import Footer from "../components/footer";
 import HeroHeader from "../components/header";
 import content from "../components/sitecontent/content";
@@ -43,7 +40,7 @@ function MataiWhetu() {
     purpose: true,
     bookingFrom: false,
     bookingTo: false,
-    wharenuiFirstName: true,
+    firstNameWharenui: true,
     wharenuiLastName: true,
     wharekaiFirstName: false,
     wharekaiLastName: false,
@@ -65,6 +62,36 @@ function MataiWhetu() {
       (formTouched[key] || formSubmitted)
     );
   };
+
+  function autoFillForm() {
+    setFormData({
+      firstName: "John",
+      lastName: "Doe",
+      organisationName: "Ngāti Example",
+      organisationDetails: "Example whānau details here",
+      phone: "0211234567",
+      email: "john.doe@example.com",
+      powhiri: "yes",
+      responsibleFirstName: "Jane",
+      responsibleLastName: "Smith",
+      responsiblePhone: "0217654321",
+      responsibleEmail: "jane.smith@example.com",
+      purpose: "Community gathering",
+      bookingFrom: "2025-09-01",
+      bookingTo: "2025-09-03",
+      firstNameWharenui: "Te",
+      wharenuiLastName: "Rangatira",
+      wharekaiFirstName: "Mere",
+      wharekaiLastName: "Williams",
+      ablutionFirstName: "Tane",
+      ablutionLastName: "Ngata",
+      acknowledgesNoAlcohol: true,
+      acknowledgesNoPhotos: true,
+      acknowledgesNoFood: true,
+      acknowledgesSmokingArea: true,
+      readTikangaInfoSheet: true,
+    });
+  }
 
   // Called when user clicks "Book Now"
   const validateBeforeSubmit = () => {
@@ -93,18 +120,33 @@ function MataiWhetu() {
     alert("Form submitted!");
     setShowConfirm(false);
   };
+  console.log("Matai Whetu component rendered");
 
   return (
     <div className="w-full">
       <div className="w-full h-50 bg-gradient-to-b from-gray-800 to-transparent absolute z-10"></div>
+
       <HeroHeader
         image={Images.MataiWhetu}
         subtitle={content.mataiwhetu.header}
         title={content.mataiwhetu.headerenglish}
       />
-      <div className="flex-col lg:grid lg:grid-cols-2 p-20 gap-10">
+      <div className="flex flex-col lg:grid lg:grid-cols-2 p-20 gap-10">
+        <div className="col-span-2 mb-4">
+          <button
+            type="button"
+            onClick={autoFillForm}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+          >
+            Auto Fill Form (Test)
+          </button>
+        </div>
+
+        <div>hello</div>
+
         <form className="grid grid-cols-2 gap-5" onSubmit={handleSubmit}>
           <div>
+            {" "}
             <FormComponent
               id="FirstName"
               label="First Name"
@@ -290,11 +332,11 @@ function MataiWhetu() {
 
           <div>
             <FormComponent
-              id="WharenuiFirstName"
+              id="firstNameWharenui"
               label="First Name"
-              name="wharenuiFirstName"
-              value={formData.wharenuiFirstName}
-              onChange={handleChange("wharenuiFirstName")}
+              name="firstNameWharenui"
+              value={formData.firstNameWharenui}
+              onChange={handleChange("firstNameWharenui")}
               placeholder="First Name Here"
               required={true}
               type="text"
@@ -552,13 +594,13 @@ function MataiWhetu() {
               value: formData.bookingTo,
               key: "bookingTo",
             },
-          ].map(({ label, value, key }) => (
+          ].map(({ label, value, keys }) => (
             <div key={label} className="mb-3">
               <p>
                 <strong>{label}:</strong>{" "}
                 {value || <span className="text-gray-400">Not provided</span>}
               </p>
-              {isMissing([key]) && (
+              {isMissing(keys) && (
                 <p className="text-sm text-red-600">
                   Missing {label.toLowerCase()}.
                 </p>
@@ -570,7 +612,7 @@ function MataiWhetu() {
 
           <h3 className="font-semibold">Wharenui</h3>
           <p>
-            <strong>Name:</strong> {formData.wharenuiFirstName}{" "}
+            <strong>Name:</strong> {formData.firstNameWharenui}{" "}
             {formData.wharenuiLastName}
           </p>
 

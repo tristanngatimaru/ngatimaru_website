@@ -21,6 +21,51 @@ import { Images } from "../components/sitecontent/images";
 import content from "../components/sitecontent/content";
 import FileAcknowledgement from "../components/formSections/FileAcknowledgement";
 
+// Autofill button that uses your curried handleChange properly
+const AutofillTestButton = ({ handleChange }) => {
+  const autofillData = {
+    firstName: "Hemi",
+    lastName: "Ngata",
+    phone: "0211234567",
+    email: "hemi.ngata@example.com",
+    organisationName: "Te Ao Mārama Trust",
+    detailsOfWhanauOrOrganisation:
+      "Local community trust organising whānau wānanga.",
+    powhiri: "Yes, we have waewae tapu",
+    firstNameResponsible: "Moana",
+    lastNameResponsible: "Ranginui",
+    phoneResponsible: "0227654321",
+    emailResponsible: "moana.r@example.com",
+    bookingPurpose: "Whānau reunion and kapa haka wānanga.",
+    bookingFrom: "2025-09-15",
+    bookingTo: "2025-09-17",
+    firstNameWharenui: "Tama",
+    lastNameWharenui: "Te Ao",
+    firstNameWharekai: "Rangi",
+    lastNameWharekai: "Whenua",
+    ablutionFirstName: "Aroha",
+    ablutionLastName: "Kōwhai",
+    agreedToTerms: true,
+    readTikangaInfoSheet: true,
+  };
+
+  const handleAutofill = () => {
+    Object.entries(autofillData).forEach(([key, value]) => {
+      handleChange(key)(value);
+    });
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleAutofill}
+      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-4"
+    >
+      Autofill Test Data
+    </button>
+  );
+};
+
 const MataiWhetu = () => {
   const {
     formData,
@@ -31,18 +76,70 @@ const MataiWhetu = () => {
     markAllTouched,
     getMissingFields,
   } = useMataiWhetuForm();
-  const [showModal, setShowModal] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
   const [missingFields, setMissingFields] = useState([]);
+
+  const submitBooking = async () => {
+    try {
+      const payload = {
+        data: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phone: formData.phone,
+          email: formData.email,
+          organisationName: formData.organisationName,
+          detailsOfWhanauOrOrganisation:
+            formData.detailsOfWhanauOrOrganisation || "",
+          powhiri: formData.powhiri || "",
+          firstNameResponsible: formData.firstNameResponsible || "",
+          lastNameResponsible: formData.lastNameResponsible || "",
+          phoneResponsible: formData.phoneResponsible || "",
+          emailResponsible: formData.emailResponsible || "",
+          bookingPurpose: formData.bookingPurpose || "",
+          bookingFrom: formData.bookingFrom,
+          bookingTo: formData.bookingTo,
+          firstNameWharenui: formData.firstNameWharenui || "",
+          lastNameWharenui: formData.lastNameWharenui || "",
+          firstNameWharekai: formData.firstNameWharekai || "",
+          lastNameWharekai: formData.lastNameWharekai || "",
+          ablutionFirstName: formData.ablutionFirstName || "",
+          ablutionLastName: formData.ablutionLastName || "",
+          agreedToTerms: formData.agreedToTerms ? true : false,
+          readTikangaInfoSheet: formData.readTikangaInfoSheet ? true : false,
+        },
+      };
+
+      const response = await fetch(
+        "http://localhost:1337/api/matai-whetu-applications",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Failed to submit booking:", errorText);
+        alert("There was an error submitting the booking. Please try again.");
+        return;
+      }
+
+      alert("Booking successfully submitted!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Something went wrong. Please try again later.");
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!isFormComplete) {
+    if (!isFormComplete()) {
       markAllTouched();
       const missing = getMissingFields();
       setMissingFields(missing);
-
       return;
     }
 
@@ -52,8 +149,7 @@ const MataiWhetu = () => {
 
   const handleConfirm = () => {
     setShowModal(false);
-    alert("Booking submitted!");
-    // send to email or WordPress endpoint here
+    submitBooking();
   };
 
   return (
@@ -65,9 +161,13 @@ const MataiWhetu = () => {
         title={content.mataiwhetu.headerenglish}
       />
 
-      {/* Main form + summary container */}
+      {/* Autofill button */}
       <div className="w-full p-20 grid lg:grid-cols-2 gap-10">
-        {/* Left column: Form */}
+        <div className="col-span-2">
+          <AutofillTestButton handleChange={handleChange} />
+        </div>
+
+        {/* Main form */}
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-2 gap-5 col-span-1"
@@ -80,6 +180,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <OrganisationDetails
               formData={formData}
@@ -88,6 +189,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <PersonResponsible
               formData={formData}
@@ -96,6 +198,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <BookingDates
               formData={formData}
@@ -104,6 +207,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <WharenuiSection
               formData={formData}
@@ -112,6 +216,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <WharekaiSection
               formData={formData}
@@ -120,6 +225,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <AblutionSection
               formData={formData}
@@ -128,6 +234,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <Acknowledgements
               formData={formData}
@@ -136,6 +243,7 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <div className="col-span-2">
             <FileAcknowledgement
               formData={formData}
@@ -144,8 +252,9 @@ const MataiWhetu = () => {
               touchedFields={touchedFields}
             />
           </div>
+
           <SubmitReviewButton
-            isFormComplete={isFormComplete}
+            isFormComplete={isFormComplete()}
             onClick={handleSubmit}
             isMissing={isMissing}
             touchedFields={touchedFields}
@@ -165,7 +274,7 @@ const MataiWhetu = () => {
           )}
         </form>
 
-        {/* Right: Booking summary */}
+        {/* Booking summary */}
         <div className="col-span-1">
           <BookingSummary formData={formData} />
         </div>

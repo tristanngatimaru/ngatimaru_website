@@ -8,12 +8,12 @@ const BookingDates = ({ formData, handleChange, touchedFields, isMissing }) => (
   <div className="grid grid-cols-2 gap-4">
     <div className="col-span-2">
       <FormComponent
-        id="Purpose"
-        label="Purpose of Booking"
-        name="purpose"
-        value={formData.purpose}
-        onChange={handleChange("purpose")}
-        placeholder="Purpose of Booking here"
+        id="bookingPurpose"
+        label="bookingPurpose of Booking"
+        name="bookingPurpose"
+        value={formData.bookingPurpose}
+        onChange={handleChange("bookingPurpose")}
+        placeholder="bookingPurpose of Booking here"
         required={true}
         type="textarea"
         touched={touchedFields.firstName}

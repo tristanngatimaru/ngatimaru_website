@@ -30,11 +30,11 @@ const OrganisationDetails = ({
 
     <div className="col-span-2">
       <FormComponent
-        id="OrganisationDetails"
+        id="detailsOfWhanauOrOrganisation"
         label="Details of Whānau or Organisation"
-        name="organisationDetails"
-        value={formData.organisationDetails}
-        onChange={handleChange("organisationDetails")}
+        name="detailsOfWhanauOrOrganisation"
+        value={formData.detailsOfWhanauOrOrganisation}
+        onChange={handleChange("detailsOfWhanauOrOrganisation")}
         placeholder="Details of Whānau or Organisation here"
         type="textarea"
       />
@@ -50,12 +50,18 @@ const OrganisationDetails = ({
         placeholder="Please Select"
         type="select"
         options={[
-          { label: "Yes, we have waewae tapu", value: "yes" },
+          {
+            label: "Yes, we have waewae tapu",
+            value: "Yes, we have waewae tapu",
+          },
           {
             label: "No, we have all been welcome to the Marae Before",
-            value: "no",
+            value: "No, we have all been welcome to the Marae Before",
           },
-          { label: "Unsure, need clarification", value: "unsure" },
+          {
+            label: "Unsure, need clarification",
+            value: "Unsure, need clarification",
+          },
         ]}
       />
     </div>

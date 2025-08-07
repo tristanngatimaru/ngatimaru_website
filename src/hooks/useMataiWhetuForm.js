@@ -14,7 +14,20 @@ export const useMataiWhetuForm = () => {
     wharekai: "",
     ablutionBlock: "",
     agreedToTerms: false,
-    readTikangaInfoSheet: false, // renamed here
+    readTikangaInfoSheet: false,
+
+    // Added missing fields:
+    firstNameResponsible: "",
+    lastNameResponsible: "",
+    phoneResponsible: "",
+    emailResponsible: "",
+    bookingPurpose: "",
+    firstNameWharenui: "",
+    lastNameWharenui: "",
+    firstNameWharekai: "",
+    lastNameWharekai: "",
+    ablutionFirstName: "",
+    ablutionLastName: "",
   });
 
   const [touchedFields, setTouchedFields] = useState({});
@@ -44,10 +57,21 @@ export const useMataiWhetuForm = () => {
 
       bookingFrom: "Booking From Date",
       bookingTo: "Booking To Date",
-      wharenui: "Wharenui",
 
       agreedToTerms: "Acknowledgement Checkbox",
-      readTikangaInfoSheet: "Tikanga Info Sheet Agreement", // renamed here too
+      readTikangaInfoSheet: "Tikanga Info Sheet Agreement",
+
+      firstNameResponsible: "First Name Responsible",
+      lastNameResponsible: "Last Name Responsible",
+      phoneResponsible: "Phone Responsible",
+      emailResponsible: "Email Responsible",
+      bookingPurpose: "Booking Purpose",
+      firstNameWharenui: "First Name Wharenui",
+      lastNameWharenui: "Last Name Wharenui",
+      firstNameWharekai: "Wharekai First Name",
+      lastNameWharekai: "Wharekai Last Name",
+      ablutionFirstName: "Ablution First Name",
+      ablutionLastName: "Ablution Last Name",
     };
 
     return Object.entries(labels)
@@ -55,17 +79,14 @@ export const useMataiWhetuForm = () => {
       .map(([_, label]) => label);
   };
 
-  // Updated to handle events for input and checkbox correctly
   const handleChange = (key) => (eOrValue) => {
     let value;
     if (eOrValue && eOrValue.target) {
-      // Called from an event
       value =
         eOrValue.target.type === "checkbox"
           ? eOrValue.target.checked
           : eOrValue.target.value;
     } else {
-      // Called directly with value (e.g., onChange("some text"))
       value = eOrValue;
     }
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -75,7 +96,7 @@ export const useMataiWhetuForm = () => {
     formData,
     handleChange,
     isMissing,
-    isFormComplete: getMissingFields().length === 0,
+    isFormComplete: () => getMissingFields().length === 0,
     getMissingFields,
     touchedFields,
     markAllTouched,

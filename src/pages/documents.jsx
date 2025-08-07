@@ -5,52 +5,14 @@ import Footer from "../components/footer";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import { useState, useEffect } from "react";
-import Sitelink from "../components/sitecontent/siteLink";
 import { Images, Icons } from "../components/sitecontent/images";
+import { fetchGroupedDocuments } from "@/api/strapi";
 
-function decodeHtml(html) {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
-}
-
-// src/pages/about.jsx
+// usage of fetch grouped documnts export which is found in Strapi.js
 const Documents = () => {
   const [documentsByCategory, setDocumentsByCategory] = useState({});
-
   useEffect(() => {
-    fetch(
-      `${Sitelink.website.API_WP_LINK}/wp-json/wp/v2/media?per_page=100&mime_type=application/pdf`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const pdfs = data
-          .filter((item) => item.mime_type === "application/pdf")
-          .map((item) => {
-            const [namePart, categoryPart] = item.title.rendered
-              .replace(".pdf", "")
-              .split("_");
-
-            return {
-              id: item.id,
-              name: decodeHtml(namePart || item.title.rendered),
-              category: decodeHtml(categoryPart || "Uncategorized"),
-              url: item.source_url,
-            };
-          });
-
-        // Group documents by category
-        const grouped = pdfs.reduce((acc, doc) => {
-          const category = doc.category;
-          if (!acc[category]) {
-            acc[category] = [];
-          }
-          acc[category].push(doc);
-          return acc;
-        }, {});
-
-        setDocumentsByCategory(grouped);
-      });
+    fetchGroupedDocuments().then(setDocumentsByCategory);
   }, []);
 
   return (

@@ -10,38 +10,38 @@ const PersonResponsible = ({ formData, handleChange }) => (
       Details of Person Responsible During Occupation
     </h1>
     <FormComponent
-      id="ResponsibleFirstName"
+      id="firstNameResponsible"
       label="First Name"
-      name="responsibleFirstName"
-      value={formData.responsibleFirstName}
-      onChange={handleChange("responsibleFirstName")}
+      name="firstNameResponsible"
+      value={formData.firstNameResponsible}
+      onChange={handleChange("firstNameResponsible")}
       placeholder="First Name Here"
       type="text"
     />
     <FormComponent
-      id="ResponsibleLastName"
+      id="lastNameResponsible"
       label="Last Name"
-      name="responsibleLastName"
-      value={formData.responsibleLastName}
-      onChange={handleChange("responsibleLastName")}
+      name="lastNameResponsible"
+      value={formData.lastNameResponsible}
+      onChange={handleChange("lastNameResponsible")}
       placeholder="Last Name Here"
       type="text"
     />
     <FormComponent
-      id="ResponsiblePhone"
+      id="phoneResponsible"
       label="Phone"
-      name="responsiblePhone"
-      value={formData.responsiblePhone}
-      onChange={handleChange("responsiblePhone")}
+      name="phoneResponsible"
+      value={formData.phoneResponsible}
+      onChange={handleChange("phoneResponsible")}
       placeholder="Phone number here"
       type="text"
     />
     <FormComponent
-      id="ResponsibleEmail"
+      id="emailResponsible"
       label="Email"
-      name="responsibleEmail"
-      value={formData.responsibleEmail}
-      onChange={handleChange("responsibleEmail")}
+      name="emailResponsible"
+      value={formData.emailResponsible}
+      onChange={handleChange("emailResponsible")}
       placeholder="Email here"
       type="email"
     />
