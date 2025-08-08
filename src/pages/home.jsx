@@ -10,6 +10,17 @@ import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import { Images, Icons } from "../components/sitecontent/images";
 
+import { STRAPI_URL } from "@/api/config";
+
+fetch(`${STRAPI_URL}/api/home-page?populate=*`)
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data, "helo");
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+
 function FadeInSection({ children }) {
   const ref = useRef();
   const [isVisible, setIsVisible] = useState(false);
