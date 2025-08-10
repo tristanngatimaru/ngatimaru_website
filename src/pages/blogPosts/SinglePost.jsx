@@ -5,7 +5,7 @@ import HamburgerNav from "../../components/hamburgerNav";
 import AppearRefresh from "../../components/appearrefresh";
 import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
-import { fetchPostById } from "../../api/strapi";
+import { fetchPostById } from "@/api/fetchFunction";
 import { shapePostData } from "../../hooks/strapifields";
 import {
   Carousel,

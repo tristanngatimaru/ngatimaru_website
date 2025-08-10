@@ -10,17 +10,6 @@ import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import { Images, Icons } from "../components/sitecontent/images";
 
-import { STRAPI_URL } from "@/api/config";
-
-fetch(`${STRAPI_URL}/api/home-page?populate=*`)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data, "helo");
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
-
 function FadeInSection({ children }) {
   const ref = useRef();
   const [isVisible, setIsVisible] = useState(false);
@@ -61,10 +50,10 @@ function FadeInSection({ children }) {
   );
 }
 
-function Home() {
+function Home({ content }) {
   const [isAppear, setAppear] = useState(false);
   const isMobile = window.innerWidth < 1024;
-
+  console.log("Home content prop:", content);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const expandMihi = () => {
@@ -114,7 +103,7 @@ function Home() {
                 <h1
                   className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center `}
                 >
-                  {Content.home.header}
+                  {content.HeaderSection?.TeReoTitle || "has not loaded"}
                 </h1>
               </AppearRefresh>
             </div>
@@ -131,9 +120,12 @@ function Home() {
     `}
                 >
                   <AppearRefresh delay={2200}>
-                    <button className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out">
-                      REGISTER
-                    </button>
+                    <a href={content.Button?.[0]?.href}>
+                      {" "}
+                      <button className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out">
+                        {content.Button?.[0]?.EnglishLabel || "nope"}
+                      </button>
+                    </a>
                   </AppearRefresh>
                 </div>
               </div>

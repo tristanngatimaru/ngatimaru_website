@@ -1,26 +1,37 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Arrow from "../assets/images/icons/arrow.png";
-import { fetchCollection } from "../api/strapi";
+
+// Import fetchCollection from your combined strapiClient (adjust path as needed)
+import { fetchCollection } from "@/api/fetchFunction";
+// or if you kept your old file name:
+// import { fetchCollection } from "../api/strapi";
+
 import { shapePostData } from "../hooks/strapifields";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchCollection("blog-posts", ["HeroMainImage"])
       .then((data) => {
-        // Sort posts by createdAt descending (most recent first)
+        if (!Array.isArray(data)) {
+          setError("Invalid data format");
+          setLoading(false);
+          return;
+        }
+
+        // Sort posts descending by createdAt
         const sorted = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
 
-        // Take only the first 2 posts
+        // Take first 2
         const recentTwo = sorted.slice(0, 2);
 
-        // Shape posts as you do
+        // Shape the posts for UI
         const shaped = recentTwo.map(shapePostData);
 
         setPosts(shaped);
@@ -33,13 +44,8 @@ function Posts() {
       });
   }, []);
 
-  if (loading) {
-    return <p className="text-center">Loading posts...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-600">{error}</p>;
-  }
+  if (loading) return <p className="text-center">Loading posts...</p>;
+  if (error) return <p className="text-center text-red-600">{error}</p>;
 
   return (
     <div>
@@ -52,7 +58,7 @@ function Posts() {
             {post.heroMainImage ? (
               <img
                 src={post.heroMainImage}
-                alt={post.title}
+                alt={post.title || "Post image"}
                 onError={() =>
                   console.warn("Image failed to load:", post.heroMainImage)
                 }
