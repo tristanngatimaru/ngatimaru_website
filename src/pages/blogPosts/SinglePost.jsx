@@ -5,8 +5,8 @@ import HamburgerNav from "../../components/hamburgerNav";
 import AppearRefresh from "../../components/appearrefresh";
 import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
-import { fetchPostById } from "@/api/fetchFunction";
-import { shapePostData } from "../../hooks/strapifields";
+import { getBlogPost } from "../../api/blogPosts";
+import { strapiImage } from "../../api/strapiImage";
 import {
   Carousel,
   CarouselContent,
@@ -22,19 +22,62 @@ const SinglePost = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchPostById(id)
-      .then((data) => {
-        console.log("Raw post data:", data); // <-- Add this
-        const shaped = shapePostData(data);
-        console.log("Shaped post data:", shaped); // <-- And this
-        setPost(shaped);
-        setLoading(false);
-      })
-      .catch((err) => {
+    async function loadPost() {
+      try {
+        const data = await getBlogPost(id);
+        if (!data) {
+          setError("Post not found");
+          return;
+        }
+
+        // Transform the data to match your component's expectations
+        console.log("Raw blog post data:", data);
+        const transformedPost = {
+          title: data.Title,
+          eventDate: data.EventDate || data.publishedAt || data.createdAt,
+          author: data.Author,
+          heroMainImage: data.HeroMainImage
+            ? strapiImage(data.HeroMainImage.url)
+            : null,
+          contentPartOne: data.ContentPartOne || "", // Use empty string if null
+          excerptOne: data.ExcerptOne || "", // Use empty string if null
+          secondaryImage: data.SecondaryImage
+            ? strapiImage(data.SecondaryImage.url)
+            : null,
+          contentPartTwo: data.ContentPartTwo || "", // Use empty string if null
+          excerptTwo: data.ExcerptTwo || "", // Use empty string if null
+          thirdImage: data.ThirdImage ? strapiImage(data.ThirdImage.url) : null,
+          contentPartThree: data.ContentPartThree || "", // Use empty string if null
+          extraMediaContent: (() => {
+            console.log(
+              "Processing ExtraMediaContent:",
+              data.ExtraMediaContent
+            );
+            if (!Array.isArray(data.ExtraMediaContent)) {
+              console.log("ExtraMediaContent is not an array");
+              return [];
+            }
+            const urls = data.ExtraMediaContent.filter((img) => img && img.url) // Make sure we have valid image objects
+              .map((img) => {
+                const url = strapiImage(img.url);
+                console.log(`Processing image URL: ${img.url} -> ${url}`);
+                return url;
+              });
+            console.log("Processed URLs:", urls);
+            return urls;
+          })(),
+        };
+
+        setPost(transformedPost);
+      } catch (err) {
         console.error("Failed to fetch post:", err);
         setError("Failed to load post");
+      } finally {
         setLoading(false);
-      });
+      }
+    }
+
+    loadPost();
   }, [id]);
 
   if (loading) return <p className="text-center">Loading post...</p>;
@@ -91,23 +134,29 @@ const SinglePost = () => {
               <div className="max-w-5/6">{post.contentPartOne}</div>
             )}
 
-            <div className=" text-center text-3xl max-w-5/6">
-              "{post.excerptOne}"
-            </div>
+            {post.excerptOne && (
+              <div className="text-center text-3xl max-w-5/6">
+                "{post.excerptOne}"
+              </div>
+            )}
 
-            <img
-              src={post.secondaryImage}
-              alt="Secondary"
-              className="w-full my-8 h-[400px] object-cover"
-            />
+            {post.secondaryImage && (
+              <img
+                src={post.secondaryImage}
+                alt="Secondary"
+                className="w-full my-8 h-[400px] object-cover"
+              />
+            )}
 
             {post.contentPartTwo && (
               <div className="max-w-5/6">{post.contentPartTwo}</div>
             )}
 
-            <div className=" text-center text-3xl max-w-5/6">
-              "{post.excerptTwo}"
-            </div>
+            {post.excerptTwo && (
+              <div className="text-center text-3xl max-w-5/6">
+                "{post.excerptTwo}"
+              </div>
+            )}
 
             <img
               src={post.thirdImage}
@@ -119,37 +168,50 @@ const SinglePost = () => {
               <div className="max-w-5/6">{post.contentPartThree}</div>
             )}
 
-            {Array.isArray(post.extraMediaContent) &&
-              post.extraMediaContent.length > 0 && (
-                <div className="my-8 max-w-4xl mx-auto">
-                  <Carousel>
-                    <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md">
-                      {/* You can use any icon or character for arrows */}
-                      &#8592;
-                    </CarouselPrevious>
+            {(() => {
+              console.log(
+                "Carousel render - extraMediaContent:",
+                post.extraMediaContent
+              );
+              return Array.isArray(post.extraMediaContent) &&
+                post.extraMediaContent.length > 0 ? (
+                <div className="w-full  py-12">
+                  <div className="text-center mb-8 font-roboto-light text-2xl">
+                    {/* {`Gallery (${post.extraMediaContent.length} images)`} */}
+                  </div>
+                  <div className="max-w-7xl mx-auto px-4">
+                    <Carousel className="w-full">
+                      <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-md hover:scale-110 transition-transform">
+                        &#8592;
+                      </CarouselPrevious>
 
-                    <CarouselContent className="overflow-hidden">
-                      {post.extraMediaContent.map((url, index) => (
-                        <CarouselItem
-                          key={index}
-                          className="w-full flex justify-center"
-                          value={index}
-                        >
-                          <img
-                            src={url}
-                            alt={`Extra media ${index + 1}`}
-                            className="max-h-[400px] object-cover rounded-md"
-                          />
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
+                      <CarouselContent>
+                        {post.extraMediaContent.map((url, index) => {
+                          console.log(`Rendering carousel item ${index}:`, url);
+                          return (
+                            <CarouselItem key={index} className="basis-full">
+                              <div className="p-4">
+                                <div className="relative w-full h-[600px] bg-gray-100 rounded-lg overflow-hidden">
+                                  <img
+                                    src={url}
+                                    alt={`Gallery image ${index + 1}`}
+                                    className="absolute inset-0 w-full h-full object-contain mx-auto"
+                                  />
+                                </div>
+                              </div>
+                            </CarouselItem>
+                          );
+                        })}
+                      </CarouselContent>
 
-                    <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md">
-                      &#8594;
-                    </CarouselNext>
-                  </Carousel>
+                      <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-md hover:scale-110 transition-transform">
+                        &#8594;
+                      </CarouselNext>
+                    </Carousel>
+                  </div>
                 </div>
-              )}
+              ) : null;
+            })()}
           </div>
         </div>
 

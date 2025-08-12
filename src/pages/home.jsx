@@ -1,14 +1,22 @@
 import { useState, useEffect, useRef } from "react";
-
 import Navbar from "../components/navbar";
-import veryCloseCarving from "../assets/images/headerimages/veryclosecarving.png";
 import Posts from "../components/posts";
 import Footer from "../components/footer";
 import HamburgerNav from "../components/hamburgerNav";
-import Content from "../components/sitecontent/content";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
-import { Images, Icons } from "../components/sitecontent/images";
+import { Icons } from "../components/sitecontent/images";
+import { getHomeContent } from "../api/siteContent";
+import { strapiImage } from "../api/strapiImage";
+
+// Helper function to handle image URLs consistently
+const getImageUrl = (imageData) => {
+  if (!imageData) return null;
+  if (imageData.url) return strapiImage(imageData.url);
+  if (imageData.data?.attributes?.url)
+    return strapiImage(imageData.data.attributes.url);
+  return null;
+};
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -26,15 +34,10 @@ function FadeInSection({ children }) {
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    if (ref.current) observer.observe(ref.current);
 
     return () => {
-      if (ref.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        observer.unobserve(ref.current);
-      }
+      if (ref.current) observer.unobserve(ref.current);
     };
   }, []);
 
@@ -50,45 +53,85 @@ function FadeInSection({ children }) {
   );
 }
 
-function Home({ content }) {
+function Home() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isAppear, setAppear] = useState(false);
   const isMobile = window.innerWidth < 1024;
-  console.log("Home content prop:", content);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const expandMihi = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  const targetRef = useRef(null);
-
-  const handleScroll = () => {
-    targetRef.current.scrollIntoView({ behavior: "smooth" });
-  };
+  useEffect(() => {
+    async function loadContent() {
+      try {
+        const homeData = await getHomeContent();
+        setContent(homeData);
+      } catch (error) {
+        console.error("Error loading home content:", error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadContent();
+  }, []);
 
   useEffect(() => {
     const appearTimeout = setTimeout(
       () => setAppear(true),
       isMobile ? 500 : 2000
     );
+    return () => clearTimeout(appearTimeout);
+  }, [isMobile]);
 
-    return () => {
-      clearTimeout(appearTimeout);
-    };
-  });
+  const expandMihi = () => setIsExpanded((prev) => !prev);
+  const targetRef = useRef(null);
+  const handleScroll = () =>
+    targetRef.current.scrollIntoView({ behavior: "smooth" });
+
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading...</div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">
+          Error loading content. Please try again later.
+        </div>
+      </div>
+    );
+  if (!content)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">No content available</div>
+      </div>
+    );
 
   return (
-    <div className="">
+    <div>
       <FadeInOnLoad delay={500} mobileDelay={200}>
         <HamburgerNav />
-        <div
-          className={`relative w-full h-full overflow-hidden transition-all ease-in-out duration-500  `}
-        >
-          <img
-            src={veryCloseCarving}
-            alt=""
-            className="w-full h-[800px] object-center object-cover overflow-hidden"
-          />
+        <div className="relative w-full h-full overflow-hidden transition-all ease-in-out duration-500">
+          {(() => {
+            const imageUrl = getImageUrl(
+              content.HeaderSection?.BackgroundHeaderImage
+            );
+            return imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={
+                  content.HeaderSection.BackgroundHeaderImage
+                    ?.alternativeText || "Background header image"
+                }
+                className="w-full h-[800px] object-center object-cover overflow-hidden"
+              />
+            ) : (
+              <div className="w-full h-[800px] bg-gray-200" />
+            );
+          })()}
 
           {/* Navbar on top of image */}
           <div className="absolute top-0 left-0 w-full z-50 pt-10">
@@ -96,51 +139,44 @@ function Home({ content }) {
           </div>
 
           {/* Centered title text */}
-
           <div className="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pt-28">
             <div className="overflow-hidden h-[80px] w-full flex justify-center">
               <AppearRefresh delay={2000}>
-                <h1
-                  className={`transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center `}
-                >
+                <h1 className="transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center">
                   {content.HeaderSection?.TeReoTitle || "has not loaded"}
                 </h1>
               </AppearRefresh>
             </div>
 
             {/* Space between title and buttons */}
-
             <div className="mt-16 flex flex-col items-center gap-6">
               {/* REGISTER Button */}
-              <div className="overflow-hidden h-[80px] w-full flex justify-center">
-                <div
-                  className={`
-      transition-all duration-1000 ease-in-out
-      
-    `}
-                >
-                  <AppearRefresh delay={2200}>
-                    <a href={content.Button?.[0]?.href}>
-                      {" "}
-                      <button className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out">
-                        {content.Button?.[0]?.EnglishLabel || "nope"}
-                      </button>
-                    </a>
-                  </AppearRefresh>
+              {content.Button?.length > 0 && (
+                <div className="overflow-hidden h-[80px] w-full flex justify-center">
+                  <div className="transition-all duration-1000 ease-in-out">
+                    <AppearRefresh delay={2200}>
+                      <a href={content.Button[0].href}>
+                        <button
+                          className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out group relative"
+                          title={content.Button[0].TeReoLabel}
+                        >
+                          <span>{content.Button[0].EnglishLabel}</span>
+                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-sm mt-1">
+                            {content.Button[0].TeReoLabel}
+                          </span>
+                        </button>
+                      </a>
+                    </AppearRefresh>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* ARROW Button */}
-              <div className="overflow-hidden h-[90px] w-full flex justify-center ">
+              <div className="overflow-hidden h-[90px] w-full flex justify-center">
                 <div
-                  className={` rounded-full
-        w-[60px] h-[60px] m-2 flex items-center justify-center
-        transform
-        ${isAppear ? "translate-y-0" : "translate-y-20"}
-        transition-transform duration-1000 ease-in-out
-
-        
-      `}
+                  className={`rounded-full w-[60px] h-[60px] m-2 flex items-center justify-center transform ${
+                    isAppear ? "translate-y-0" : "translate-y-20"
+                  } transition-transform duration-1000 ease-in-out`}
                 >
                   <AppearRefresh delay={2400}>
                     <button
@@ -155,63 +191,69 @@ function Home({ content }) {
             </div>
           </div>
         </div>
+
         <FadeInSection>
           <div
             ref={targetRef}
             className="h-[500px] pt-20 lg:pt-0 flex flex-row overflow-hidden"
           >
-            <img
-              src={Images.Korowai}
-              alt=""
-              className={`object-cover w-1/2 h-full lg:block hidden`}
-            />
-            <div
-              className={`w-screen lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center `}
-            >
+            {(() => {
+              const imageUrl = getImageUrl(content.MihiSection?.Image);
+              return imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={
+                    content.MihiSection.Image?.alternativeText ||
+                    "Mihi section image"
+                  }
+                  className="object-cover w-1/2 h-full lg:block hidden"
+                />
+              ) : (
+                <div className="w-1/2 h-full bg-gray-200 lg:block hidden" />
+              );
+            })()}
+
+            <div className="w-screen lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center">
               <p className="font-roboto-light text-3xl pb-10">
-                {Content.home.mihiIntro}
+                {content.MihiSection?.Title}
               </p>
-              <p className="font-roboto-light text-xl md:text-3xl ">
-                {Content.home.mihiShortened}
+              <p className="font-roboto-light text-xl md:text-3xl">
+                {content.MihiSection?.MihiShortened}
               </p>
               <p className="font-roboto-light text-3xl pt-10 pb-5">Full Mihi</p>
               <button
                 onClick={expandMihi}
-                className={`hover:outline-black active:scale-95 hover:scale-110 ease-in-out duration-200  outline-transparent outline-2 rounded-full p-3 ${
+                className={`hover:outline-black active:scale-95 hover:scale-110 ease-in-out duration-200 outline-transparent outline-2 rounded-full p-3 ${
                   isExpanded ? "rotate-180" : "rotate-0"
                 }`}
               >
-                <img src={Icons.BlackArrow} alt="" className="w-10 " />
+                <img src={Icons.BlackArrow} alt="" className="w-10" />
               </button>
             </div>
           </div>
+
           <div
-            className={` transition-all duration-700 ease-in-out overflow-hidden bg-gray-200 shadow-inner ${
+            className={`transition-all duration-700 ease-in-out overflow-hidden bg-gray-200 shadow-inner ${
               isExpanded ? "max-h-[400vh]" : "max-h-0"
             }`}
           >
             <div className="p-4 flex flex-col gap-12 px-10 lg:px-40 py-20 items-center">
               <p className="text-center text-2xl font-roboto-light">
-                {Content.home.fullMihi1}
-              </p>
-              <p className="text-center text-2xl font-roboto-light">
-                {Content.home.fullMihi2}
+                {content.MihiSection?.FullMihi}
               </p>
 
-              <p className="text-center text-2xl font-roboto-light">
-                {Content.home.fullMihi3}
-              </p>
               <div>
                 <button
                   onClick={expandMihi}
-                  className={`hover:outline-black hover:scale-110 ease-in-out duration-200  outline-transparent outline-2 rounded-full p-3 rotate-180 active:scale-95`}
+                  className="hover:outline-black hover:scale-110 ease-in-out duration-200 outline-transparent outline-2 rounded-full p-3 rotate-180 active:scale-95"
                 >
-                  <img src={Icons.BlackArrow} alt="" className="w-10 " />
+                  <img src={Icons.BlackArrow} alt="" className="w-10" />
                 </button>
               </div>
             </div>
           </div>
         </FadeInSection>
+
         <FadeInSection>
           <Posts />
         </FadeInSection>
@@ -221,4 +263,5 @@ function Home({ content }) {
     </div>
   );
 }
+
 export default Home;

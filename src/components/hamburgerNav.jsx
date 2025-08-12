@@ -62,10 +62,10 @@ export default function HamburgerNav() {
           animate={{ translateX: expanded ? "20%" : "100%" }}
           className="z-40 w-[30rem] h-full bg-white fixed right-0"
         >
-          <ul class="font-roboto-light pl-10 pt-40 space-y-8 w-full flex flex-col gap-2">
+          <ul className="font-roboto-light pl-10 pt-40 space-y-8 w-full flex flex-col gap-2">
             <li>
-              <Link to="/" href="" class="block group ">
-                <h2 class="text-2xl font-roboto-regular absolute w-full bg-white z-10">
+              <Link to="/" href="" className="block group ">
+                <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
                   KAINGA
                 </h2>
                 <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
@@ -74,37 +74,37 @@ export default function HamburgerNav() {
               </Link>
             </li>
             <li>
-              <Link to="/about" href="" class="block group">
+              <Link to="/about" href="" className="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   KO WAI
                 </h2>
-                <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
+                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   ABOUT US
                 </h2>
               </Link>
             </li>
             <li>
-              <Link to="/bookingmataiwhetu" href="" class="block group">
+              <Link to="/bookingmataiwhetu" href="" className="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   RĀHITA MATAI WHETŪ
                 </h2>
-                <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
+                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   BOOKING MATAI WHETŪ
                 </h2>
               </Link>
             </li>
             <li>
-              <Link to="/fishingpermit" href="" class="block group">
+              <Link to="/fishingpermit" href="" className="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   RIHITI HĪ IKA
                 </h2>
-                <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
+                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   FISHING PERMIT
                 </h2>
               </Link>
             </li>
             <li>
-              <Link to="/documents" href="" class="block group">
+              <Link to="/documents" href="" className="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   NGĀ TUHINGA
                 </h2>
@@ -124,11 +124,11 @@ export default function HamburgerNav() {
               </Link>
             </li>
             <li>
-              <Link to="/register" href="" class="block group">
+              <Link to="/register" href="" className="block group">
                 <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
                   RĀHITA
                 </h2>
-                <h2 class="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
+                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                   REGISTER
                 </h2>
               </Link>

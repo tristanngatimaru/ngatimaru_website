@@ -7,7 +7,7 @@ import MataiWhetu from "../../pages/bookingMataiWhetu";
 //Home
 const content = {
   home: {
-    header: "NGĀTI MARU RŪNANGA",
+    header: "Content is Not Available",
     mihiIntro: "Nau mai, haere mai",
     mihiShortened:
       "Mai i Ngā Kuri-a-Whārei ki Tīkapa Moana, ko Hauraki te rohe whenua, ko Marutūāhu te tangata, ko Ngāti Maru te iwi. Tātou te hunga ora – hui e, tāiki e!",

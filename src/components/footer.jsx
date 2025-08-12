@@ -3,7 +3,7 @@ function Footer() {
 
   return (
     <div className="flex w-full justify-between px-20 items-start py-10 bg-gray-300">
-      <phone className="flex-col flex">
+      <div className="flex-col flex">
         <h1 className="pb-5 font-roboto-light text-2xl">PHONE</h1>
         <div className="flex gap-2 items-start">
           <h2>Office</h2>
@@ -15,8 +15,8 @@ function Footer() {
           <h2>-</h2>
           <h2>021 905 192</h2>
         </div>
-      </phone>
-      <office>
+      </div>
+      <div>
         <h1 className="pb-5 font-roboto-light text-2xl">OFFICE</h1>
         <div>111 Queen Street</div>
         <a
@@ -26,13 +26,13 @@ function Footer() {
         >
           Directions
         </a>
-      </office>
-      <postal>
+      </div>
+      <div>
         <h1 className="pb-5 font-roboto-light text-2xl">POSTAL</h1>
-      </postal>
-      <email>
+      </div>
+      <div>
         <h1 className="pb-5 font-roboto-light text-2xl">EMAIL</h1>
-      </email>
+      </div>
     </div>
   );
 }

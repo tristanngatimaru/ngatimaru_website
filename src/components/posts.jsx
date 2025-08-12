@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Arrow from "../assets/images/icons/arrow.png";
-
-// Import fetchCollection from your combined strapiClient (adjust path as needed)
-import { fetchCollection } from "@/api/fetchFunction";
-// or if you kept your old file name:
-// import { fetchCollection } from "../api/strapi";
-
-import { shapePostData } from "../hooks/strapifields";
+import { getBlogPosts } from "../api/blogPosts";
+import { strapiImage } from "../api/strapiImage";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -15,33 +10,43 @@ function Posts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchCollection("blog-posts", ["HeroMainImage"])
-      .then((data) => {
+    async function loadPosts() {
+      try {
+        const data = await getBlogPosts({
+          sort: ["publishedAt:desc"],
+          pagination: {
+            limit: 2,
+          },
+        });
+
         if (!Array.isArray(data)) {
           setError("Invalid data format");
-          setLoading(false);
           return;
         }
 
-        // Sort posts descending by createdAt
-        const sorted = data.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
+        // Transform the posts for UI
+        const transformedPosts = data.map((post) => ({
+          id: post.id,
+          documentId: post.documentId,
+          title: post.Title,
+          heroMainImage: post.HeroMainImage?.url
+            ? strapiImage(post.HeroMainImage.url)
+            : null,
+          createdAt: post.createdAt,
+          author: post.Author,
+          eventDate: post.EventDate,
+        }));
 
-        // Take first 2
-        const recentTwo = sorted.slice(0, 2);
-
-        // Shape the posts for UI
-        const shaped = recentTwo.map(shapePostData);
-
-        setPosts(shaped);
-        setLoading(false);
-      })
-      .catch((err) => {
+        setPosts(transformedPosts);
+      } catch (err) {
         console.error(err);
         setError("Failed to load posts.");
+      } finally {
         setLoading(false);
-      });
+      }
+    }
+
+    loadPosts();
   }, []);
 
   if (loading) return <p className="text-center">Loading posts...</p>;
@@ -59,14 +64,16 @@ function Posts() {
               <img
                 src={post.heroMainImage}
                 alt={post.title || "Post image"}
-                onError={() =>
-                  console.warn("Image failed to load:", post.heroMainImage)
-                }
                 className="w-full h-[300px] object-cover transition duration-500 group-hover:scale-105 group-hover:blur-sm group-hover:brightness-75"
+                onError={(e) => {
+                  console.warn("Image failed to load:", post.heroMainImage);
+                  e.target.src = ""; // Clear the broken image
+                  e.target.classList.add("bg-gray-500");
+                }}
               />
             ) : (
               <div className="w-full h-[300px] bg-gray-500 flex items-center justify-center text-white">
-                No Image Found
+                No Image Available
               </div>
             )}
 
@@ -75,11 +82,17 @@ function Posts() {
                 <h2 className="text-3xl font-roboto-light text-white mb-3 uppercase">
                   {post.title || "No Title"}
                 </h2>
-                <Link to={`/post/${post.id}`}>
+                <Link to={`/post/${post.documentId}`}>
                   <div className="flex items-center gap-10 hover:scale-110 hover:translate-x-5 ease-in-out duration-200 cursor-pointer">
-                    <h2 className="text-2xl font-roboto-light text-white">
-                      READ MORE
-                    </h2>
+                    <div className="flex flex-col">
+                      <h2 className="text-2xl font-roboto-light text-white">
+                        READ MORE
+                      </h2>
+                      <p className="text-sm font-roboto-light text-white mt-1">
+                        By {post.author} -{" "}
+                        {new Date(post.eventDate).toLocaleDateString()}
+                      </p>
+                    </div>
                     <img src={Arrow} alt="" className="w-[40px] -rotate-90" />
                   </div>
                 </Link>
