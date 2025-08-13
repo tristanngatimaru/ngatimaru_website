@@ -1,12 +1,12 @@
 import Footer from "../components/footer";
 import HeroHeader from "../components/header";
-import content from "../components/sitecontent/content";
+import { Content } from "../components/sitecontent/content";
 import { Images, Icons } from "../components/sitecontent/images";
-// src/pages/about.jsx
+// src/pages/register.jsx
 function Register() {
   return (
     <div className="w-full">
-      <HeroHeader image={Images.Mihi} title={content.register.title} />
+      <HeroHeader image={Images.Mihi} title={Content.register.title} />
       <Footer />
     </div>
   );

@@ -14,9 +14,10 @@ import Paul from "../../assets/images/aboutus/paulmajourey.png";
 import David from "../../assets/images/aboutus/davidtaipari.png";
 import Waati from "../../assets/images/aboutus/waatingamani.png";
 
-// all png images that are not in wordpress for a blog post is held here, to change the image background of headers etc, locate the name of the file that looks like fits with
-//what coresponds to the image you want to change, then only change the file path of that image which is found above
-//adding in more images rather than changing them are more involved and best asked by either chatgpt or the corresponding IT developer to look into this.
+// All png images that are not in wordpress for a blog post are held here
+// To change the image background of headers etc, locate the name of the file that corresponds
+// to the image you want to change, then only change the file path of that image which is found above
+// Adding more images rather than changing them are more involved and best asked by either ChatGPT or the corresponding IT developer
 
 const Images = {
   Coromandel: Coromandel,
@@ -41,4 +42,5 @@ const Cards = {
   Waati: Waati,
   David: David,
 };
+
 export { Images, Icons, Cards };

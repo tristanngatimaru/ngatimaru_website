@@ -5,7 +5,7 @@ import Footer from "../components/footer";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import { Images, Icons } from "../components/sitecontent/images";
-import Content from "../components/sitecontent/content";
+import { Content } from "../components/sitecontent/content";
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -19,10 +19,11 @@ function FadeInSection({ children }) {
       { threshold: 0.5 }
     );
 
-    if (ref.current) observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) observer.observe(currentRef);
 
     return () => {
-      if (ref.current) observer.unobserve(ref.current);
+      if (currentRef) observer.unobserve(currentRef);
     };
   }, []);
 

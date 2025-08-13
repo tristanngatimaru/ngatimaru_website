@@ -1,9 +1,4 @@
-// --------------------------
-// src/pages/MataiWhetu.jsx
-// --------------------------
-
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import SubmitReviewButton from "../components/SubmitReviewButton";
 import PersonalDetails from "../components/formSections/PersonalDetails";
 import OrganisationDetails from "../components/formSections/OrganisationDetails";
@@ -12,14 +7,13 @@ import BookingDates from "../components/formSections/BookingDates";
 import WharenuiSection from "../components/formSections/WharenuiSection";
 import Acknowledgements from "../components/formSections/Acknowledgement";
 import BookingSummary from "../components/BookingSummary";
-import ConfirmModal from "../components/ConfirmModal";
+import ConfirmModal from "../components/confirmmodal";
 import AblutionSection from "../components/formSections/AblutionSection";
 import WharekaiSection from "../components/formSections/WharekaiSection";
 import { useMataiWhetuForm } from "../hooks/useMataiWhetuForm";
 import HeroHeader from "../components/header";
-import { Images } from "../components/sitecontent/images";
-import content from "../components/sitecontent/content";
 import FileAcknowledgement from "../components/formSections/FileAcknowledgement";
+import { getBookingMataiWhetuContent } from "@/api/siteContent";
 
 // Autofill button that uses your curried handleChange properly
 const AutofillTestButton = ({ handleChange }) => {
@@ -77,8 +71,52 @@ const MataiWhetu = () => {
     getMissingFields,
   } = useMataiWhetuForm();
 
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [missingFields, setMissingFields] = useState([]);
+
+  useEffect(() => {
+    async function loadContent() {
+      try {
+        const bookingData = await getBookingMataiWhetuContent();
+        setContent(bookingData);
+      } catch (err) {
+        console.error("Error loading booking content:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadContent();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading booking content...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">
+          Error loading booking content. Please try again later.
+        </div>
+      </div>
+    );
+  }
+
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">No booking content available</div>
+      </div>
+    );
+  }
 
   const submitBooking = async () => {
     try {
@@ -154,11 +192,10 @@ const MataiWhetu = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full h-50 bg-gradient-to-b from-gray-800 to-transparent absolute z-10"></div>
       <HeroHeader
-        image={Images.MataiWhetu}
-        subtitle={content.mataiwhetu.header}
-        title={content.mataiwhetu.headerenglish}
+        image={content.HeaderSection?.BackgroundHeaderImage?.url}
+        subtitle={content.bookingMataiWhetu?.title || "nope"}
+        title={content.bookingMataiWhetu?.englishTitle || "Nope"}
       />
 
       {/* Autofill button */}

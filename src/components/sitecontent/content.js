@@ -1,58 +1,91 @@
-//all text that is not found on blogs/posts you will see on the site is found here
-//you can easily change the content anywhere in the site just from doing it here, for it to work "" MUST BE THERE as well as a comma at the end after the quotes.
-//if there are any issues with syntax or if something goes red, copy/paste the code into chatgpt and it will correct whatever might be wrong.
+// Static content for fallbacks when Strapi is not available
+// This content serves as backup content for all pages
 
-import MataiWhetu from "../../pages/bookingMataiWhetu";
-
-//Home
-const content = {
+const Content = {
   home: {
-    header: "Content is Not Available",
-    mihiIntro: "Nau mai, haere mai",
-    mihiShortened:
-      "Mai i Ngā Kuri-a-Whārei ki Tīkapa Moana, ko Hauraki te rohe whenua, ko Marutūāhu te tangata, ko Ngāti Maru te iwi. Tātou te hunga ora – hui e, tāiki e!",
-    fullMihi1:
-      "Tènei te raukawakawa, i waiwai i roto i Te Puna Wai-ora-o-Tàne kia pata pata kei runga i to tinana; ànei te rau kawakawa; unuhia te peka ki runga; kia whakataka te hau ki te Tonga; unuhia te peka ki raro; ka whakataka te hau ki te Muri; kia màkinakina a uta, kia màtaratara ki tai, kia hiake ana te atakura; he tio, he huka, he hau hunga… Kia whakatù ki te rangi, whakamaua rangi, kia tìna! hui e, Taiki e!",
-    fullMihi2:
-      "Mai i Ngà Kurì-a-whàrei i te Tonga , ki Mahurangi i te Muri, Ànei ngà maunga tapu, mai Moehau ka piki ki Te Aroha, peke atu ki te Uru, ko Te Hapu-a-Kohe, ka heke ki Te Kohukohunui, tae atu ki Mahurangi, Ko Tìkapa, ko Te Taitamawahine, ngà moana karekare, ngà moana marino, e hora nei Hauraki te rohe whenua Marutùàhu te tangata. Ngàti Maru te iwi.",
-    fullMihi3:
-      "Ko te kupu tuatahi, ki to tàtou kaihanga, nàna nei te kàkano i ruia mai i Rangiàtea, arà, nàna nei tàtou katoa. Ngà mihi maioha ki Te Whare Kàhui Àriki, ki tò tàtou Kìngi, Tùheitia, e noho nei i te taumata tapu ò òna tùpuna, ò tòna whaea. Ki a koutou rà rire, rire, hau, pai màrire. Ki ò tàtou tini aitua, ki a ràtou mà kua huri ki tua o te àrai, ki Te Pùtahitanga o Rehua, hàere koutou, hàere koutou, hàere atu rà. Ràtou te hunga wairua, ràtou ki a ràtou, tàtou te hunga ora, tàtou nei ki a tàtou, tàtou te hunga oranga pùmautanga, tau atu rà, tau mai nei, e tau ana nei i runga i te pepehà e paiheretia e tàtou.",
+    teReoTitle: "[Strapi Error: Home Te Reo Title]",
+    englishTitle: "[Strapi Error: Home English Title]",
+    mihiTitle: "[Strapi Error: Home Mihi Title]",
+    mihiShortened: "[Strapi Error: Home Mihi Shortened]",
+    fullMihi: "[Strapi Error: Home Full Mihi]",
+    buttonLabel: "[Strapi Error: Home Button Label]",
+    buttonTeReo: "[Strapi Error: Home Button Te Reo]",
   },
 
   about: {
-    header: "KO WAI MĀTAU",
-    headerenglish: "ABOUT US",
-    Quote: "“LOREM IPSUM DOLOR SIT AMET, CONSECUTUR ADIPISCING ELIT”",
-    Info1:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at convallis nisi. Vestibulum nibh lacus, porta vehicula rutrum a, ullamcorper quis metus. Donec ut nisl nec leo convallis rhoncus id non purus. Vestibulum porta sapien eu velit viverra, eu laoreet erat tincidunt.",
-    trusteesheader: "General Trustees",
-    trustees:
-      "Craig Reidy | Wati Ngamane | Pat Corcoran | Dawn Wihongi | Phillip Hikairo | Kathy Ngamane | Paul Majurey",
+    header: "[Strapi Error: About Header]",
+    headerenglish: "[Strapi Error: About Header English]",
+    Quote: "[Strapi Error: About Quote]",
+    Info1: "[Strapi Error: About Info1]",
+    trusteesheader: "[Strapi Error: About Trustees Header]",
+    trustees: "[Strapi Error: About Trustees Content]",
   },
 
-  mataiwhetu: {
-    header: "RĀHITA MĀTAI WHETŪ",
-    headerenglish: "BOOKING MĀTAI WHETŪ",
+  bookingMataiWhetu: {
+    title: "[Strapi Error: Booking Matai Whetu Title]",
+    englishTitle: "[Strapi Error: Booking Matai Whetu English Title]",
+    description: "[Strapi Error: Booking Matai Whetu Description]",
+    formTitle: "[Strapi Error: Booking Matai Whetu Form Title]",
   },
 
   fishingPermit: {
-    header: "RIHITI HĪ IKA",
-    headerenglish: "FISHING PERMIT",
+    title: "[Strapi Error: Fishing Permit Title]",
+    englishTitle: "[Strapi Error: Fishing Permit English Title]",
+    description: "[Strapi Error: Fishing Permit Description]",
+    formTitle: "[Strapi Error: Fishing Permit Form Title]",
   },
+
   documents: {
-    header: "NGĀ TUHINGA",
-    headerenglish: "DOCUMENTS",
+    title: "[Strapi Error: Documents Title]",
+    englishTitle: "[Strapi Error: Documents English Title]",
+    header: "[Strapi Error: Documents Header]",
+    headerenglish: "[Strapi Error: Documents Header English]",
+    description: "[Strapi Error: Documents Description]",
+    categories: [
+      "[Strapi Error: Documents Category 1]",
+      "[Strapi Error: Documents Category 2]",
+      "[Strapi Error: Documents Category 3]",
+      "[Strapi Error: Documents Category 4]",
+    ],
   },
 
   store: {
-    header: "TOA",
-    headerenglish: "STORE",
+    title: "[Strapi Error: Store Title]",
+    englishTitle: "[Strapi Error: Store English Title]",
+    description: "[Strapi Error: Store Description]",
+    categories: [
+      "[Strapi Error: Store Category 1]",
+      "[Strapi Error: Store Category 2]",
+      "[Strapi Error: Store Category 3]",
+      "[Strapi Error: Store Category 4]",
+    ],
   },
 
   register: {
-    header: "RĒHITA",
-    headerenglish: "REGISTER",
+    title: "[Strapi Error: Register Title]",
+    englishTitle: "[Strapi Error: Register English Title]",
+    description: "[Strapi Error: Register Description]",
+    formTitle: "[Strapi Error: Register Form Title]",
+    benefits: [
+      "[Strapi Error: Register Benefit 1]",
+      "[Strapi Error: Register Benefit 2]",
+      "[Strapi Error: Register Benefit 3]",
+      "[Strapi Error: Register Benefit 4]",
+    ],
+  },
+
+  general: {
+    loading: "[Strapi Error: General Loading]",
+    error: "[Strapi Error: General Error Message]",
+    noContent: "[Strapi Error: General No Content]",
+    contactUs: "[Strapi Error: General Contact Us]",
+    learnMore: "[Strapi Error: General Learn More]",
+    submit: "[Strapi Error: General Submit]",
+    cancel: "[Strapi Error: General Cancel]",
+    next: "[Strapi Error: General Next]",
+    previous: "[Strapi Error: General Previous]",
+    close: "[Strapi Error: General Close]",
   },
 };
 
-export default content;
+export { Content };
