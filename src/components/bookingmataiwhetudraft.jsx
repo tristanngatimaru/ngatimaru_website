@@ -120,7 +120,6 @@ function MataiWhetu() {
     alert("Form submitted!");
     setShowConfirm(false);
   };
-  console.log("Matai Whetu component rendered");
 
   return (
     <div className="w-full">
@@ -499,7 +498,7 @@ function MataiWhetu() {
         </form>
 
         {/* RIGHT: Preview */}
-        <div className="sticky top-20 overflow-y-auto bg-white p-8 rounded shadow full">
+        <div className="sticky top-20  bg-gray-500 p-8 rounded ">
           <h2 className="text-2xl font-semibold mb-4">Booking Summary</h2>
 
           {/* Helper function to render fields with missing validation */}

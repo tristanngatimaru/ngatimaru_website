@@ -5,7 +5,6 @@ import FaceCard from "../components/facecard";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import HeroHeader from "../components/header";
 import { getAboutContent } from "../api/siteContent";
-import { Images, Cards } from "../components/sitecontent/images";
 
 // src/pages/about.jsx
 function About() {
@@ -62,11 +61,11 @@ function About() {
       <FadeInOnLoad delay={500} mobileDelay={200}>
         <HeroHeader
           image={
-            content.HeaderSection?.BackgroundHeaderImage?.url ||
-            Images.CarvingUpClose
+            content.Header?.BackgroundHeaderImage?.url ||
+            "Images.CarvingUpClose"
           }
           title={content.Header?.TeReoTitle || "Ko Wai not live"}
-          subtitle={content.HeaderSection?.EnglishTitle || "About Us"}
+          subtitle={content.Header?.EnglishTitle || "About Us"}
         />
 
         {/* page content below */}
@@ -74,7 +73,7 @@ function About() {
         <div className=" lg:grid flex flex-col lg:grid-cols-3 grid-cols-2 grid-rows-[500px_auto_auto_auto_500px] md:grid-rows-[700px_auto_auto_auto_700px]">
           <FadeInSection delay={400} className="row-span-2">
             <img
-              src={Images.Pohutakawa}
+              src={content.SidePanelImageOne?.url || "none"}
               alt=""
               className="h-full object-cover overflow-hidden object-center hidden lg:block"
             />
@@ -83,7 +82,7 @@ function About() {
             <div>
               <FadeInSection>
                 <img
-                  src={Images.Pohutakawa}
+                  src={content.SidePanelImageOne?.url || "none"}
                   alt=""
                   className="h-full w-80 object-cover overflow-hidden object-center block lg:hidden"
                 />
@@ -102,16 +101,16 @@ function About() {
             </div>
           </div>
 
-          {/* Team member cards - these could come from Strapi TeamMembers */}
-          {content.TeamMembers && content.TeamMembers.length > 0 ? (
+          {/* Team member cards - these could come from Strapi FaceCard */}
+          {content.FaceCard && content.FaceCard.length > 0 ? (
             // Dynamic team members from Strapi
-            content.TeamMembers.map((member, index) => (
+            content.FaceCard.map((member, index) => (
               <div key={member.id || index} className="row-start-3">
                 <FadeInSection delay={index * 200}>
                   <FaceCard
-                    imageSrc={member.Image?.url || Cards.Waati}
+                    imageSrc={member.Image?.url || "image"}
                     name={member.Name || "Team Member"}
-                    title={member.Title || "Position"}
+                    title={member.Detail || "Position"}
                     description={member.Description || ""}
                     className=""
                     direction={
@@ -127,7 +126,7 @@ function About() {
               <div className="row-start-3 ">
                 <FadeInSection>
                   <FaceCard
-                    imageSrc={Cards.Waati}
+                    imageSrc={"placeholder"}
                     name="Waati Ngamane"
                     title="Chairperson & Treaty Negotiator"
                     description=""
@@ -139,7 +138,7 @@ function About() {
               <div className="row-start-3 ">
                 <FadeInSection delay={200}>
                   <FaceCard
-                    imageSrc={Cards.David}
+                    imageSrc={"placeholder"}
                     name="David Taipari"
                     title="General Manager"
                     description=""
@@ -151,7 +150,7 @@ function About() {
               <div className="row-start-3 ">
                 <FadeInSection delay={400}>
                   <FaceCard
-                    imageSrc={Cards.Paul}
+                    imageSrc={"placeholder"}
                     name="Paul Majurey"
                     title="Treaty Negotiator"
                     description=""
@@ -177,7 +176,7 @@ function About() {
             <div>
               <FadeInSection>
                 <img
-                  src={Images.Pohutakawa}
+                  src={content.SidePanelImageTwo?.url || "placeholder"}
                   alt=""
                   className="h-full w-80 object-cover overflow-hidden object-center block lg:hidden"
                 />
@@ -188,7 +187,7 @@ function About() {
           <div className="row-span-2 col-start-3 row-start-4 hidden lg:block">
             <FadeInSection>
               <img
-                src={Images.BeachIsland}
+                src={content.SidePanelImageTwo?.url || "placeholder"}
                 alt=""
                 className="h-full object-cover overflow-hidden object-center"
               />

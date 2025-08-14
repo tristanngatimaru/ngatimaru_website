@@ -1,3 +1,4 @@
+import FaceCard from "@/components/facecard";
 import fetchContentType from "./fetchContentType";
 import { strapiImage } from "./strapiImage";
 
@@ -7,13 +8,7 @@ import { strapiImage } from "./strapiImage";
  * @returns {Object|null} Formatted image data
  */
 function transformImage(imageData) {
-  console.log(
-    "🎨 Transforming image data:",
-    JSON.stringify(imageData, null, 2)
-  );
-
   if (!imageData) {
-    console.log("⚠️ No image data provided");
     return null;
   }
 
@@ -21,13 +16,8 @@ function transformImage(imageData) {
   const data = imageData.data?.attributes || imageData;
 
   if (!data.url) {
-    console.log("⚠️ No URL found in image data");
     return null;
   }
-
-  console.log("🔗 Extracted image URL:", data.url);
-  console.log("📝 Extracted alt text:", data.alternativeText);
-  console.log("📐 Available formats:", Object.keys(data.formats || {}));
 
   return {
     url: strapiImage(data.url),
@@ -40,6 +30,38 @@ function transformImage(imageData) {
  * Universal page configuration for Strapi content types
  */
 const PAGE_CONFIGS = {
+  mataiWhetu: {
+    contentType: "matai-whetu-page",
+    populate: {
+      HeaderSection: {
+        populate: "*",
+      },
+      Tikanga: true,
+    },
+  },
+
+  fishingPermit: {
+    contentType: "fishing-permit",
+    populate: {
+      HeaderSection: {
+        populate: "*",
+      },
+    },
+    defaultContent: {
+      HeaderSection: {
+        TeReoTitle: "[Strapi Error: FishingPermit HeaderSection.TeReoTitle]",
+        EnglishTitle:
+          "[Strapi Error: FishingPermit HeaderSection.EnglishTitle]",
+        BackgroundHeaderImage: {
+          url: null,
+          alternativeText:
+            "[Strapi Error: FishingPermit HeaderSection.BackgroundHeaderImage]",
+        },
+      },
+      Content: "[Strapi Error: FishingPermit Content]",
+    },
+  },
+
   home: {
     contentType: "home",
     populate: {
@@ -86,70 +108,85 @@ const PAGE_CONFIGS = {
   about: {
     contentType: "about",
     populate: {
+      Header: {
+        populate: "*",
+      },
+      FaceCard: {
+        populate: "*",
+      },
+      SidePanelImageOne: true,
+      SidePanelImageTwo: true,
+    },
+    defaultContent: {
+      Header: {
+        TeReoTitle: "[Strapi Error: About Header.TeReoTitle]",
+        EnglishTitle: "[Strapi Error: About Header.EnglishTitle]",
+        BackgroundHeaderImage: {
+          url: null,
+          alternativeText: "[Strapi Error: About Header.BackgroundHeaderImage]",
+        },
+      },
+      FaceCard: [],
+      ContentHeader: "[Strapi Error: About ContentHeader]",
+      Content: "[Strapi Error: About Content]",
+      TrusteesTitle: "[Strapi Error: About TrusteesTitle]",
+      TrusteesList: "[Strapi Error: About TrusteesList]",
+      SidePanelImageOne: {
+        url: null,
+        alternativeText: "[Strapi Error: About SidePanelImageOne]",
+      },
+      SidePanelImageTwo: {
+        url: null,
+        alternativeText: "[Strapi Error: About SidePanelImageTwo]",
+      },
+    },
+  },
+
+  documents: {
+    contentType: "document-page",
+    populate: {
       HeaderSection: {
         populate: {
           BackgroundHeaderImage: true,
         },
       },
-      TeamMembers: {
-        populate: {
-          Image: true,
-        },
+      Documentation: {
+        populate: "*",
       },
-      Content: true,
     },
     defaultContent: {
       HeaderSection: {
-        TeReoTitle: "[Strapi Error: About HeaderSection.TeReoTitle]",
-        EnglishTitle: "[Strapi Error: About HeaderSection.EnglishTitle]",
+        TeReoTitle: "[Strapi Error: Documents HeaderSection.TeReoTitle]",
+        EnglishTitle: "[Strapi Error: Documents HeaderSection.EnglishTitle]",
         BackgroundHeaderImage: {
           url: null,
           alternativeText:
-            "[Strapi Error: About HeaderSection.BackgroundHeaderImage]",
+            "[Strapi Error: Documents HeaderSection.BackgroundHeaderImage]",
         },
       },
-      TeamMembers: [],
-      Content: "[Strapi Error: About Content]",
+      Documentation: [],
     },
   },
-  bookingMataiWhetu: {
-    contentType: "booking-matai-whetu",
-    populate: "*",
-    defaultContent: {
-      Title: "[Strapi Error: BookingMataiWhetu Title]",
-      Description: "[Strapi Error: BookingMataiWhetu Description]",
-    },
-  },
-  fishingPermit: {
-    contentType: "fishing-permit",
-    populate: "*",
-    defaultContent: {
-      Title: "[Strapi Error: FishingPermit Title]",
-      Description: "[Strapi Error: FishingPermit Description]",
-    },
-  },
-  documents: {
-    contentType: "documents",
-    populate: "*",
-    defaultContent: {
-      Title: "[Strapi Error: Documents Title]",
-      DocumentList: [],
-    },
-  },
-  store: {
-    contentType: "store",
-    populate: "*",
-    defaultContent: {
-      Title: "[Strapi Error: Store Title]",
-      Products: [],
-    },
-  },
+
   register: {
     contentType: "register",
-    populate: "*",
+    populate: {
+      HeaderSection: {
+        populate: "*",
+      },
+    },
     defaultContent: {
-      Title: "[Strapi Error: Register Title]",
-      Description: "[Strapi Error: Register Description]",
+      HeaderSection: {
+        TeReoTitle: "[Strapi Error: Register HeaderSection.TeReoTitle]",
+        EnglishTitle: "[Strapi Error: Register HeaderSection.EnglishTitle]",
+        BackgroundHeaderImage: {
+          url: null,
+          alternativeText:
+            "[Strapi Error: Register HeaderSection.BackgroundHeaderImage]",
+        },
+      },
+      Content: "[Strapi Error: Register Content]",
+      PostInfo: "[Strapi Error: Register PostInfo]",
     },
   },
 };
@@ -185,7 +222,7 @@ export async function getAboutContent() {
  * @returns {Promise<Object>} The booking matai whetu page content
  */
 export async function getBookingMataiWhetuContent() {
-  return getPageContent("bookingMataiWhetu");
+  return getPageContent("mataiWhetu");
 }
 
 /**
@@ -237,6 +274,31 @@ function transformPageData(pageName, rawData) {
     return transformHomeData(rawData, config.defaultContent);
   }
 
+  // For about page, use specific transformation
+  if (pageName === "about") {
+    return transformAboutData(rawData, config.defaultContent);
+  }
+
+  // For mataiWhetu page, use specific transformation
+  if (pageName === "mataiWhetu") {
+    return transformMataiWhetuData(rawData, config.defaultContent);
+  }
+
+  // For fishingPermit page, use specific transformation
+  if (pageName === "fishingPermit") {
+    return transformFishingPermitData(rawData, config.defaultContent);
+  }
+
+  // For documents page, use specific transformation
+  if (pageName === "documents") {
+    return transformDocumentsData(rawData, config.defaultContent);
+  }
+
+  // For register page, use specific transformation
+  if (pageName === "register") {
+    return transformRegisterData(rawData, config.defaultContent);
+  }
+
   // For other pages, use generic transformation
   return transformGenericData(rawData, config.defaultContent);
 }
@@ -248,8 +310,6 @@ function transformPageData(pageName, rawData) {
  * @returns {Object} Transformed home data
  */
 function transformHomeData(homeContent, defaultContent) {
-  console.log("📥 Raw home data:", JSON.stringify(homeContent, null, 2));
-
   // Validate required fields and log missing ones
   const requiredFields = {
     HeaderSection: ["TeReoTitle", "EnglishTitle", "BackgroundHeaderImage"],
@@ -330,11 +390,174 @@ function transformHomeData(homeContent, defaultContent) {
     })(),
   };
 
-  console.log(
-    "✅ Transformed home data:",
-    JSON.stringify(transformedHome, null, 2)
-  );
   return transformedHome;
+}
+
+/**
+ * Transform about page data (specific handling for Header and FaceCard)
+ * @param {Object} aboutContent - Raw about data from Strapi
+ * @param {Object} defaultContent - Default content for fallback
+ * @returns {Object} Transformed about data
+ */
+function transformAboutData(aboutContent, defaultContent) {
+  const transformed = {
+    Header: {
+      TeReoTitle:
+        aboutContent.Header?.TeReoTitle || defaultContent.Header?.TeReoTitle,
+      EnglishTitle:
+        aboutContent.Header?.EnglishTitle ||
+        defaultContent.Header?.EnglishTitle,
+      BackgroundHeaderImage: transformImage(
+        aboutContent.Header?.BackgroundHeaderImage
+      ),
+    },
+    FaceCard: Array.isArray(aboutContent.FaceCard)
+      ? aboutContent.FaceCard.map((member) => ({
+          id: member.id,
+          Name: member.Name,
+          Detail: member.Detail,
+          Image: transformImage(member.Image),
+        }))
+      : [],
+    ContentHeader: aboutContent.ContentHeader || defaultContent.ContentHeader,
+    Content: aboutContent.Content || defaultContent.Content,
+    TrusteesTitle: aboutContent.TrusteesTitle || defaultContent.TrusteesTitle,
+    TrusteesList: aboutContent.TrusteesList || defaultContent.TrusteesList,
+    SidePanelImageOne: transformImage(aboutContent.SidePanelImageOne),
+    SidePanelImageTwo: transformImage(aboutContent.SidePanelImageTwo),
+  };
+
+  return transformed;
+}
+
+/**
+ * Transform Matai Whetu page data (specific handling for HeaderSection and Tikanga)
+ * @param {Object} mataiWhetuContent - Raw matai whetu data from Strapi
+ * @param {Object} defaultContent - Default content for fallback
+ * @returns {Object} Transformed matai whetu data
+ */
+function transformMataiWhetuData(mataiWhetuContent, defaultContent) {
+  const transformed = {
+    HeaderSection: {
+      TeReoTitle:
+        mataiWhetuContent.HeaderSection?.TeReoTitle ||
+        defaultContent.HeaderSection?.TeReoTitle,
+      EnglishTitle:
+        mataiWhetuContent.HeaderSection?.EnglishTitle ||
+        defaultContent.HeaderSection?.EnglishTitle,
+      BackgroundHeaderImage: transformImage(
+        mataiWhetuContent.HeaderSection?.BackgroundHeaderImage
+      ),
+    },
+    Content: mataiWhetuContent.Content || defaultContent.Content,
+    Tikanga: mataiWhetuContent.Tikanga || null,
+  };
+
+  return transformed;
+}
+
+/**
+ * Transform fishing permit page data
+ * @param {Object} fishingPermitContent - Raw fishing permit data from Strapi
+ * @param {Object} defaultContent - Default content for fallback
+ * @returns {Object} Transformed fishing permit data
+ */
+function transformFishingPermitData(fishingPermitContent, defaultContent) {
+  const transformed = {
+    HeaderSection: {
+      TeReoTitle:
+        fishingPermitContent.HeaderSection?.TeReoTitle ||
+        defaultContent.HeaderSection?.TeReoTitle,
+      EnglishTitle:
+        fishingPermitContent.HeaderSection?.EnglishTitle ||
+        defaultContent.HeaderSection?.EnglishTitle,
+      BackgroundHeaderImage: transformImage(
+        fishingPermitContent.HeaderSection?.BackgroundHeaderImage
+      ),
+    },
+    Content: fishingPermitContent.Content || defaultContent.Content,
+  };
+
+  return transformed;
+}
+
+/**
+ * Transform register page data
+ * @param {Object} registerContent - Raw register data from Strapi
+ * @param {Object} defaultContent - Default content for fallback
+ * @returns {Object} Transformed register data
+ */
+function transformRegisterData(registerContent, defaultContent) {
+  const transformed = {
+    HeaderSection: {
+      TeReoTitle:
+        registerContent.HeaderSection?.TeReoTitle ||
+        defaultContent.HeaderSection?.TeReoTitle,
+      EnglishTitle:
+        registerContent.HeaderSection?.EnglishTitle ||
+        defaultContent.HeaderSection?.EnglishTitle,
+      BackgroundHeaderImage: transformImage(
+        registerContent.HeaderSection?.BackgroundHeaderImage
+      ),
+    },
+    Content: registerContent.Content || defaultContent.Content,
+    PostInfo: registerContent.PostInfo || defaultContent.PostInfo,
+  };
+
+  return transformed;
+}
+
+/**
+ * Transform documents page data (specific handling for HeaderSection and Documentation)
+ * @param {Object} documentsContent - Raw documents data from Strapi
+ * @param {Object} defaultContent - Default content for fallback
+ * @returns {Object} Transformed documents data
+ */
+function transformDocumentsData(documentsContent, defaultContent) {
+  // Transform documentation files and organize by category
+  const transformedDocumentation = Array.isArray(documentsContent.Documentation)
+    ? documentsContent.Documentation.map((doc) => {
+        const transformedDoc = {
+          id: doc.id,
+          name: doc.name,
+          url: strapiImage(doc.url),
+          alternativeText: doc.alternativeText,
+          size: doc.size,
+          ext: doc.ext,
+          mime: doc.mime,
+        };
+
+        // Parse category from filename using " _ " separator
+        if (doc.name && doc.name.includes(" _ ")) {
+          const parts = doc.name.split(" _ ");
+          transformedDoc.displayName = parts[0].trim(); // Left side is display name
+          transformedDoc.category = parts[1].trim().replace(/\.[^/.]+$/, ""); // Right side is category (remove extension)
+        } else {
+          transformedDoc.displayName =
+            doc.name?.replace(/\.[^/.]+$/, "") || "Untitled"; // Remove extension
+          transformedDoc.category = "Uncategorized";
+        }
+
+        return transformedDoc;
+      })
+    : [];
+
+  const transformed = {
+    HeaderSection: {
+      TeReoTitle:
+        documentsContent.HeaderSection?.TeReoTitle ||
+        defaultContent.HeaderSection?.TeReoTitle,
+      EnglishTitle:
+        documentsContent.HeaderSection?.EnglishTitle ||
+        defaultContent.HeaderSection?.EnglishTitle,
+      BackgroundHeaderImage: transformImage(
+        documentsContent.HeaderSection?.BackgroundHeaderImage
+      ),
+    },
+    Documentation: transformedDocumentation,
+  };
+
+  return transformed;
 }
 
 /**
@@ -396,15 +619,6 @@ function transformGenericData(rawData, defaultContent) {
  */
 export async function loadSiteContent() {
   try {
-    console.log("🔄 Fetching all page data from Strapi...");
-
-    // Log the API URL and token presence
-    console.log("🌐 API URL:", import.meta.env.VITE_STRAPI_API_URL);
-    console.log(
-      "🔑 API Token present:",
-      !!import.meta.env.VITE_STRAPI_API_TOKEN
-    );
-
     // Fetch all configured pages in parallel
     const pageNames = Object.keys(PAGE_CONFIGS);
     const fetchPromises = pageNames.map((pageName) => {
@@ -433,10 +647,6 @@ export async function loadSiteContent() {
       allContent[pageName] = transformPageData(pageName, rawData);
     });
 
-    console.log(
-      "✅ All content loaded and transformed:",
-      Object.keys(allContent)
-    );
     return allContent;
   } catch (error) {
     console.error("❌ Error loading site content:", error);

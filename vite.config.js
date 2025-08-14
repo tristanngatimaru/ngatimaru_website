@@ -15,4 +15,74 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          // Vendor libraries
+          if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-dom")) {
+              return "vendor-react";
+            }
+            if (
+              id.includes("@radix-ui") ||
+              id.includes("class-variance-authority") ||
+              id.includes("clsx") ||
+              id.includes("tailwind-merge") ||
+              id.includes("lucide-react")
+            ) {
+              return "vendor-ui";
+            }
+            if (id.includes("axios") || id.includes("qs")) {
+              return "vendor-api";
+            }
+            if (id.includes("framer-motion") || id.includes("embla-carousel")) {
+              return "vendor-animation";
+            }
+            if (id.includes("react-router")) {
+              return "vendor-router";
+            }
+            return "vendor-misc";
+          }
+
+          // Large form components
+          if (
+            id.includes("RegistrationForm.jsx") ||
+            id.includes("bookingmataiwhetudraft.jsx") ||
+            id.includes("useMataiWhetuForm.js")
+          ) {
+            return "forms";
+          }
+
+          // API modules
+          if (id.includes("/api/")) {
+            return "api";
+          }
+
+          // Page components
+          if (id.includes("/pages/")) {
+            return "pages";
+          }
+
+          // Form sections
+          if (id.includes("formSections/")) {
+            return "form-sections";
+          }
+        },
+      },
+    },
+
+    // Adjust chunk size warning limit
+    chunkSizeWarningLimit: 1000,
+
+    // Enable minification and tree-shaking
+    minify: "esbuild",
+    target: "es2015",
+
+    // Enable source maps for better debugging in development only
+    sourcemap: false,
+
+    // Optimize CSS
+    cssCodeSplit: true,
+  },
 });

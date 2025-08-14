@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import HamburgerNav from "../components/hamburgerNav";
-import Navbar from "../components/navbar";
 import Footer from "../components/footer";
+import HeroHeader from "../components/header";
+import { getDocumentsContent } from "@/api/siteContent";
 import FadeInOnLoad from "../components/loadonstartanimation";
-import AppearRefresh from "../components/appearrefresh";
-import { Images, Icons } from "../components/sitecontent/images";
-import { Content } from "../components/sitecontent/content";
+import { Icons } from "../components/sitecontent/images";
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -39,113 +37,197 @@ function FadeInSection({ children }) {
   );
 }
 
-const Documents = ({ content }) => {
+const Documents = () => {
+  // 🔧 DEBUG MODE - Set to true to show debug info, false to hide
+  const DEBUG_MODE = false;
+
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [documentsByCategory, setDocumentsByCategory] = useState({});
 
   useEffect(() => {
-    // content is an object, not a function, so no await or calling
-    const siteContent = content;
+    async function loadContent() {
+      try {
+        const documentsData = await getDocumentsContent();
+        setContent(documentsData);
 
-    const docs = siteContent.documents?.Documentation || [];
+        // Group documents by category
 
-    // Group documents by category, similar to your previous logic
-    const grouped = docs.reduce((acc, doc) => {
-      if (!doc.url) return acc;
+        const grouped =
+          documentsData.Documentation?.reduce((acc, doc) => {
+            const category = doc.category || "Uncategorized";
 
-      let category = "Uncategorized";
-      if (doc.name.includes(" _ ")) {
-        const splitName = doc.name.split(" _ ");
-        category = splitName[1].trim().replace(/\.pdf$/i, "");
+            if (!acc[category]) {
+              acc[category] = [];
+            }
+
+            acc[category].push(doc);
+            return acc;
+          }, {}) || {};
+
+        // Force state update with a new object reference
+        setDocumentsByCategory({ ...grouped });
+      } catch (err) {
+        console.error("Error loading documents content:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
       }
+    }
+    loadContent();
+  }, []);
 
-      const cleanName = doc.name
-        .split(" _ ")[0]
-        .trim()
-        .replace(/\.pdf$/i, "");
+  // Monitor documentsByCategory changes
+  useEffect(() => {
+    // State update tracking removed for production
+  }, [documentsByCategory]);
 
-      const formattedDoc = { ...doc, name: cleanName, category };
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading documents...</div>
+      </div>
+    );
+  }
 
-      if (!acc[category]) acc[category] = [];
-      acc[category].push(formattedDoc);
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl text-red-600">
+          Error loading documents. Please try again later.
+        </div>
+      </div>
+    );
+  }
 
-      return acc;
-    }, {});
-
-    setDocumentsByCategory(grouped);
-  }, [content]);
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">No documents content available</div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
-      <FadeInOnLoad delay={500} mobileDelay={200}>
-        <HamburgerNav />
-        <div>
-          <img
-            src={Images.Korowai}
-            alt=""
-            className="w-full h-[500px] object-center object-cover overflow-hidden"
-          />
-          <div className="absolute flex flex-col w-full top-1/4 ">
-            <div className="overflow-hidden h-[80px] w-full flex justify-center">
-              <AppearRefresh delay={2000}>
-                <div className="uppercase transition-all duration-1000 ease-in-out text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center">
-                  {Content.documents.header}
-                </div>
-              </AppearRefresh>
-            </div>
-            <div className="overflow-hidden h-[80px] w-full flex justify-center">
-              <AppearRefresh delay={2500}>
-                <div className="uppercase transition-all duration-1000 ease-in-out text-xl sm:text-2xl md:text-3xl lg:text-4xl font-roboto-thin text-white text-center">
-                  {Content.documents.headerenglish}
-                </div>
-              </AppearRefresh>
-            </div>
-          </div>
-        </div>
+      <FadeInOnLoad>
+        <HeroHeader
+          image={content.HeaderSection?.BackgroundHeaderImage?.url}
+          title={content.HeaderSection?.TeReoTitle || "Documents"}
+          subtitle={content.HeaderSection?.EnglishTitle || "Documents"}
+        />
 
-        <div className="absolute top-0 left-0 w-full z-50 pt-10">
-          <Navbar />
-        </div>
+        <div className="py-6 md:py-10 lg:py-20 px-4 sm:px-6 md:px-10 lg:px-20">
+          {/* 🐛 DEBUG INFO - Toggle with DEBUG_MODE flag above */}
+          {DEBUG_MODE && (
+            <>
+              {/* Temporary Debug Info */}
+              <div className="mb-4 p-3 bg-yellow-100 border rounded text-sm">
+                <p>
+                  <strong>Debug:</strong> Categories:{" "}
+                  {Object.keys(documentsByCategory).length}
+                </p>
+                <p>
+                  <strong>Category names:</strong>{" "}
+                  {Object.keys(documentsByCategory).join(", ")}
+                </p>
+                <p>
+                  <strong>Loading:</strong> {loading ? "true" : "false"}
+                </p>
+                <p>
+                  <strong>Error:</strong> {error ? "true" : "false"}
+                </p>
+                <p>
+                  <strong>Content exists:</strong> {content ? "true" : "false"}
+                </p>
+                <p>
+                  <strong>Raw categories object:</strong>{" "}
+                  {JSON.stringify(Object.keys(documentsByCategory))}
+                </p>
+              </div>
 
-        <FadeInSection>
-          <div className="py-20 px-20">
-            {Object.keys(documentsByCategory).map((category) => (
-              <div key={category} className="mb-10">
-                <h2 className="text-2xl font-roboto-light uppercase mb-4">
-                  {category}
-                </h2>
-                <div className="flex flex-col md:grid grid-cols-2 gap-5">
-                  {documentsByCategory[category].map((doc) => (
-                    <div
-                      key={doc.id}
-                      className="flex justify-between items-center bg-gray-200 p-6"
-                    >
-                      <div>
-                        <div className="font-roboto-light lg:text-lg">
-                          {doc.name}
+              {/* Success Message */}
+              <div className="documents-container">
+                <p className="text-green-600 mb-4 font-bold">
+                  ✅ SUCCESS: Found {Object.keys(documentsByCategory).length}{" "}
+                  categories!
+                </p>
+              </div>
+            </>
+          )}
+
+          {Object.keys(documentsByCategory).length === 0 ? (
+            <div className="text-center text-gray-600">
+              <p className="text-lg">No documents available at this time.</p>
+            </div>
+          ) : (
+            <div>
+              {Object.keys(documentsByCategory).map((category) => (
+                <div key={category} className="mb-12 lg:mb-16">
+                  {/* Category Header Section */}
+                  <div className="border-b-2 border-emerald-200 pb-3 mb-6">
+                    <h2 className="text-2xl md:text-3xl font-roboto-medium uppercase text-emerald-800">
+                      {category}
+                    </h2>
+                    <p className="text-emerald-600 font-roboto-light text-lg mt-1">
+                      {documentsByCategory[category]
+                        ? documentsByCategory[category].length
+                        : 0}{" "}
+                      {documentsByCategory[category]?.length === 1
+                        ? "document"
+                        : "documents"}
+                    </p>
+                  </div>
+
+                  {/* Documents Grid */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                    {documentsByCategory[category].map((doc) => (
+                      <div
+                        key={doc.id}
+                        className="bg-white border border-gray-200 rounded-lg p-5 md:p-6 hover:shadow-lg hover:border-emerald-200 transition-all duration-200 group"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="flex-1 min-w-0 pr-4">
+                            <div className="font-roboto-medium text-base md:text-lg text-gray-900 mb-2 leading-tight">
+                              {doc.displayName}
+                            </div>
+                            <div className="flex items-center space-x-3 text-sm text-gray-500">
+                              <span className="bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full text-xs font-medium">
+                                {doc.ext?.toUpperCase()}
+                              </span>
+                              <span>
+                                {doc.size
+                                  ? `${Math.round(doc.size / 1024)} KB`
+                                  : "Unknown size"}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex-shrink-0">
+                            <a
+                              target="_blank"
+                              href={doc.url}
+                              download
+                              rel="noreferrer"
+                              className="inline-flex items-center justify-center w-12 h-12 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors duration-200 group-hover:scale-105"
+                              title={`Download ${doc.displayName}`}
+                            >
+                              <img
+                                src={Icons.Download}
+                                alt="Download"
+                                className="w-6 h-6"
+                              />
+                            </a>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex gap-4">
-                        <a
-                          target="_blank"
-                          href={doc.url}
-                          download
-                          rel="noreferrer"
-                          className="hover:scale-105 ease-in-out duration-200 pl-5"
-                        >
-                          <img
-                            src={Icons.Download}
-                            alt="Download"
-                            className="min-w-[40px] max-w-[40px]"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </FadeInSection>
+              ))}
+            </div>
+          )}
+        </div>
 
         <Footer />
       </FadeInOnLoad>

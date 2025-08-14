@@ -1,8 +1,10 @@
 // src/components/BookingSummary.jsx
 const BookingSummary = ({ formData }) => {
   return (
-    <div className="p-4  rounded bg-gray-50  max-h-[80vh]">
-      <h2 className="text-lg font-bold mb-4">Booking Summary</h2>
+    <div className="p-6 rounded-lg bg-gray-50 border border-gray-200 shadow-sm max-h-[80vh] overflow-y-auto">
+      <h2 className="text-lg font-bold mb-4 text-emerald-800">
+        Booking Summary
+      </h2>
       <ul className="space-y-4 text-sm">
         <li>
           <strong>Name:</strong>{" "}
@@ -27,7 +29,7 @@ const BookingSummary = ({ formData }) => {
           <strong>Will a pōwhiri be required?:</strong>{" "}
           {formData.powhiri || "Not provided"}
         </li>
-        <hr />
+        <hr className="border-gray-300" />
         <li>
           <strong>Person Responsible During Occupation:</strong>
           <ul className="ml-4 mt-1 space-y-1 text-sm">
@@ -46,7 +48,7 @@ const BookingSummary = ({ formData }) => {
             </li>
           </ul>
         </li>
-        <hr />
+        <hr className="border-gray-300" />
         <li>
           <strong>Purpose of Booking:</strong>{" "}
           {formData.purpose || "Not provided"}
@@ -58,7 +60,7 @@ const BookingSummary = ({ formData }) => {
         <li>
           <strong>Booking To:</strong> {formData.bookingTo || "Not provided"}
         </li>
-        <hr />
+        <hr className="border-gray-300" />
         <li>
           <strong>Wharenui Contact:</strong>{" "}
           {`${formData.firstNameWharenui} ${formData.lastNameWharenui}`.trim() ||
@@ -74,7 +76,7 @@ const BookingSummary = ({ formData }) => {
           {`${formData.ablutionFirstName} ${formData.ablutionLastName}`.trim() ||
             "Not provided"}
         </li>
-        <hr />
+        <hr className="border-gray-300" />
         <li>
           <strong>Acknowledgements:</strong>
           <ul className="list-disc ml-6 mt-1 text-sm">

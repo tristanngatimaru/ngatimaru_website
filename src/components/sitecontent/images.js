@@ -20,15 +20,15 @@ import Waati from "../../assets/images/aboutus/waatingamani.png";
 // Adding more images rather than changing them are more involved and best asked by either ChatGPT or the corresponding IT developer
 
 const Images = {
-  Coromandel: Coromandel,
-  BeachIsland: BeachIsland,
-  CarvingUpClose: CarvingUpClose,
-  Korowai: Korowai,
-  MataiWhetu: MataiWhetu,
+  Coromandel: "no image",
+  BeachIsland: "",
+  CarvingUpClose: "CarvingUpClose",
+  Korowai: "",
+  MataiWhetu: "MataiWhetu",
   Mihi: Mihi,
-  Pohutakawa: Pohutakawa,
+  Pohutakawa: "Pohutakawa",
   Shells: Shells,
-  VeryCloseCarving: VeryCloseCarving,
+  VeryCloseCarving: "VeryCloseCarving",
 };
 
 const Icons = {
@@ -38,9 +38,9 @@ const Icons = {
 };
 
 const Cards = {
-  Paul: Paul,
-  Waati: Waati,
-  David: David,
+  Paul: "Paul",
+  Waati: "Waati",
+  David: "David",
 };
 
 export { Images, Icons, Cards };

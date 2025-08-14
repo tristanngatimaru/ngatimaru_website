@@ -9,22 +9,55 @@ const FileAcknowledgement = ({
   handleChange,
   touchedFields,
   isMissing,
+  tikangaUrl,
 }) => {
   const [readFile, setReadFile] = useState(false);
 
   const handleOpenFile = () => {
-    window.open("/path-to-your-file.pdf", "_blank");
-    setReadFile(true);
+    if (tikangaUrl) {
+      // Construct the full URL for the Strapi file
+      const fullUrl = tikangaUrl.startsWith("http")
+        ? tikangaUrl
+        : `http://localhost:1337${tikangaUrl}`;
+      window.open(fullUrl, "_blank");
+      setReadFile(true);
+    } else {
+      alert("Tikanga document is not available. Please contact support.");
+    }
+  };
+
+  const handleMouseDown = (e) => {
+    // Handle middle-click (mouse wheel button)
+    if (e.button === 1) {
+      e.preventDefault();
+      handleOpenFile();
+    }
   };
 
   return (
     <div className="w-full flex-col items-center col-span-2 gap-10 space-y-6">
-      <button
-        onClick={handleOpenFile}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-      >
-        Open Tikanga & Info Sheet
-      </button>
+      <div className="flex flex-col items-center space-y-4">
+        <button
+          onClick={handleOpenFile}
+          onMouseDown={handleMouseDown}
+          className="px-6 py-3 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition-colors font-medium"
+          disabled={!tikangaUrl}
+        >
+          {tikangaUrl ? "Open Tikanga & Info Sheet" : "Document Not Available"}
+        </button>
+
+        {readFile && (
+          <p className="text-sm text-emerald-600 font-medium">
+            ✓ Document opened - you can now acknowledge below
+          </p>
+        )}
+
+        {!readFile && (
+          <p className="text-sm text-gray-600">
+            Please open and read the document before proceeding
+          </p>
+        )}
+      </div>
 
       <FormComponent
         id="readTikangaInfoSheet"
@@ -33,7 +66,7 @@ const FileAcknowledgement = ({
         checked={formData.readTikangaInfoSheet}
         onChange={handleChange("readTikangaInfoSheet")}
         required={true}
-        disabled={!readFile} // readFile state can be replaced with readTikangaInfoSheet if needed
+        disabled={!readFile}
         type="checkbox"
         touched={touchedFields.readTikangaInfoSheet}
         error={
