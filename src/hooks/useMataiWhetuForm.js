@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export const useMataiWhetuForm = () => {
   const [formData, setFormData] = useState({
@@ -31,10 +31,6 @@ export const useMataiWhetuForm = () => {
   });
 
   const [touchedFields, setTouchedFields] = useState({});
-
-  useEffect(() => {
-    console.log("FormData changed:", formData);
-  }, [formData]);
 
   const isMissing = (key) =>
     formData[key] === "" || formData[key] === false || formData[key] == null;
@@ -76,7 +72,7 @@ export const useMataiWhetuForm = () => {
 
     return Object.entries(labels)
       .filter(([key]) => isMissing(key))
-      .map(([_, label]) => label);
+      .map(([, label]) => label);
   };
 
   const handleChange = (key) => (eOrValue) => {

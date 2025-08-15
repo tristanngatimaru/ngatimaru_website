@@ -7,16 +7,6 @@ import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import { Icons } from "../components/sitecontent/images";
 import { getHomeContent } from "../api/siteContent";
-import { strapiImage } from "../api/strapiImage";
-
-// Helper function to handle image URLs consistently
-const getImageUrl = (imageData) => {
-  if (!imageData) return null;
-  if (imageData.url) return strapiImage(imageData.url);
-  if (imageData.data?.attributes?.url)
-    return strapiImage(imageData.data.attributes.url);
-  return null;
-};
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -34,10 +24,11 @@ function FadeInSection({ children }) {
       }
     );
 
-    if (ref.current) observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) observer.observe(currentRef);
 
     return () => {
-      if (ref.current) observer.unobserve(ref.current);
+      if (currentRef) observer.unobserve(currentRef);
     };
   }, []);
 
@@ -115,23 +106,18 @@ function Home() {
       <FadeInOnLoad delay={500} mobileDelay={200}>
         <HamburgerNav />
         <div className="relative w-full h-full overflow-hidden transition-all ease-in-out duration-500">
-          {(() => {
-            const imageUrl = getImageUrl(
-              content.HeaderSection?.BackgroundHeaderImage
-            );
-            return imageUrl ? (
-              <img
-                src={imageUrl}
-                alt={
-                  content.HeaderSection.BackgroundHeaderImage
-                    ?.alternativeText || "Background header image"
-                }
-                className="w-full h-[800px] object-center object-cover overflow-hidden"
-              />
-            ) : (
-              <div className="w-full h-[800px] bg-gray-200" />
-            );
-          })()}
+          {content.HeaderSection?.BackgroundHeaderImage?.url ? (
+            <img
+              src={content.HeaderSection.BackgroundHeaderImage.url}
+              alt={
+                content.HeaderSection.BackgroundHeaderImage.alternativeText ||
+                "Background header image"
+              }
+              className="w-full h-[800px] object-center object-cover overflow-hidden"
+            />
+          ) : (
+            <div className="w-full h-[800px] bg-gray-200" />
+          )}
 
           {/* Navbar on top of image */}
           <div className="absolute top-0 left-0 w-full z-50 pt-10">
@@ -161,9 +147,6 @@ function Home() {
                           title={content.Button[0].TeReoLabel}
                         >
                           <span>{content.Button[0].EnglishLabel}</span>
-                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-sm mt-1">
-                            {content.Button[0].TeReoLabel}
-                          </span>
                         </button>
                       </a>
                     </AppearRefresh>
@@ -197,21 +180,18 @@ function Home() {
             ref={targetRef}
             className="h-[500px] pt-20 lg:pt-0 flex flex-row overflow-hidden"
           >
-            {(() => {
-              const imageUrl = getImageUrl(content.MihiSection?.Image);
-              return imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={
-                    content.MihiSection.Image?.alternativeText ||
-                    "Mihi section image"
-                  }
-                  className="object-cover w-1/2 h-full lg:block hidden"
-                />
-              ) : (
-                <div className="w-1/2 h-full bg-gray-200 lg:block hidden" />
-              );
-            })()}
+            {content.MihiSection?.Image?.url ? (
+              <img
+                src={content.MihiSection.Image.url}
+                alt={
+                  content.MihiSection.Image.alternativeText ||
+                  "Mihi section image"
+                }
+                className="object-cover w-1/2 h-full lg:block hidden"
+              />
+            ) : (
+              <div className="w-1/2 h-full bg-gray-200 lg:block hidden" />
+            )}
 
             <div className="w-screen lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center">
               <p className="font-roboto-light text-3xl pb-10">
