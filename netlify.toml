@@ -4,14 +4,11 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_STRAPI_API_URL,VITE_STRAPI_API_TOKEN,VITE_STRAPI_FORM_API_TOKEN"
 
 # Configure secrets scanning to allow expected environment variables
 [build.processing]
   skip_processing = false
-
-# Disable secrets scanning for build output containing expected environment variables
-[build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "VITE_STRAPI_API_URL,VITE_STRAPI_API_TOKEN,VITE_STRAPI_FORM_API_TOKEN"
 
 # Alternative: You can also omit paths if needed
 # SECRETS_SCAN_OMIT_PATHS = "dist/**"
