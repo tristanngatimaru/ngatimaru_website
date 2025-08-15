@@ -2,7 +2,7 @@
 // src/components/formSections/BookingDates.jsx
 // --------------------------
 
-import FormComponent from "../FormComponent.jsx";
+import FormComponent from "../formcomponent.jsx";
 
 const BookingDates = ({ formData, handleChange, touchedFields, isMissing }) => (
   <div className="grid grid-cols-2 gap-4">
