@@ -2,11 +2,50 @@ import { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
+import { getNavigationContent } from "@/api/siteContent";
 
 export default function HamburgerNav() {
   const buttonControls = useAnimation();
   const [expanded, setExpanded] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [navigationItems, setNavigationItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadNavigation = async () => {
+      try {
+        const navData = await getNavigationContent();
+        setNavigationItems(navData.filter((item) => item.Visible));
+      } catch (error) {
+        console.error("Error loading navigation:", error);
+        // Fallback to default navigation if error occurs
+        setNavigationItems([
+          { href: "/", TitleEnglish: "HOME", TitleTeReo: "KAINGA" },
+          { href: "/about", TitleEnglish: "ABOUT US", TitleTeReo: "KO WAI" },
+          {
+            href: "/bookingmataiwhetu",
+            TitleEnglish: "BOOKING MATAI WHETŪ",
+            TitleTeReo: "RĀHITA MATAI WHETŪ",
+          },
+          {
+            href: "/fishingpermit",
+            TitleEnglish: "FISHING PERMIT",
+            TitleTeReo: "RIHITI HĪ IKA",
+          },
+          {
+            href: "/documents",
+            TitleEnglish: "DOCUMENTS",
+            TitleTeReo: "NGĀ TUHINGA",
+          },
+          { href: "/register", TitleEnglish: "REGISTER", TitleTeReo: "RĀHITA" },
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadNavigation();
+  }, []);
 
   useEffect(() => {
     const handleScrollAndResize = () => {
@@ -63,76 +102,22 @@ export default function HamburgerNav() {
           className="z-40 w-[30rem] h-full bg-white fixed right-0"
         >
           <ul className="font-roboto-light pl-10 pt-40 space-y-8 w-full flex flex-col gap-2">
-            <li>
-              <Link to="/" href="" className="block group ">
-                <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
-                  KAINGA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  HOME
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  KO WAI
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  ABOUT US
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/bookingmataiwhetu" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  RĀHITA MATAI WHETŪ
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  BOOKING MATAI WHETŪ
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/fishingpermit" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  RIHITI HĪ IKA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  FISHING PERMIT
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/documents" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  NGĀ TUHINGA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  DOCUMENTS
-                </h2>
-              </Link>
-            </li>
-            <li className="hidden">
-              <Link to="/store" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  TOA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  STORE
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/register" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  RĀHITA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  REGISTER
-                </h2>
-              </Link>
-            </li>
+            {isLoading ? (
+              <li className="text-gray-600">Loading navigation...</li>
+            ) : (
+              navigationItems.map((item, index) => (
+                <li key={`${item.href}-${index}`}>
+                  <Link to={item.href} className="block group">
+                    <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
+                      {item.TitleTeReo}
+                    </h2>
+                    <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
+                      {item.TitleEnglish}
+                    </h2>
+                  </Link>
+                </li>
+              ))
+            )}
           </ul>
         </motion.div>
 

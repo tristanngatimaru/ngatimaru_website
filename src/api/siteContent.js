@@ -27,6 +27,53 @@ function transformImage(imageData) {
 }
 
 /**
+ * Navigation configuration for Strapi navigation content type
+ */
+const NAVIGATION_CONFIG = {
+  contentType: "navigation-bar",
+  populate: "*",
+  defaultContent: [
+    { href: "/", TitleEnglish: "HOME", TitleTeReo: "KAINGA", Visible: true },
+    {
+      href: "/about",
+      TitleEnglish: "ABOUT US",
+      TitleTeReo: "KO WAI",
+      Visible: true,
+    },
+    {
+      href: "/bookingmataiwhetu",
+      TitleEnglish: "BOOKING MATAI WHETŪ",
+      TitleTeReo: "RĀHITA MATAI WHETŪ",
+      Visible: true,
+    },
+    {
+      href: "/fishingpermit",
+      TitleEnglish: "FISHING PERMIT",
+      TitleTeReo: "RIHITI HĪ IKA",
+      Visible: true,
+    },
+    {
+      href: "/documents",
+      TitleEnglish: "DOCUMENTS",
+      TitleTeReo: "NGĀ TUHINGA",
+      Visible: true,
+    },
+    {
+      href: "/store",
+      TitleEnglish: "STORE",
+      TitleTeReo: "TOA",
+      Visible: false,
+    },
+    {
+      href: "/register",
+      TitleEnglish: "REGISTER",
+      TitleTeReo: "RĀHITA",
+      Visible: true,
+    },
+  ],
+};
+
+/**
  * Universal page configuration for Strapi content types
  */
 const PAGE_CONFIGS = {
@@ -189,6 +236,30 @@ const PAGE_CONFIGS = {
       PostInfo: "[Strapi Error: Register PostInfo]",
     },
   },
+
+  footer: {
+    contentType: "footer",
+    populate: {
+      FooterColumn: {
+        populate: {
+          Content: true,
+        },
+      },
+    },
+    defaultContent: {
+      FooterColumn: [
+        {
+          ContentTItle: "[Strapi Error: Footer Column Title]",
+          Content: [
+            {
+              ContentText: "[Strapi Error: Footer Content Text]",
+            },
+          ],
+        },
+      ],
+      Copyright: "[Strapi Error: Footer Copyright]",
+    },
+  },
 };
 
 /**
@@ -242,6 +313,14 @@ export async function getDocumentsContent() {
 }
 
 /**
+ * Gets the footer content
+ * @returns {Promise<Object>} The footer content
+ */
+export async function getFooterContent() {
+  return getPageContent("footer");
+}
+
+/**
  * Gets the store page content
  * @returns {Promise<Object>} The store page content
  */
@@ -255,6 +334,39 @@ export async function getStoreContent() {
  */
 export async function getRegisterContent() {
   return getPageContent("register");
+}
+
+/**
+ * Gets the navigation content
+ * @returns {Promise<Array>} The navigation items
+ */
+export async function getNavigationContent() {
+  try {
+    const navigationData = await fetchContentType(
+      NAVIGATION_CONFIG.contentType,
+      { populate: NAVIGATION_CONFIG.populate },
+      true
+    );
+
+    if (
+      navigationData &&
+      navigationData.Navigation &&
+      Array.isArray(navigationData.Navigation)
+    ) {
+      return navigationData.Navigation.map((item) => ({
+        href: item.href || "/",
+        TitleEnglish: item.TitleEnglish || "Unknown",
+        TitleTeReo: item.TitleTeReo || "Unknown",
+        Visible: item.Visible !== false, // Default to true if not specified
+      }));
+    }
+
+    console.warn("⚠️ No navigation data received from Strapi, using defaults");
+    return NAVIGATION_CONFIG.defaultContent;
+  } catch (error) {
+    console.error("❌ Error loading navigation content:", error);
+    return NAVIGATION_CONFIG.defaultContent;
+  }
 }
 
 /**
@@ -297,6 +409,11 @@ function transformPageData(pageName, rawData) {
   // For register page, use specific transformation
   if (pageName === "register") {
     return transformRegisterData(rawData, config.defaultContent);
+  }
+
+  // For footer, use specific transformation
+  if (pageName === "footer") {
+    return transformFooterData(rawData, config.defaultContent);
   }
 
   // For other pages, use generic transformation
@@ -556,6 +673,44 @@ function transformDocumentsData(documentsContent, defaultContent) {
     },
     Documentation: transformedDocumentation,
   };
+
+  return transformed;
+}
+
+/**
+ * Transform footer data
+ * @param {Object} footerContent - Raw footer data from Strapi
+ * @param {Object} defaultContent - Default footer content for fallback
+ * @returns {Object} Transformed footer data
+ */
+function transformFooterData(footerContent, defaultContent) {
+  const transformed = {
+    FooterColumn: [],
+    Copyright: "",
+  };
+
+  // Handle FooterColumn (singular from Strapi)
+  if (
+    footerContent?.FooterColumn &&
+    Array.isArray(footerContent.FooterColumn)
+  ) {
+    transformed.FooterColumn = footerContent.FooterColumn.map((column) => ({
+      ContentTItle: column.ContentTItle || "",
+      Content:
+        column.Content && Array.isArray(column.Content)
+          ? column.Content.map((contentItem) => ({
+              ContentText: contentItem.ContentText || "",
+            }))
+          : [],
+    }));
+  } else {
+    // Fallback to default content
+    transformed.FooterColumn = defaultContent.FooterColumn || [];
+  }
+
+  // Handle Copyright
+  transformed.Copyright =
+    footerContent?.Copyright || defaultContent?.Copyright || "";
 
   return transformed;
 }

@@ -7,6 +7,7 @@ import FishingPersonalDetails from "../components/formSections/FishingPersonalDe
 import FishingPurposeDetails from "../components/formSections/FishingPurposeDetails";
 import FishingSpeciesDetails from "../components/formSections/FishingSpeciesDetails";
 import FadeInOnLoad from "@/components/loadonstartanimation";
+import FadeInSection from "@/components/fadeinanimation";
 
 function Fishing() {
   const [content, setContent] = useState(null);
@@ -136,44 +137,46 @@ function Fishing() {
           title={content.HeaderSection?.TeReoTitle || "Fishing Permits"}
           subtitle={content.HeaderSection?.EnglishTitle || "Fishing Permits"}
         />
-
-        <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 md:pt-20 font-roboto-light text-center">
-          {content.Content
-            ? (() => {
-                const sentences = content.Content.split(".")
-                  .map((s) => s.trim())
-                  .filter(Boolean);
-                const groups = [];
-                for (let i = 0; i < sentences.length; i += 3) {
-                  groups.push(
-                    sentences.slice(i, i + 3).join(". ") +
-                      (i + 3 < sentences.length ? "." : "")
-                  );
-                }
-                return groups.map((group, idx) => (
-                  <span key={idx}>
-                    {group}
-                    <br />
-                    <br />
-                  </span>
-                ));
-              })()
-            : "Fishing permit information will be displayed here."}
-        </p>
-
-        <div className="w-full flex justify-center items-center py-6 md:py-8 px-4">
-          <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 flex flex-col items-center">
-            <h2 className="text-xl md:text-2xl font-roboto-bold text-emerald-800 mb-4 text-center">
-              Application Instructions
-            </h2>
-            <p className="text-gray-700 text-base md:text-lg text-center leading-relaxed font-roboto-light">
-              Please complete the fishing permit application below. If you have
-              any questions or need assistance, feel free to contact Ngāti Maru
-              at (07) 867 9104.
-            </p>
+        <FadeInSection>
+          <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 md:pt-20 font-roboto-light text-center">
+            {content.Content
+              ? (() => {
+                  const sentences = content.Content.split(".")
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+                  const groups = [];
+                  for (let i = 0; i < sentences.length; i += 3) {
+                    groups.push(
+                      sentences.slice(i, i + 3).join(". ") +
+                        (i + 3 < sentences.length ? "." : "")
+                    );
+                  }
+                  return groups.map((group, idx) => (
+                    <span key={idx}>
+                      {group}
+                      <br />
+                      <br />
+                    </span>
+                  ));
+                })()
+              : "Fishing permit information will be displayed here."}
+          </p>
+        </FadeInSection>
+        <FadeInSection>
+          {" "}
+          <div className="w-full flex justify-center items-center py-6 md:py-8 px-4">
+            <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 flex flex-col items-center">
+              <h2 className="text-xl md:text-2xl font-roboto-bold text-emerald-800 mb-4 text-center">
+                Application Instructions
+              </h2>
+              <p className="text-gray-700 text-base md:text-lg text-center leading-relaxed font-roboto-light">
+                Please complete the fishing permit application below. If you
+                have any questions or need assistance, feel free to contact
+                Ngāti Maru at (07) 867 9104.
+              </p>
+            </div>
           </div>
-        </div>
-
+        </FadeInSection>
         <div className="w-full px-4 sm:px-6 md:px-10 lg:px-20 py-6 md:py-10">
           {/* Success Message */}
           {submitSuccess && (
@@ -195,55 +198,57 @@ function Fishing() {
           )}
 
           {/* Main form */}
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10"
-          >
-            <div className="lg:col-span-1">
-              <FishingPersonalDetails
-                formData={formData}
-                handleChange={handleChange}
-                errors={errors}
-              />
-            </div>
+          <FadeInSection>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10"
+            >
+              <div className="lg:col-span-1">
+                <FishingPersonalDetails
+                  formData={formData}
+                  handleChange={handleChange}
+                  errors={errors}
+                />
+              </div>
 
-            <div className="lg:col-span-1">
-              <FishingPurposeDetails
-                formData={formData}
-                handleChange={handleChange}
-                errors={errors}
-              />
-            </div>
+              <div className="lg:col-span-1">
+                <FishingPurposeDetails
+                  formData={formData}
+                  handleChange={handleChange}
+                  errors={errors}
+                />
+              </div>
 
-            <div className="lg:col-span-2">
-              <FishingSpeciesDetails
-                formData={formData}
-                handleSpeciesChange={handleSpeciesChange}
-                addSpecies={addSpecies}
-                removeSpecies={removeSpecies}
-                errors={errors}
-              />
-            </div>
+              <div className="lg:col-span-2">
+                <FishingSpeciesDetails
+                  formData={formData}
+                  handleSpeciesChange={handleSpeciesChange}
+                  addSpecies={addSpecies}
+                  removeSpecies={removeSpecies}
+                  errors={errors}
+                />
+              </div>
 
-            {/* Submit Button */}
-            <div className="lg:col-span-2 flex flex-col sm:flex-row justify-end mt-6 md:mt-10 space-y-3 sm:space-y-0 sm:space-x-4">
-              <button
-                type="button"
-                onClick={resetForm}
-                className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
-                disabled={submitting}
-              >
-                Clear Form
-              </button>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full sm:w-auto px-6 py-3 bg-emerald-700 text-white rounded hover:bg-emerald-800 transition"
-              >
-                {submitting ? "Submitting..." : "Submit Application"}
-              </button>
-            </div>
-          </form>
+              {/* Submit Button */}
+              <div className="lg:col-span-2 flex flex-col sm:flex-row justify-end mt-6 md:mt-10 space-y-3 sm:space-y-0 sm:space-x-4">
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
+                  disabled={submitting}
+                >
+                  Clear Form
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full sm:w-auto px-6 py-3 bg-emerald-700 text-white rounded hover:bg-emerald-800 transition"
+                >
+                  {submitting ? "Submitting..." : "Submit Application"}
+                </button>
+              </div>
+            </form>
+          </FadeInSection>
         </div>
 
         <Footer />

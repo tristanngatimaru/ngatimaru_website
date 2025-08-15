@@ -3,6 +3,7 @@ import Footer from "../components/footer";
 import HeroHeader from "../components/header";
 import { getRegisterContent } from "@/api/siteContent";
 import FadeInOnLoad from "../components/loadonstartanimation";
+import FadeInSection from "@/components/fadeinanimation";
 
 // Lazy load the RegistrationForm component
 const RegistrationForm = lazy(() => import("../components/RegistrationForm"));
@@ -65,41 +66,44 @@ function Register() {
 
         <div className="py-6 md:py-10 lg:py-20 px-4 sm:px-6 md:px-10 lg:px-20">
           {/* Main Content Section */}
+
           <div className="max-w-4xl mx-auto">
-            {content.Content && (
-              <div className="bg-white rounded-lg text-center p-6 md:p-8 mb-8">
-                <div className="prose prose-lg max-w-none">
-                  {content.Content.split("\n\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="text-gray-700 leading-relaxed mb-4 last:mb-0"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
+            <FadeInSection>
+              {content.Content && (
+                <div className="bg-white rounded-lg text-center p-6 md:p-8 mb-8">
+                  <div className="prose prose-lg max-w-none">
+                    {content.Content.split("\n\n").map((paragraph, index) => (
+                      <p
+                        key={index}
+                        className="text-gray-700 leading-relaxed mb-4 last:mb-0"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-
-            {/* Post Information Section */}
-            {content.PostInfo && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 md:p-8 mb-8">
-                <h3 className="text-xl font-roboto-medium text-emerald-800 mb-4">
-                  Important Information
-                </h3>
-                <div className="prose max-w-none">
-                  {content.PostInfo.split("\n\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="text-emerald-700 leading-relaxed mb-4 last:mb-0"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
+              )}
+            </FadeInSection>
+            <FadeInSection>
+              {/* Post Information Section */}
+              {content.PostInfo && (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 md:p-8 mb-8">
+                  <h3 className="text-xl font-roboto-medium text-emerald-800 mb-4">
+                    Important Information
+                  </h3>
+                  <div className="prose max-w-none">
+                    {content.PostInfo.split("\n\n").map((paragraph, index) => (
+                      <p
+                        key={index}
+                        className="text-emerald-700 leading-relaxed mb-4 last:mb-0"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-
+              )}
+            </FadeInSection>
             {/* Registration Form Toggle */}
             {!showForm ? (
               <div className="text-center">
