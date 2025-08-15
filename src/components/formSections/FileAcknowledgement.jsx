@@ -2,7 +2,7 @@
 // src/components/formSections/FileAcknowledgement.jsx
 // --------------------------
 import { useState } from "react";
-import FormComponent from "../FormComponent";
+import FormComponent from "@/components/FormComponent";
 
 const FileAcknowledgement = ({
   formData,

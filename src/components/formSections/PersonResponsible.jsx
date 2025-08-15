@@ -2,7 +2,7 @@
 // src/components/formSections/PersonResponsible.jsx
 // --------------------------
 
-import FormComponent from "../FormComponent";
+import FormComponent from "@/components/FormComponent";
 
 const PersonResponsible = ({ formData, handleChange }) => (
   <div className="grid grid-cols-2 gap-4">
