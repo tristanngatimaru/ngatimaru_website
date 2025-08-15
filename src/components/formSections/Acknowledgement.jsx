@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import FormComponent from "@/components/FormComponent.jsx";
+import FormComponent from "../FormComponent.jsx";
 
 const Acknowledgements = ({
   formData,

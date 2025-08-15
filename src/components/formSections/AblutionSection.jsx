@@ -1,4 +1,4 @@
-import FormComponent from "@/components/FormComponent.jsx";
+import FormComponent from "../FormComponent.jsx";
 
 const AblutionSection = ({
   formData,
