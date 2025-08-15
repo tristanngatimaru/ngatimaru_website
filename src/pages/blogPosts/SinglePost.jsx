@@ -31,7 +31,6 @@ const SinglePost = () => {
         }
 
         // Transform the data to match your component's expectations
-        console.log("Raw blog post data:", data);
         const transformedPost = {
           title: data.Title,
           eventDate: data.EventDate || data.publishedAt || data.createdAt,
@@ -49,21 +48,14 @@ const SinglePost = () => {
           thirdImage: data.ThirdImage ? strapiImage(data.ThirdImage.url) : null,
           contentPartThree: data.ContentPartThree || "", // Use empty string if null
           extraMediaContent: (() => {
-            console.log(
-              "Processing ExtraMediaContent:",
-              data.ExtraMediaContent
-            );
             if (!Array.isArray(data.ExtraMediaContent)) {
-              console.log("ExtraMediaContent is not an array");
               return [];
             }
             const urls = data.ExtraMediaContent.filter((img) => img && img.url) // Make sure we have valid image objects
               .map((img) => {
                 const url = strapiImage(img.url);
-                console.log(`Processing image URL: ${img.url} -> ${url}`);
                 return url;
               });
-            console.log("Processed URLs:", urls);
             return urls;
           })(),
         };
@@ -169,10 +161,6 @@ const SinglePost = () => {
             )}
 
             {(() => {
-              console.log(
-                "Carousel render - extraMediaContent:",
-                post.extraMediaContent
-              );
               return Array.isArray(post.extraMediaContent) &&
                 post.extraMediaContent.length > 0 ? (
                 <div className="w-full  py-12">
@@ -187,7 +175,6 @@ const SinglePost = () => {
 
                       <CarouselContent>
                         {post.extraMediaContent.map((url, index) => {
-                          console.log(`Rendering carousel item ${index}:`, url);
                           return (
                             <CarouselItem key={index} className="basis-full">
                               <div className="p-4">

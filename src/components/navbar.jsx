@@ -1,27 +1,69 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Documents from "../pages/documents";
-import MataiWhetu from "../pages/bookingMataiWhetu";
+import { getNavigationContent } from "@/api/siteContent";
 
 function Navbar() {
-  //line in nav bar should appear on refresh
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAppeared, setIsAppeared] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [navigationItems, setNavigationItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadedTimeout = setTimeout(() => setIsLoaded(true), 500);
-    const expandedTimeout = setTimeout(() => setIsExpanded(true), 1000);
-    const appearedTimeout = setTimeout(() => setIsAppeared(true), 1500);
+    const timer1 = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+
+    const timer2 = setTimeout(() => {
+      setIsExpanded(true);
+    }, 600);
+
+    const timer3 = setTimeout(() => {
+      setIsAppeared(true);
+    }, 1100);
 
     return () => {
-      clearTimeout(loadedTimeout);
-      clearTimeout(expandedTimeout);
-      clearTimeout(appearedTimeout);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
     };
   }, []);
 
-  //text on nav bar appear out of the line
+  useEffect(() => {
+    const loadNavigation = async () => {
+      try {
+        const navData = await getNavigationContent();
+        setNavigationItems(navData.filter((item) => item.Visible));
+      } catch (error) {
+        console.error("Error loading navigation:", error);
+        // Fallback to default navigation if error occurs
+        setNavigationItems([
+          { href: "/", TitleEnglish: "HOME", TitleTeReo: "KAINGA" },
+          { href: "/about", TitleEnglish: "ABOUT US", TitleTeReo: "KO WAI" },
+          {
+            href: "/bookingmataiwhetu",
+            TitleEnglish: "BOOKING MATAI WHETŪ",
+            TitleTeReo: "RĀHITA MATAI WHETŪ",
+          },
+          {
+            href: "/fishingpermit",
+            TitleEnglish: "FISHING PERMIT",
+            TitleTeReo: "RIHITI HĪ IKA",
+          },
+          {
+            href: "/documents",
+            TitleEnglish: "DOCUMENTS",
+            TitleTeReo: "NGĀ TUHINGA",
+          },
+          { href: "/register", TitleEnglish: "REGISTER", TitleTeReo: "RĀHITA" },
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadNavigation();
+  }, []);
 
   return (
     <div
@@ -38,192 +80,55 @@ function Navbar() {
         />
 
         <nav className="w-full flex items-center justify-between ">
-          <Link
-            to="/"
-            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
-          >
-            <div className="items-center flex flex-col">
-              {/* Top text container */}
-              <div className="overflow-hidden h-6 w-full flex justify-center">
-                <h3
-                  className={`delay-500 text-base pb-0.5 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                >
-                  KAINGA
-                </h3>
-              </div>
-
-              {/* Bottom text container */}
-              <div className="overflow-hidden h-4 w-full flex justify-center">
-                <h3
-                  className={` delay-500 text-xs pt-1 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
-                >
-                  HOME
-                </h3>
-              </div>
+          {/* Show loading indicator or render navigation items */}
+          {isLoading ? (
+            <div className="text-gray-300 text-center w-full py-4">
+              Loading navigation...
             </div>
-          </Link>
-          <Link
-            to="/about"
-            className="block font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200 cursor-pointer"
-          >
-            <div className="items-center flex flex-col">
-              {/* Top text container */}
-              <div className="overflow-hidden h-6 w-full flex justify-center">
-                <h3
-                  className={`delay-300 text-base pb-0.5 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                >
-                  KO WAI
-                </h3>
-              </div>
+          ) : (
+            navigationItems.map((item, index) => {
+              // Calculate staggered delay for animations
+              const baseDelay = 300;
+              const delayIncrement = 100;
+              const delay = baseDelay + index * delayIncrement;
 
-              {/* Bottom text container */}
-              <div className="overflow-hidden h-4 w-full flex justify-center">
-                <h3
-                  className={`delay-300 text-xs pt-1 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
+              return (
+                <Link
+                  key={`${item.href}-${index}`}
+                  to={item.href}
+                  className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
                 >
-                  ABOUT US
-                </h3>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="/bookingmataiwhetu"
-            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
-          >
-            <div className="items-center flex flex-col">
-              {/* Top text container */}
-              <div className="overflow-hidden h-6 w-full flex justify-center">
-                <h3
-                  className={`text-base pb-0.5 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                >
-                  RĀHITA MATAI WHETŪ
-                </h3>
-              </div>
+                  <div className="items-center flex flex-col">
+                    {/* Top text container */}
+                    <div className="overflow-hidden h-6 w-full flex justify-center">
+                      <h3
+                        className={`text-base pb-0.5 transition-transform duration-700 ease-in-out
+                ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
+                        style={{
+                          transitionDelay: `${delay}ms`,
+                        }}
+                      >
+                        {item.TitleTeReo}
+                      </h3>
+                    </div>
 
-              {/* Bottom text container */}
-              <div className="overflow-hidden h-4 w-full flex justify-center">
-                <h3
-                  className={`text-xs pt-1 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
-                >
-                  BOOKING MATAI WHETŪ
-                </h3>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="/fishingpermit"
-            href=""
-            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
-          >
-            <div className="items-center flex flex-col">
-              {/* Top text container */}
-              <div className="overflow-hidden h-6 w-full flex justify-center">
-                <h3
-                  className={`text-base pb-0.5 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                >
-                  RIHITI HĪ IKA
-                </h3>
-              </div>
-
-              {/* Bottom text container */}
-              <div className="overflow-hidden h-4 w-full flex justify-center">
-                <h3
-                  className={`text-xs pt-1 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
-                >
-                  FISHING PERMIT
-                </h3>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="/Documents"
-            href=""
-            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
-          >
-            <div className="items-center flex flex-col">
-              {/* Top text container */}
-              <div className="overflow-hidden h-6 w-full flex justify-center">
-                <h3
-                  className={`delay-300 text-base pb-0.5 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                >
-                  NGĀ TUHINGA
-                </h3>
-              </div>
-
-              {/* Bottom text container */}
-              <div className=" overflow-hidden h-4 w-full flex justify-center">
-                <h3
-                  className={`delay-300 text-xs pt-1 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
-                >
-                  DOCUMENTS
-                </h3>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="/store"
-            href=""
-            className="font-roboto-light text-gray-300 hidden hover:scale-110 ease-in-out duration-200"
-          >
-            <div className="items-center flex flex-col">
-              {/* Top text container */}
-              <div className="overflow-hidden h-6 w-full flex justify-center">
-                <h3
-                  className={`text-base pb-0.5 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                >
-                  TOA
-                </h3>
-              </div>
-
-              {/* Bottom text container */}
-              <div className="overflow-hidden h-4 w-full flex justify-center">
-                <h3
-                  className={`text-xs pt-1 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
-                >
-                  STORE
-                </h3>
-              </div>
-            </div>
-          </Link>
-          <Link
-            to="/register"
-            href=""
-            className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
-          >
-            <div className="items-center flex flex-col">
-              {/* Top text container */}
-              <div className="overflow-hidden h-6 w-full flex justify-center">
-                <h3
-                  className={`delay-500 text-base pb-0.5 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                >
-                  RĒHITA
-                </h3>
-              </div>
-
-              {/* Bottom text container */}
-              <div className="overflow-hidden h-4 w-full flex justify-center">
-                <h3
-                  className={` delay-500 text-xs pt-1 transition-transform duration-700 ease-in-out
-          ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
-                >
-                  REGISTER
-                </h3>
-              </div>
-            </div>
-          </Link>
+                    {/* Bottom text container */}
+                    <div className="overflow-hidden h-4 w-full flex justify-center">
+                      <h3
+                        className={`text-xs pt-1 transition-transform duration-700 ease-in-out
+                ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
+                        style={{
+                          transitionDelay: `${delay}ms`,
+                        }}
+                      >
+                        {item.TitleEnglish}
+                      </h3>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })
+          )}
         </nav>
       </div>
     </div>

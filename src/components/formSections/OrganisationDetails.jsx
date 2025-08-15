@@ -2,7 +2,7 @@
 // src/components/formSections/OrganisationDetails.jsx
 // --------------------------
 
-import FormComponent from "../FormComponent";
+import FormComponent from "@/components/FormComponent";
 
 const OrganisationDetails = ({
   formData,
