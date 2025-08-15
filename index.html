@@ -9,6 +9,25 @@
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ngāti Maru</title>
+    
+    <!-- Initialize global variables to prevent initialization errors -->
+    <script>
+      // Prevent Google Analytics and other global variable initialization errors
+      window.ga = window.ga || function() { 
+        (window.ga.q = window.ga.q || []).push(arguments);
+      };
+      window.gtag = window.gtag || function() {
+        (window.gtag.q = window.gtag.q || []).push(arguments);
+      };
+      
+      // Initialize other common global variables that might cause issues
+      window.fbq = window.fbq || function() {
+        (window.fbq.q = window.fbq.q || []).push(arguments);
+      };
+      
+      // Debug logging
+      console.log('Global variables initialized before module loading');
+    </script>
   </head>
   <body>
     <div id="root"></div>

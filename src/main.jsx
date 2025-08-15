@@ -2,18 +2,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import TestApp from "./TestApp.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
-// Safety check for global variables that might cause initialization errors
+// Additional safety checks
 if (typeof window !== 'undefined') {
-  // Prevent common variable initialization errors
-  window.ga = window.ga || function() {};
-  
-  // Add debugging
   console.log('Starting app initialization...');
   
-  // Catch any global errors
+  // Catch any remaining global errors
   window.addEventListener('error', (event) => {
     console.error('Global error:', event.error);
   });
@@ -27,12 +22,10 @@ try {
   const root = createRoot(document.getElementById("root"));
   console.log('Root created, rendering app...');
   
-  // Temporarily use TestApp to verify basic functionality
-  // Switch back to <App /> once we confirm it's loading
   root.render(
     <ErrorBoundary>
       <StrictMode>
-        <TestApp />
+        <App />
       </StrictMode>
     </ErrorBoundary>
   );
