@@ -1,3 +1,7 @@
 [build]
   publish = "dist"
   command = "npm run build"
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_STRAPI_API_TOKEN,VITE_STRAPI_API_URL,VITE_STRAPI_FORM_API_TOKEN"
+  SECRETS_SCAN_OMIT_PATHS = "dist/**"
