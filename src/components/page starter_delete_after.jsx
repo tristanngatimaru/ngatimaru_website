@@ -2,7 +2,7 @@ import Footer from "../components/footer";
 import HeroHeader from "../components/header";
 import content from "../components/sitecontent/content";
 import { Images } from "../components/sitecontent/images";
-import FormComponent from "../components/FormComponent";
+import FormComponent from "../components/FormComponent.jsx";
 // src/pages/about.jsx
 function MataiWhetu() {
   return (

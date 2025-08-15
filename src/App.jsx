@@ -2,13 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 // Lazy load page components
-const Home = lazy(() => import("./pages/home"));
-const About = lazy(() => import("./pages/about"));
-const Documents = lazy(() => import("./pages/documents"));
-const SinglePost = lazy(() => import("./pages/blogPosts/SinglePost"));
-const MataiWhetu = lazy(() => import("./pages/bookingMataiWhetu"));
-const Fishing = lazy(() => import("./pages/fishingPermits"));
-const Register = lazy(() => import("./pages/register"));
+const Home = lazy(() => import("./pages/home.jsx"));
+const About = lazy(() => import("./pages/about.jsx"));
+const Documents = lazy(() => import("./pages/documents.jsx"));
+const SinglePost = lazy(() => import("./pages/blogPosts/SinglePost.jsx"));
+const MataiWhetu = lazy(() => import("./pages/bookingMataiWhetu.jsx"));
+const Fishing = lazy(() => import("./pages/fishingPermits.jsx"));
+const Register = lazy(() => import("./pages/register.jsx"));
 
 // Loading component for page transitions
 const PageLoader = () => (

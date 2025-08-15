@@ -6,7 +6,7 @@ import FadeInOnLoad from "../components/loadonstartanimation";
 import FadeInSection from "@/components/fadeinanimation";
 
 // Lazy load the RegistrationForm component
-const RegistrationForm = lazy(() => import("../components/RegistrationForm"));
+const RegistrationForm = lazy(() => import("../components/RegistrationForm.jsx"));
 
 function Register() {
   const [content, setContent] = useState(null);
