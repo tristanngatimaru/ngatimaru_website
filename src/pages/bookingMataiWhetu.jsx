@@ -27,7 +27,7 @@ const WharenuiSection = lazy(
 const Acknowledgements = lazy(
   () => import("../components/formSections/Acknowledgement")
 );
-const BookingSummary = lazy(() => import("../components/BookingSummary"));
+const BookingSummary = lazy(() => import("../components/bookingsummary"));
 const ConfirmModal = lazy(() => import("../components/confirmmodal"));
 const AblutionSection = lazy(
   () => import("../components/formSections/AblutionSection")
