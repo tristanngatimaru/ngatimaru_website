@@ -117,8 +117,7 @@ typeof React;
 // Test API directly
 fetch("https://colorful-animal-7c45d1cc5a.strapiapp.com/api/home", {
   headers: {
-    Authorization:
-      "Bearer YOUR_STRAPI_API_TOKEN_HERE",
+    Authorization: "Bearer YOUR_STRAPI_API_TOKEN_HERE",
   },
 })
   .then((r) => r.json())

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Navbar from "../components/navbar";
 import Posts from "../components/posts";
 import Footer from "../components/footer";
@@ -6,7 +7,7 @@ import HamburgerNav from "../components/hamburgerNav";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 // Removed static Icons import - all images should be dynamic from Strapi
-import { getHomeContent } from "../api/siteContent";
+import { loadPageContent } from "../api/lazyContentLoader";
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -54,11 +55,20 @@ function Home() {
 
   useEffect(() => {
     async function loadContent() {
+      console.log("🚀 Starting home page content load...");
+      const startTime = performance.now();
+
       try {
-        const homeData = await getHomeContent();
+        // Load only home page content (not all pages)
+        const homeData = await loadPageContent("home");
         setContent(homeData);
+
+        const loadTime = performance.now() - startTime;
+        console.log(
+          `✅ Home content loaded successfully (${loadTime.toFixed(2)}ms)`
+        );
       } catch (error) {
-        console.error("Error loading home content:", error);
+        console.error("❌ Error loading home content:", error);
         setError(error);
       } finally {
         setLoading(false);
@@ -166,9 +176,8 @@ function Home() {
                       onClick={handleScroll}
                       className="hover:scale-110 active:scale-95 ease-in-out duration-200 hover:outline-white outline-transparent outline-2 rounded-full p-3"
                     >
-                      {/* TODO: Replace with dynamic arrow icon from Strapi */}
                       <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                        ↓
+                        <ChevronDown className="w-6 h-6 text-gray-800" />
                       </div>
                     </button>
                   </AppearRefresh>
@@ -206,13 +215,12 @@ function Home() {
               <p className="font-roboto-light text-3xl pt-10 pb-5">Full Mihi</p>
               <button
                 onClick={expandMihi}
-                className={`hover:outline-black active:scale-95 hover:scale-110 ease-in-out duration-200 outline-transparent outline-2 rounded-full p-3 ${
+                className={`hover:outline-black active:scale-95 hover:scale-110 ease-in-out outline-transparent outline-2 rounded-full p-3 transition-all duration-300 ${
                   isExpanded ? "rotate-180" : "rotate-0"
                 }`}
               >
-                {/* TODO: Replace with dynamic arrow icon from Strapi */}
                 <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
-                  ↑
+                  <ChevronDown className="w-6 h-6 text-white" />
                 </div>
               </button>
             </div>
@@ -231,11 +239,10 @@ function Home() {
               <div>
                 <button
                   onClick={expandMihi}
-                  className="hover:outline-black hover:scale-110 ease-in-out duration-200 outline-transparent outline-2 rounded-full p-3 rotate-180 active:scale-95"
+                  className="hover:outline-black hover:scale-110 ease-in-out duration-200 outline-transparent outline-2 rounded-full p-3 active:scale-95"
                 >
-                  {/* TODO: Replace with dynamic arrow icon from Strapi */}
                   <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
-                    ↑
+                    <ChevronUp className="w-6 h-6 text-white" />
                   </div>
                 </button>
               </div>

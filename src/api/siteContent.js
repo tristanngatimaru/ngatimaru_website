@@ -29,7 +29,7 @@ function transformImage(imageData) {
 /**
  * Universal page configuration for Strapi content types
  */
-const PAGE_CONFIGS = {
+export const PAGE_CONFIGS = {
   mataiWhetu: {
     contentType: "matai-whetu-page",
     populate: {
@@ -263,7 +263,7 @@ export async function getRegisterContent() {
  * @param {Object} rawData - Raw data from Strapi
  * @returns {Object} Transformed data
  */
-function transformPageData(pageName, rawData) {
+export function transformPageData(pageName, rawData) {
   const config = PAGE_CONFIGS[pageName];
   if (!config || !rawData) {
     return config?.defaultContent || {};

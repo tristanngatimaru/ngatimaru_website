@@ -18,7 +18,7 @@ export default function FaceCard({
 
   return (
     <div
-      className={`group relative w-full h-[500px] overflow-hidden ${className}`}
+      className={`group relative w-full h-[400px] sm:h-[450px] lg:h-[500px] overflow-hidden ${className}`}
     >
       {/* Image */}
       <div className="relative w-full h-full">
@@ -43,13 +43,17 @@ export default function FaceCard({
           </div>
         </div>
 
-        {/* Static mobile overlay at bottom */}
-        <div className="lg:hidden absolute bottom-0 left-0 w-full bg-black/70 text-white text-center p-4">
-          <h2 className="font-roboto-bold text-xl">{name}</h2>
-          <p className="font-roboto-light text-sm text-gray-300">{title}</p>
-          <p className="font-roboto-light text-xs text-gray-400 mt-2">
-            {description}
+        {/* Enhanced mobile overlay at bottom */}
+        <div className="lg:hidden absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 via-black/60 to-transparent text-white text-center p-6">
+          <h2 className="font-roboto-bold text-lg sm:text-xl mb-1">{name}</h2>
+          <p className="font-roboto-light text-sm sm:text-base text-gray-200 mb-2">
+            {title}
           </p>
+          {description && (
+            <p className="font-roboto-light text-xs sm:text-sm text-gray-300 leading-relaxed">
+              {description}
+            </p>
+          )}
         </div>
       </div>
     </div>

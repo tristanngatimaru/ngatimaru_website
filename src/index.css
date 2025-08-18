@@ -57,6 +57,33 @@
   font-display: swap;
 }
 
+/* Roboto Medium - 500 */
+@font-face {
+  font-family: "Roboto-medium";
+  src: url("../src/assets/fonts/Roboto-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto SemiBold - 600 */
+@font-face {
+  font-family: "Roboto-semibold";
+  src: url("../src/assets/fonts/Roboto-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto Bold - 700 */
+@font-face {
+  font-family: "Roboto-bold";
+  src: url("../src/assets/fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-roboto-thin: Roboto-thin, sans-serif;
   --font-roboto-light: Roboto-light, sans-serif;

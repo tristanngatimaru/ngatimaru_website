@@ -1,0 +1,28 @@
+/* Additional fonts loaded lazily after critical fonts */
+
+/* Roboto Thin - 100 */
+@font-face {
+  font-family: "Roboto-thin";
+  src: url("../src/assets/fonts/Roboto-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto SemiBold - 600 */
+@font-face {
+  font-family: "Roboto-semibold";
+  src: url("../src/assets/fonts/Roboto-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto Bold - 700 */
+@font-face {
+  font-family: "Roboto-bold";
+  src: url("../src/assets/fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

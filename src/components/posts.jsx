@@ -93,10 +93,6 @@ function Posts() {
                         {new Date(post.eventDate).toLocaleDateString()}
                       </p>
                     </div>
-                    {/* TODO: Replace with dynamic arrow icon from Strapi */}
-                    <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center -rotate-90">
-                      →
-                    </div>
                   </div>
                 </Link>
               </div>

@@ -17,6 +17,8 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ["react", "react-dom", "react-router-dom", "axios", "qs"],
+    // Force pre-bundling of these modules for faster dev startup
+    force: true,
   },
   build: {
     rollupOptions: {
@@ -24,7 +26,7 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor libraries - be more specific to avoid conflicts
           if (id.includes("node_modules")) {
-            // Keep React ecosystem together
+            // Keep React ecosystem together - smaller chunk
             if (id.includes("react") && !id.includes("react-router")) {
               return "vendor-react";
             }
@@ -32,7 +34,7 @@ export default defineConfig({
               return "vendor-router";
             }
 
-            // UI libraries
+            // UI libraries - smaller chunk
             if (
               id.includes("@radix-ui") ||
               id.includes("class-variance-authority") ||
@@ -43,22 +45,21 @@ export default defineConfig({
               return "vendor-ui";
             }
 
-            // API libraries
+            // API libraries - very small chunk
             if (id.includes("axios") || id.includes("qs")) {
               return "vendor-api";
             }
 
-            // Animation libraries
+            // Animation libraries - separate chunk
             if (id.includes("embla-carousel")) {
               return "vendor-carousel";
             }
 
             // Let Rollup handle other smaller dependencies automatically
-            // This prevents chunking conflicts
             return undefined;
           }
 
-          // Large form components
+          // Large form components - separate chunks for lazy loading
           if (
             id.includes("RegistrationForm.jsx") ||
             id.includes("bookingmataiwhetudraft.jsx") ||
@@ -67,17 +68,17 @@ export default defineConfig({
             return "forms";
           }
 
-          // API modules
+          // API modules - critical for performance
           if (id.includes("/api/")) {
             return "api";
           }
 
-          // Page components
+          // Page components - lazy loaded
           if (id.includes("/pages/")) {
             return "pages";
           }
 
-          // Form sections
+          // Form sections - lazy loaded
           if (id.includes("formSections/")) {
             return "form-sections";
           }
@@ -85,17 +86,33 @@ export default defineConfig({
       },
     },
 
-    // Adjust chunk size warning limit
-    chunkSizeWarningLimit: 1000,
+    // Adjust chunk size warning limit for better performance
+    chunkSizeWarningLimit: 500, // Smaller chunks for better caching
 
-    // Enable minification and tree-shaking
+    // Enable aggressive minification
     minify: "esbuild",
     target: "es2015",
 
-    // Enable source maps for better debugging in development only
+    // Disable source maps in production for smaller bundles
     sourcemap: false,
 
-    // Optimize CSS
+    // Enable CSS code splitting for better performance
     cssCodeSplit: true,
+
+    // Enable tree-shaking
+    assetsInlineLimit: 4096, // Inline small assets
+  },
+
+  // Performance optimizations
+  server: {
+    warmup: {
+      // Pre-warm frequently used files
+      clientFiles: [
+        "./src/main.jsx",
+        "./src/App.jsx",
+        "./src/pages/home.jsx",
+        "./src/api/lazyContentLoader.js",
+      ],
+    },
   },
 });
