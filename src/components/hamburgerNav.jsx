@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getNavigationData } from "../api/navigation";
 
 export default function HamburgerNav() {
   const [expanded, setExpanded] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [buttonRotation, setButtonRotation] = useState(0);
+  const [navigationItems, setNavigationItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleScrollAndResize = () => {
@@ -29,6 +32,23 @@ export default function HamburgerNav() {
       setExpanded(false);
     }
   }, [showMenu]);
+
+  // Load navigation data from Strapi
+  useEffect(() => {
+    async function loadNavigationData() {
+      try {
+        console.log("🧭 HamburgerNav: Loading navigation data...");
+        const navData = await getNavigationData();
+        setNavigationItems(navData);
+      } catch (error) {
+        console.error("🧭 HamburgerNav: Error loading navigation:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadNavigationData();
+  }, []);
 
   const handleClick = () => {
     if (!expanded) {
@@ -62,76 +82,29 @@ export default function HamburgerNav() {
           }`}
         >
           <ul className="font-roboto-light pl-10 pt-40 space-y-8 w-full flex flex-col gap-2">
-            <li>
-              <Link to="/" href="" className="block group ">
-                <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
-                  KAINGA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  HOME
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  KO WAI
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  ABOUT US
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/bookingmataiwhetu" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  RĀHITA MATAI WHETŪ
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  BOOKING MATAI WHETŪ
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/fishingpermit" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  RIHITI HĪ IKA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  FISHING PERMIT
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/documents" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  NGĀ TUHINGA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  DOCUMENTS
-                </h2>
-              </Link>
-            </li>
-            <li className="hidden">
-              <Link to="/store" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  TOA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  STORE
-                </h2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/register" href="" className="block group">
-                <h2 className="text-2xl font-roboto-regular w-full absolute bg-white z-10">
-                  RĀHITA
-                </h2>
-                <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                  REGISTER
-                </h2>
-              </Link>
-            </li>
+            {loading ? (
+              // Loading placeholder
+              [...Array(6)].map((_, index) => (
+                <li key={index} className="animate-pulse">
+                  <div className="h-8 w-48 bg-gray-300 rounded mb-2"></div>
+                  <div className="h-6 w-32 bg-gray-200 rounded"></div>
+                </li>
+              ))
+            ) : (
+              // Dynamic navigation items
+              navigationItems.map((item) => (
+                <li key={item.id}>
+                  <Link to={item.href} className="block group">
+                    <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
+                      {item.titleTeReo}
+                    </h2>
+                    <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
+                      {item.titleEnglish}
+                    </h2>
+                  </Link>
+                </li>
+              ))
+            )}
           </ul>
         </div>
 
