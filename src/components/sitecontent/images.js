@@ -1,15 +1,21 @@
 // Lazy loading image objects with direct dynamic imports
 const Images = {
   async Coromandel() {
-    const module = await import("../../assets/images/headerimages/coromandel top.png");
+    const module = await import(
+      "../../assets/images/headerimages/coromandel top.png"
+    );
     return module.default;
   },
   async BeachIsland() {
-    const module = await import("../../assets/images/headerimages/beachIsland.png");
+    const module = await import(
+      "../../assets/images/headerimages/beachIsland.png"
+    );
     return module.default;
   },
   async CarvingUpClose() {
-    const module = await import("../../assets/images/headerimages/carvingcloseup.png");
+    const module = await import(
+      "../../assets/images/headerimages/carvingcloseup.png"
+    );
     return module.default;
   },
   async Korowai() {
@@ -17,23 +23,33 @@ const Images = {
     return module.default;
   },
   async MataiWhetu() {
-    const module = await import("../../assets/images/headerimages/matai whetu.png");
+    const module = await import(
+      "../../assets/images/headerimages/matai whetu.png"
+    );
     return module.default;
   },
   async Mihi() {
-    const module = await import("../../assets/images/headerimages/mihi background.png");
+    const module = await import(
+      "../../assets/images/headerimages/mihi background.png"
+    );
     return module.default;
   },
   async Pohutakawa() {
-    const module = await import("../../assets/images/headerimages/pohutakawaflowers.png");
+    const module = await import(
+      "../../assets/images/headerimages/pohutakawaflowers.png"
+    );
     return module.default;
   },
   async Shells() {
-    const module = await import("../../assets/images/headerimages/shells on a beach.png");
+    const module = await import(
+      "../../assets/images/headerimages/shells on a beach.png"
+    );
     return module.default;
   },
   async VeryCloseCarving() {
-    const module = await import("../../assets/images/headerimages/veryclosecarving.png");
+    const module = await import(
+      "../../assets/images/headerimages/veryclosecarving.png"
+    );
     return module.default;
   },
 };
