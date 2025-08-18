@@ -9,6 +9,7 @@
   src: url("../src/assets/fonts/Roboto-Thin.ttf") format("truetype");
   font-weight: 100;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Roboto Light - 300 */
@@ -17,6 +18,7 @@
   src: url("../src/assets/fonts/Roboto-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Roboto Regular - 400 */
@@ -25,6 +27,7 @@
   src: url("../src/assets/fonts/Roboto-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Roboto Medium - 500 */
@@ -33,6 +36,7 @@
   src: url("../src/assets/fonts/Roboto-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Roboto SemiBold - 600 */
@@ -41,6 +45,7 @@
   src: url("../src/assets/fonts/Roboto-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Roboto Bold - 700 */
@@ -49,6 +54,7 @@
   src: url("../src/assets/fonts/Roboto-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 @theme {

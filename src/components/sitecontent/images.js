@@ -1,46 +1,85 @@
-import Coromandel from "../../assets/images/headerimages/coromandel top.png";
-import BeachIsland from "../../assets/images/headerimages/beachIsland.png";
-import CarvingUpClose from "../../assets/images/headerimages/carvingcloseup.png";
-import Korowai from "../../assets/images/headerimages/korowai.png";
-import MataiWhetu from "../../assets/images/headerimages/matai whetu.png";
-import Mihi from "../../assets/images/headerimages/mihi background.png";
-import Pohutakawa from "../../assets/images/headerimages/pohutakawaflowers.png";
-import Shells from "../../assets/images/headerimages/shells on a beach.png";
-import VeryCloseCarving from "../../assets/images/headerimages/veryclosecarving.png";
-import BlackArrow from "../../assets/images/icons/arrow_black.png";
-import Arrow from "../../assets/images/icons/arrow.png";
-import Download from "../../assets/images/icons/download.png";
-import Paul from "../../assets/images/aboutus/paulmajourey.png";
-import David from "../../assets/images/aboutus/davidtaipari.png";
-import Waati from "../../assets/images/aboutus/waatingamani.png";
+// Dynamic image loader for better performance
+const imageCache = new Map();
 
-// All png images that are not in wordpress for a blog post are held here
-// To change the image background of headers etc, locate the name of the file that corresponds
-// to the image you want to change, then only change the file path of that image which is found above
-// Adding more images rather than changing them are more involved and best asked by either ChatGPT or the corresponding IT developer
+/**
+ * Dynamically imports an image only when needed
+ * @param {string} imageName - Name of the image file
+ * @param {string} folder - Folder path (headerimages, icons, aboutus)
+ * @returns {Promise<string>} Image URL
+ */
+async function loadImage(imageName, folder) {
+  const cacheKey = `${folder}/${imageName}`;
 
+  if (imageCache.has(cacheKey)) {
+    return imageCache.get(cacheKey);
+  }
+
+  try {
+    const imageModule = await import(
+      `../../assets/images/${folder}/${imageName}`
+    );
+    const imageUrl = imageModule.default;
+    imageCache.set(cacheKey, imageUrl);
+    return imageUrl;
+  } catch {
+    console.warn(`Failed to load image: ${folder}/${imageName}`);
+    return null;
+  }
+}
+
+// Lazy loading image objects
 const Images = {
-  Coromandel: "no image",
-  BeachIsland: "",
-  CarvingUpClose: "CarvingUpClose",
-  Korowai: "",
-  MataiWhetu: "MataiWhetu",
-  Mihi: Mihi,
-  Pohutakawa: "Pohutakawa",
-  Shells: Shells,
-  VeryCloseCarving: "VeryCloseCarving",
+  async Coromandel() {
+    return await loadImage("coromandel top.png", "headerimages");
+  },
+  async BeachIsland() {
+    return await loadImage("beachIsland.png", "headerimages");
+  },
+  async CarvingUpClose() {
+    return await loadImage("carvingcloseup.png", "headerimages");
+  },
+  async Korowai() {
+    return await loadImage("korowai.png", "headerimages");
+  },
+  async MataiWhetu() {
+    return await loadImage("matai whetu.png", "headerimages");
+  },
+  async Mihi() {
+    return await loadImage("mihi background.png", "headerimages");
+  },
+  async Pohutakawa() {
+    return await loadImage("pohutakawaflowers.png", "headerimages");
+  },
+  async Shells() {
+    return await loadImage("shells on a beach.png", "headerimages");
+  },
+  async VeryCloseCarving() {
+    return await loadImage("veryclosecarving.png", "headerimages");
+  },
 };
 
 const Icons = {
-  BlackArrow: BlackArrow,
-  Arrow: Arrow,
-  Download: Download,
+  async BlackArrow() {
+    return await loadImage("arrow_black.png", "icons");
+  },
+  async Arrow() {
+    return await loadImage("arrow.png", "icons");
+  },
+  async Download() {
+    return await loadImage("download.png", "icons");
+  },
 };
 
 const Cards = {
-  Paul: "Paul",
-  Waati: "Waati",
-  David: "David",
+  async Paul() {
+    return await loadImage("paulmajourey.png", "aboutus");
+  },
+  async David() {
+    return await loadImage("davidtaipari.png", "aboutus");
+  },
+  async Waati() {
+    return await loadImage("waatingamani.png", "aboutus");
+  },
 };
 
 export { Images, Icons, Cards };

@@ -1,5 +1,9 @@
 import qs from "qs";
 
+// Simple in-memory cache for API responses
+const cache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 /**
  * Fetches data for a specified Strapi content type.
  *
@@ -23,6 +27,15 @@ export default async function fetchContentType(
   params = {},
   spreadData = false
 ) {
+  // Create cache key from contentType and params
+  const cacheKey = `${contentType}-${JSON.stringify(params)}-${spreadData}`;
+
+  // Check cache first
+  const cached = cache.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+
   try {
     const queryParams = { ...params };
 
@@ -54,7 +67,15 @@ export default async function fetchContentType(
     }
 
     const jsonData = await response.json();
-    return spreadData ? spreadStrapiData(jsonData) : jsonData;
+    const result = spreadData ? spreadStrapiData(jsonData) : jsonData;
+
+    // Cache the result
+    cache.set(cacheKey, {
+      data: result,
+      timestamp: Date.now(),
+    });
+
+    return result;
   } catch (error) {
     console.error("FetchContentTypeError:", error);
     throw error; // Re-throw to handle in components
