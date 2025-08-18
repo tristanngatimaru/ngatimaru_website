@@ -60,10 +60,7 @@ function About() {
     <div className="w-full">
       <FadeInOnLoad delay={500} mobileDelay={200}>
         <HeroHeader
-          image={
-            content.Header?.BackgroundHeaderImage?.url ||
-            "Images.CarvingUpClose"
-          }
+          image={content.Header?.BackgroundHeaderImage?.url || null} // TODO: Load from Strapi, no static fallback
           title={content.Header?.TeReoTitle || "Ko Wai not live"}
           subtitle={content.Header?.EnglishTitle || "About Us"}
         />

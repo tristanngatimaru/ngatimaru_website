@@ -1,7 +1,7 @@
 import Footer from "../components/footer";
 import HeroHeader from "../components/header";
 import content from "../components/sitecontent/content";
-import { Images } from "../components/sitecontent/images";
+// Removed static Images import - all images should be dynamic from Strapi
 import FormComponent from "../components/formcomponent";
 import { useState } from "react";
 
@@ -126,7 +126,7 @@ function MataiWhetu() {
       <div className="w-full h-50 bg-gradient-to-b from-gray-800 to-transparent absolute z-10"></div>
 
       <HeroHeader
-        image={Images.MataiWhetu}
+        image={null} // TODO: Load MataiWhetu header image dynamically from Strapi content
         subtitle={content.mataiwhetu.header}
         title={content.mataiwhetu.headerenglish}
       />

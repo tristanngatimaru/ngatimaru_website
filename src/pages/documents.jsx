@@ -4,7 +4,7 @@ import HeroHeader from "../components/header";
 import { getDocumentsContent } from "@/api/siteContent";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import FadeInSection from "@/components/fadeinanimation";
-import { Icons } from "../components/sitecontent/images";
+// Removed static Icons import - all images should be dynamic from Strapi
 
 const Documents = () => {
   // 🔧 DEBUG MODE - Set to true to show debug info, false to hide
@@ -182,11 +182,10 @@ const Documents = () => {
                                 className="inline-flex items-center justify-center w-12 h-12 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors duration-200 group-hover:scale-105"
                                 title={`Download ${doc.displayName}`}
                               >
-                                <img
-                                  src={Icons.Download}
-                                  alt="Download"
-                                  className="w-6 h-6"
-                                />
+                                {/* TODO: Replace with dynamic download icon from Strapi */}
+                                <div className="w-6 h-6 bg-emerald-600 rounded flex items-center justify-center text-white text-sm">
+                                  ↓
+                                </div>
                               </a>
                             </div>
                           </div>

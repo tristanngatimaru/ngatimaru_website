@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Arrow from "../assets/images/icons/arrow.png";
+// Removed static Arrow import - all images should be dynamic from Strapi
 import { getBlogPosts } from "../api/blogPosts";
 import { strapiImage } from "../api/strapiImage";
 
@@ -93,7 +93,10 @@ function Posts() {
                         {new Date(post.eventDate).toLocaleDateString()}
                       </p>
                     </div>
-                    <img src={Arrow} alt="" className="w-[40px] -rotate-90" />
+                    {/* TODO: Replace with dynamic arrow icon from Strapi */}
+                    <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center -rotate-90">
+                      →
+                    </div>
                   </div>
                 </Link>
               </div>

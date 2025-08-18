@@ -5,7 +5,7 @@ import Footer from "../components/footer";
 import HamburgerNav from "../components/hamburgerNav";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
-import { Icons } from "../components/sitecontent/images";
+// Removed static Icons import - all images should be dynamic from Strapi
 import { getHomeContent } from "../api/siteContent";
 
 function FadeInSection({ children }) {
@@ -166,7 +166,10 @@ function Home() {
                       onClick={handleScroll}
                       className="hover:scale-110 active:scale-95 ease-in-out duration-200 hover:outline-white outline-transparent outline-2 rounded-full p-3"
                     >
-                      <img src={Icons.Arrow} alt="" className="w-10" />
+                      {/* TODO: Replace with dynamic arrow icon from Strapi */}
+                      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        ↓
+                      </div>
                     </button>
                   </AppearRefresh>
                 </div>
@@ -207,7 +210,10 @@ function Home() {
                   isExpanded ? "rotate-180" : "rotate-0"
                 }`}
               >
-                <img src={Icons.BlackArrow} alt="" className="w-10" />
+                {/* TODO: Replace with dynamic arrow icon from Strapi */}
+                <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
+                  ↑
+                </div>
               </button>
             </div>
           </div>
@@ -227,7 +233,10 @@ function Home() {
                   onClick={expandMihi}
                   className="hover:outline-black hover:scale-110 ease-in-out duration-200 outline-transparent outline-2 rounded-full p-3 rotate-180 active:scale-95"
                 >
-                  <img src={Icons.BlackArrow} alt="" className="w-10" />
+                  {/* TODO: Replace with dynamic arrow icon from Strapi */}
+                  <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
+                    ↑
+                  </div>
                 </button>
               </div>
             </div>
