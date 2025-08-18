@@ -2,7 +2,7 @@
 // src/components/formSections/PersonalDetails.jsx
 // --------------------------
 
-import FormComponent from "../FormComponent";
+import FormComponent from "../formcomponent";
 
 const PersonalDetails = ({
   formData,

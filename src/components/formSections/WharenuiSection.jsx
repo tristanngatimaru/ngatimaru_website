@@ -1,4 +1,4 @@
-import FormComponent from "../FormComponent";
+import FormComponent from "../formcomponent";
 
 const WharenuiSection = ({
   formData,

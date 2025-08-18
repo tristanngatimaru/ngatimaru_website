@@ -2,7 +2,7 @@
 // src/components/formSections/WharekaiSection.jsx
 // --------------------------
 
-import FormComponent from "../FormComponent";
+import FormComponent from "../formcomponent";
 
 const WharekaiSection = ({ formData, handleChange }) => (
   <div className="grid grid-cols-2 gap-4">
