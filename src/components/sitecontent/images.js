@@ -1,84 +1,70 @@
-// Dynamic image loader for better performance
-const imageCache = new Map();
-
-/**
- * Dynamically imports an image only when needed
- * @param {string} imageName - Name of the image file
- * @param {string} folder - Folder path (headerimages, icons, aboutus)
- * @returns {Promise<string>} Image URL
- */
-async function loadImage(imageName, folder) {
-  const cacheKey = `${folder}/${imageName}`;
-
-  if (imageCache.has(cacheKey)) {
-    return imageCache.get(cacheKey);
-  }
-
-  try {
-    const imageModule = await import(
-      `../../assets/images/${folder}/${imageName}`
-    );
-    const imageUrl = imageModule.default;
-    imageCache.set(cacheKey, imageUrl);
-    return imageUrl;
-  } catch {
-    console.warn(`Failed to load image: ${folder}/${imageName}`);
-    return null;
-  }
-}
-
-// Lazy loading image objects
+// Lazy loading image objects with direct dynamic imports
 const Images = {
   async Coromandel() {
-    return await loadImage("coromandel top.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/coromandel top.png");
+    return module.default;
   },
   async BeachIsland() {
-    return await loadImage("beachIsland.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/beachIsland.png");
+    return module.default;
   },
   async CarvingUpClose() {
-    return await loadImage("carvingcloseup.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/carvingcloseup.png");
+    return module.default;
   },
   async Korowai() {
-    return await loadImage("korowai.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/korowai.png");
+    return module.default;
   },
   async MataiWhetu() {
-    return await loadImage("matai whetu.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/matai whetu.png");
+    return module.default;
   },
   async Mihi() {
-    return await loadImage("mihi background.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/mihi background.png");
+    return module.default;
   },
   async Pohutakawa() {
-    return await loadImage("pohutakawaflowers.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/pohutakawaflowers.png");
+    return module.default;
   },
   async Shells() {
-    return await loadImage("shells on a beach.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/shells on a beach.png");
+    return module.default;
   },
   async VeryCloseCarving() {
-    return await loadImage("veryclosecarving.png", "headerimages");
+    const module = await import("../../assets/images/headerimages/veryclosecarving.png");
+    return module.default;
   },
 };
 
 const Icons = {
   async BlackArrow() {
-    return await loadImage("arrow_black.png", "icons");
+    const module = await import("../../assets/images/icons/arrow_black.png");
+    return module.default;
   },
   async Arrow() {
-    return await loadImage("arrow.png", "icons");
+    const module = await import("../../assets/images/icons/arrow.png");
+    return module.default;
   },
   async Download() {
-    return await loadImage("download.png", "icons");
+    const module = await import("../../assets/images/icons/download.png");
+    return module.default;
   },
 };
 
 const Cards = {
   async Paul() {
-    return await loadImage("paulmajourey.png", "aboutus");
+    const module = await import("../../assets/images/aboutus/paulmajourey.png");
+    return module.default;
   },
   async David() {
-    return await loadImage("davidtaipari.png", "aboutus");
+    const module = await import("../../assets/images/aboutus/davidtaipari.png");
+    return module.default;
   },
   async Waati() {
-    return await loadImage("waatingamani.png", "aboutus");
+    const module = await import("../../assets/images/aboutus/waatingamani.png");
+    return module.default;
   },
 };
 
