@@ -16,13 +16,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: [
-      "react",
-      "react-dom", 
-      "react-router-dom",
-      "axios",
-      "qs"
-    ],
+    include: ["react", "react-dom", "react-router-dom", "axios", "qs"],
   },
   build: {
     rollupOptions: {
@@ -37,7 +31,7 @@ export default defineConfig({
             if (id.includes("react-router")) {
               return "vendor-router";
             }
-            
+
             // UI libraries
             if (
               id.includes("@radix-ui") ||
@@ -48,17 +42,17 @@ export default defineConfig({
             ) {
               return "vendor-ui";
             }
-            
+
             // API libraries
             if (id.includes("axios") || id.includes("qs")) {
               return "vendor-api";
             }
-            
+
             // Animation libraries
             if (id.includes("embla-carousel")) {
               return "vendor-carousel";
             }
-            
+
             // Let Rollup handle other smaller dependencies automatically
             // This prevents chunking conflicts
             return undefined;

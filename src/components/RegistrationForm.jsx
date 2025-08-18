@@ -72,8 +72,84 @@ const RegistrationForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+
+  // Autofill function for testing
+  const autofillTestData = () => {
+    const testData = {
+      // Personal Information
+      PersonalSalutaion: "Mr",
+      PersonalGender: "Male",
+      PersonalBirthDate: "1985-03-15",
+      PersonalFirstName: "Tane",
+      PersonalLastName: "Mahuta",
+      PersonalMaidenName: "",
+      PersonalAKA: "TM",
+      PersonalOccupation: "Cultural Advisor",
+      PersonalSpouce: true,
+      PersonalContactDetails: "Available weekdays 9-5",
+      PersonalPostalAddress: "123 Maori Street, Thames, 3500",
+      PersonalHomePhone: "07 867 1234",
+      PersonalWorkPhone: "07 867 5678",
+      PersonalMobilePhone: "021 234 5678",
+      PersonalEmail: "tane.mahuta@example.com",
+
+      // Hapu & Iwi Information
+      PrincipleHapu: "Te Ahumua",
+      PrincipleOtherIwiAffiliation: "Ngāti Porou",
+      PrincipleMarae: "Tararu Marae",
+      OtherHapu: "Ngati Te Aute",
+      OtherIwiAffiliation: "Tainui",
+      OtherMarae: "Hotunui Marae",
+      DecendantAffiliation: "Ngati Maru Descendant",
+
+      // Genealogy - Father's Side (Men)
+      FatherGreatGrandFatherMen: "Wiremu Mahuta",
+      FatherGreatGrandMotherMen: "Hohepa Mahuta",
+      FatherGrandFather: "Rangi Mahuta",
+      Father: "Tama Mahuta",
+
+      // Genealogy - Father's Side (Women)
+      FatherGreatGrandFatherWomen: "Mere Mahuta",
+      FatherGreatGrandMotherWomen: "Aroha Mahuta",
+      FatherGrandMother: "Hinewai Mahuta",
+
+      // Genealogy - Mother's Side (Men)
+      MotherGreatGrandFatherMen: "Pita Wharekawa",
+      MotherGreatGrandMotherMen: "Tamati Wharekawa",
+      MotherGrandFather: "Hone Wharekawa",
+
+      // Genealogy - Mother's Side (Women)
+      MotherGreatGrandFatherWomen: "Whina Wharekawa",
+      MotherGreatGrandMotherWomen: "Maata Wharekawa",
+      MotherGrandMother: "Hinemoa Wharekawa",
+      Mother: "Kiri Wharekawa",
+
+      // Additional Information
+      AdditionalInformation:
+        "Test registration for development purposes. Active in community events and cultural preservation.",
+      AgreeToTerms: true,
+
+      // Spouse Details
+      SpouseSalutation: "Mrs",
+      SpouseGender: "Female",
+      SpouseDateOfBirth: "1987-07-22",
+      SpouseFirstName: "Aroha",
+      SpouseLastName: "Mahuta",
+      SpouseMaidenName: "Smith",
+      SpouseAlsoKnownAs: "A",
+      SpouseIwi: "Ngāti Maru",
+
+      // Postal Address
+      PostalAddress: true,
+      PostalAddressYes: "PO Box 123, Thames, 3540",
+    };
+
+    // Set the entire form data with test values
+    setFormData(testData);
+  };
 
   const totalSteps = 5;
 
@@ -170,6 +246,7 @@ const RegistrationForm = () => {
     const errors = validateCurrentStep();
     if (errors.length > 0) {
       setSubmitError(`Please fix the following errors: ${errors.join(", ")}`);
+      setShowErrorModal(true);
       return;
     }
 
@@ -192,6 +269,9 @@ const RegistrationForm = () => {
     setSubmitError(null);
 
     try {
+      console.log("🚀 Starting registration submission...");
+      console.log("📝 Form data:", formData);
+
       // Create clean data object with only the fields Strapi expects
       const cleanFormData = {
         PersonalSalutaion: formData.PersonalSalutaion,
@@ -250,26 +330,46 @@ const RegistrationForm = () => {
         };
       }
 
-      const response = await fetch(
-        `${import.meta.env.VITE_STRAPI_API_URL}/api/register-applications`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Remove auth header if not needed for public submissions
-            // Authorization: `Bearer ${import.meta.env.VITE_STRAPI_API_TOKEN}`,
-          },
-          body: JSON.stringify({
-            data: cleanFormData,
-          }),
-        }
-      );
+      console.log("📦 Payload:", { data: cleanFormData });
+
+      // Use environment variable for API URL with proper endpoint
+      const apiUrl = `${import.meta.env.VITE_STRAPI_API_URL.replace(/\/$/, "")}/api/register-applications`;
+      console.log("🌐 API URL:", apiUrl);
+
+      console.log("🧪 Trying registration submission...");
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Remove auth header if not needed for public submissions
+          // Authorization: `Bearer ${import.meta.env.VITE_STRAPI_API_TOKEN}`,
+        },
+        body: JSON.stringify({
+          data: cleanFormData,
+        }),
+      });
+
+      console.log("📡 Response status:", response.status);
+      console.log("📡 Response ok:", response.ok);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        const errorText = await response.text();
+        console.error("❌ Error response:", errorText);
+
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch (parseError) {
+          console.error(
+            "❌ Could not parse error response:",
+            parseError.message
+          );
+        }
 
         // Log validation errors for troubleshooting
         if (errorData?.error?.details?.errors) {
+          console.error("📝 Validation details:", errorData.error.details);
           errorData.error.details.errors.forEach((err, index) => {
             console.error(
               `Validation Error ${index + 1}: ${err.path} - ${err.message}`
@@ -278,42 +378,109 @@ const RegistrationForm = () => {
         }
 
         throw new Error(
-          `HTTP error! status: ${response.status}${errorData?.error?.message ? ` - ${errorData.error.message}` : ""}`
+          `HTTP ${response.status}: ${errorData?.error?.message || errorText}`
         );
       }
 
-      await response.json(); // Response received successfully
-      setSubmitSuccess(true);
+      const result = await response.json();
+      console.log("✅ Registration submitted successfully:", result);
+      setShowSuccessModal(true);
     } catch (error) {
-      console.error("Registration submission failed:", error.message);
+      console.error("💥 Registration submission failed:", error.message);
       setSubmitError(error.message);
+      setShowErrorModal(true);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Success screen
-  if (submitSuccess) {
-    return (
-      <div className="max-w-2xl mx-auto bg-green-50 border border-green-200 rounded-lg p-8 text-center">
-        <div className="text-green-600 text-6xl mb-4">✅</div>
-        <h2 className="text-2xl font-roboto-medium text-green-800 mb-4">
-          Registration Submitted Successfully!
-        </h2>
-        <p className="text-green-700 mb-6">
-          Thank you for your registration. Your application is now being
-          processed by our team. You will be contacted if any additional
-          information is required.
-        </p>
-        <p className="text-sm text-green-600">
-          If you need immediate assistance, please call us on 07 867 9104
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6 md:p-8">
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
+            <div className="flex items-center mb-4">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-6 w-6 text-green-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-medium text-gray-900">
+                  Registration Submitted Successfully!
+                </h3>
+              </div>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Thank you for your registration. Your application is now being
+              processed by our team. You will be contacted if any additional
+              information is required.
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              If you need immediate assistance, please call us on 07 867 9104
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Error Modal */}
+      {showErrorModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
+            <div className="flex items-center mb-4">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-6 w-6 text-red-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-medium text-gray-900">
+                  Registration Submission Error
+                </h3>
+              </div>
+            </div>
+            <p className="text-gray-600 mb-4">{submitError}</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowErrorModal(false)}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Progress Indicator */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
@@ -1372,17 +1539,27 @@ const RegistrationForm = () => {
 
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-        <button
-          onClick={prevStep}
-          disabled={currentStep === 1}
-          className={`px-6 py-2 rounded-lg font-medium ${
-            currentStep === 1
-              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          }`}
-        >
-          Previous
-        </button>
+        <div className="flex space-x-3">
+          <button
+            onClick={prevStep}
+            disabled={currentStep === 1}
+            className={`px-6 py-2 rounded-lg font-medium ${
+              currentStep === 1
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            Previous
+          </button>
+
+          <button
+            onClick={autofillTestData}
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600"
+            disabled={isSubmitting}
+          >
+            Autofill Test Data
+          </button>
+        </div>
 
         {currentStep < totalSteps ? (
           <button
@@ -1405,13 +1582,6 @@ const RegistrationForm = () => {
           </button>
         )}
       </div>
-
-      {/* Error Message */}
-      {submitError && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-700">Error: {submitError}</p>
-        </div>
-      )}
     </div>
   );
 };

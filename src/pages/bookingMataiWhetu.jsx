@@ -5,6 +5,7 @@ import Footer from "@/components/footer";
 import FadeInOnLoad from "@/components/loadonstartanimation";
 import { getBookingMataiWhetuContent } from "@/api/siteContent";
 import { useMataiWhetuForm } from "../hooks/useMataiWhetuForm";
+import FadeInSection from "@/components/fadeinanimation";
 
 // Lazy load form components
 const PersonalDetails = lazy(
@@ -26,7 +27,6 @@ const Acknowledgements = lazy(
   () => import("../components/formSections/Acknowledgement")
 );
 const BookingSummary = lazy(() => import("../components/BookingSummary"));
-const ConfirmModal = lazy(() => import("../components/confirmmodal"));
 const AblutionSection = lazy(
   () => import("../components/formSections/AblutionSection")
 );
@@ -104,7 +104,9 @@ const MataiWhetu = () => {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [missingFields, setMissingFields] = useState([]);
 
   useEffect(() => {
@@ -150,6 +152,9 @@ const MataiWhetu = () => {
 
   const submitBooking = async () => {
     try {
+      console.log("🚀 Starting booking submission...");
+      console.log("📝 Form data:", formData);
+
       const payload = {
         data: {
           firstName: formData.firstName,
@@ -178,26 +183,74 @@ const MataiWhetu = () => {
         },
       };
 
-      const response = await fetch(
-        "http://localhost:1337/api/matai-whetu-applications",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      console.log("📦 Payload:", payload);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Failed to submit booking:", errorText);
-        alert("There was an error submitting the booking. Please try again.");
+      // Use the confirmed endpoint from Postman
+      const apiUrl = `${import.meta.env.VITE_STRAPI_API_URL.replace(/\/$/, "")}/api/matai-whetu-applications`;
+      console.log("🌐 API URL:", apiUrl);
+
+      // Since public role has create permission, try without auth first
+      console.log("🧪 Trying without authentication (public access)...");
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      console.log("📡 Response status:", response.status);
+      console.log("📡 Response ok:", response.ok);
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("✅ Booking submitted successfully:", responseData);
+        setShowSuccessModal(true);
         return;
       }
 
-      alert("Booking successfully submitted!");
+      // Handle errors with detailed logging
+      let errorData;
+      try {
+        errorData = await response.json();
+        console.error("❌ Error response:", errorData);
+      } catch (jsonError) {
+        console.error("❌ Could not parse error response:", jsonError.message);
+      }
+
+      if (response.status === 403) {
+        console.error(
+          "❌ 403 Forbidden - even though public role has create permission"
+        );
+        console.error("📋 Possible causes:");
+        console.error(
+          "1. Field validation errors (check required fields in Strapi)"
+        );
+        console.error("2. Content type configuration issues");
+        console.error("3. Strapi validation rules not met");
+
+        if (errorData?.error?.details) {
+          console.error("📝 Validation details:", errorData.error.details);
+        }
+        if (errorData?.error?.message) {
+          console.error("📝 Error message:", errorData.error.message);
+        }
+
+        setSubmitError(
+          `Permission denied (403). This might be a field validation issue.\n\nDetails: ${errorData?.error?.message || "Check console for more info"}`
+        );
+        setShowErrorModal(true);
+      } else {
+        setSubmitError(
+          `Error submitting booking: ${response.status} - ${errorData?.error?.message || "Unknown error"}`
+        );
+        setShowErrorModal(true);
+      }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Something went wrong. Please try again later.");
+      console.error("❌ Network/fetch error:", error);
+      setSubmitError(`Network error: ${error.message}`);
+      setShowErrorModal(true);
     }
   };
 
@@ -212,17 +265,95 @@ const MataiWhetu = () => {
     }
 
     setMissingFields([]);
-    setShowModal(true);
-  };
-
-  const handleConfirm = () => {
-    setShowModal(false);
     submitBooking();
   };
 
   return (
     <div className="w-full">
       <FadeInOnLoad>
+        {/* Success Modal */}
+        {showSuccessModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
+              <div className="flex items-center mb-4">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-6 w-6 text-green-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Booking Submitted Successfully!
+                  </h3>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Your Matai Whetu booking has been received and is being
+                processed.
+              </p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowSuccessModal(false)}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Error Modal */}
+        {showErrorModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
+              <div className="flex items-center mb-4">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-6 w-6 text-red-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Booking Submission Error
+                  </h3>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4 whitespace-pre-line">
+                {submitError}
+              </p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowErrorModal(false)}
+                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <HeroHeader
           image={content.HeaderSection?.BackgroundHeaderImage?.url}
           title={content.HeaderSection?.TeReoTitle || "Matai Whetu"}
@@ -230,43 +361,45 @@ const MataiWhetu = () => {
             content.HeaderSection?.EnglishTitle || "Matai Whetu Booking"
           }
         />
-
-        <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 md:pt-20 font-roboto-light text-center">
-          {content.Content
-            ? (() => {
-                const sentences = content.Content.split(".")
-                  .map((s) => s.trim())
-                  .filter(Boolean);
-                const groups = [];
-                for (let i = 0; i < sentences.length; i += 3) {
-                  groups.push(
-                    sentences.slice(i, i + 3).join(". ") +
-                      (i + 3 < sentences.length ? "." : "")
-                  );
-                }
-                return groups.map((group, idx) => (
-                  <span key={idx}>
-                    {group}
-                    <br />
-                    <br />
-                  </span>
-                ));
-              })()
-            : "none here"}
-        </p>
-        <div className="w-full flex justify-center items-center py-6 md:py-8 px-4">
-          <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 flex flex-col items-center">
-            <h2 className="text-xl md:text-2xl font-roboto-bold text-emerald-800 mb-4 text-center">
-              Booking Instructions
-            </h2>
-            <p className="text-gray-700 text-base md:text-lg text-center leading-relaxed font-roboto-light">
-              Please answer the questions below to the best of your ability. If
-              you have any questions or are unsure, feel free to contact Ngāti
-              Maru at (07) 867 9104.
-            </p>
+        <FadeInSection>
+          <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 md:pt-20 font-roboto-light text-center">
+            {content.Content
+              ? (() => {
+                  const sentences = content.Content.split(".")
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+                  const groups = [];
+                  for (let i = 0; i < sentences.length; i += 3) {
+                    groups.push(
+                      sentences.slice(i, i + 3).join(". ") +
+                        (i + 3 < sentences.length ? "." : "")
+                    );
+                  }
+                  return groups.map((group, idx) => (
+                    <span key={idx}>
+                      {group}
+                      <br />
+                      <br />
+                    </span>
+                  ));
+                })()
+              : "none here"}
+          </p>
+        </FadeInSection>
+        <FadeInSection>
+          <div className="w-full flex justify-center items-center py-6 md:py-8 px-4">
+            <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 flex flex-col items-center">
+              <h2 className="text-xl md:text-2xl font-roboto-bold text-emerald-800 mb-4 text-center">
+                Booking Instructions
+              </h2>
+              <p className="text-gray-700 text-base md:text-lg text-center leading-relaxed font-roboto-light">
+                Please answer the questions below to the best of your ability.
+                If you have any questions or are unsure, feel free to contact
+                Ngāti Maru at (07) 867 9104.
+              </p>
+            </div>
           </div>
-        </div>
-
+        </FadeInSection>
         {/* Autofill button */}
         <div className="w-full px-4 sm:px-6 md:px-10 lg:px-20 py-6 md:py-10 grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-10">
           <div className="xl:col-span-2">
@@ -274,135 +407,134 @@ const MataiWhetu = () => {
           </div>
 
           {/* Main form */}
-          <div className="order-2 xl:order-1">
-            <form
-              onSubmit={handleSubmit}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5"
-            >
-              <div className="sm:col-span-2">
-                <Suspense fallback={<FormSectionLoader />}>
-                  <PersonalDetails
-                    formData={formData}
-                    handleChange={handleChange}
-                    isMissing={isMissing}
-                    touchedFields={touchedFields}
-                  />
-                </Suspense>
-              </div>
 
-              <div className="sm:col-span-2">
-                <Suspense fallback={<FormSectionLoader />}>
-                  <OrganisationDetails
-                    formData={formData}
-                    handleChange={handleChange}
-                    isMissing={isMissing}
-                    touchedFields={touchedFields}
-                  />
-                </Suspense>
-              </div>
-
-              <div className="sm:col-span-2">
-                <PersonResponsible
-                  formData={formData}
-                  handleChange={handleChange}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <BookingDates
-                  formData={formData}
-                  handleChange={handleChange}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <WharenuiSection
-                  formData={formData}
-                  handleChange={handleChange}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <WharekaiSection
-                  formData={formData}
-                  handleChange={handleChange}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <AblutionSection
-                  formData={formData}
-                  handleChange={handleChange}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <Acknowledgements
-                  formData={formData}
-                  handleChange={handleChange}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <FileAcknowledgement
-                  formData={formData}
-                  handleChange={handleChange}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                  tikangaUrl={content.Tikanga?.url}
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <SubmitReviewButton
-                  isFormComplete={isFormComplete()}
-                  onClick={handleSubmit}
-                  isMissing={isMissing}
-                  touchedFields={touchedFields}
-                />
-              </div>
-
-              {missingFields.length > 0 && (
-                <div className="sm:col-span-2 max-w-4xl mx-auto mb-6 md:mb-10 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                  <strong className="font-bold">
-                    Please complete the following fields:
-                  </strong>
-                  <ul className="list-disc ml-5 mt-2">
-                    {missingFields.map((field, idx) => (
-                      <li key={idx}>{field}</li>
-                    ))}
-                  </ul>
+          <div className="order-1 xl:order-1">
+            <FadeInSection direction="left">
+              <form
+                onSubmit={handleSubmit}
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5"
+              >
+                <div className="sm:col-span-2">
+                  <Suspense fallback={<FormSectionLoader />}>
+                    <PersonalDetails
+                      formData={formData}
+                      handleChange={handleChange}
+                      isMissing={isMissing}
+                      touchedFields={touchedFields}
+                    />
+                  </Suspense>
                 </div>
-              )}
-            </form>
+
+                <div className="sm:col-span-2">
+                  <Suspense fallback={<FormSectionLoader />}>
+                    <OrganisationDetails
+                      formData={formData}
+                      handleChange={handleChange}
+                      isMissing={isMissing}
+                      touchedFields={touchedFields}
+                    />
+                  </Suspense>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <PersonResponsible
+                    formData={formData}
+                    handleChange={handleChange}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <BookingDates
+                    formData={formData}
+                    handleChange={handleChange}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <WharenuiSection
+                    formData={formData}
+                    handleChange={handleChange}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <WharekaiSection
+                    formData={formData}
+                    handleChange={handleChange}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <AblutionSection
+                    formData={formData}
+                    handleChange={handleChange}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <Acknowledgements
+                    formData={formData}
+                    handleChange={handleChange}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <FileAcknowledgement
+                    formData={formData}
+                    handleChange={handleChange}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                    tikangaUrl={content.Tikanga?.url}
+                  />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <SubmitReviewButton
+                    isFormComplete={isFormComplete()}
+                    onClick={handleSubmit}
+                    isMissing={isMissing}
+                    touchedFields={touchedFields}
+                  />
+                </div>
+
+                {missingFields.length > 0 && (
+                  <div className="sm:col-span-2 max-w-4xl mx-auto mb-6 md:mb-10 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <strong className="font-bold">
+                      Please complete the following fields:
+                    </strong>
+                    <ul className="list-disc ml-5 mt-2">
+                      {missingFields.map((field, idx) => (
+                        <li key={idx}>{field}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </form>
+            </FadeInSection>
           </div>
 
           {/* Booking summary */}
-          <div className="order-1 xl:order-2">
-            <div className="sticky top-4">
-              <BookingSummary formData={formData} />
+          <FadeInSection direction="right">
+            <div className="order-2 xl:order-2">
+              <div className="sticky top-4">
+                <BookingSummary formData={formData} />
+              </div>
             </div>
-          </div>
+          </FadeInSection>
         </div>
 
-        {/* Confirmation Modal */}
-        <ConfirmModal
-          show={showModal}
-          onCancel={() => setShowModal(false)}
-          onConfirm={handleConfirm}
-        />
         <Footer />
       </FadeInOnLoad>
     </div>

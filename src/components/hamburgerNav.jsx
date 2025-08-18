@@ -82,29 +82,27 @@ export default function HamburgerNav() {
           }`}
         >
           <ul className="font-roboto-light pl-10 pt-40 space-y-8 w-full flex flex-col gap-2">
-            {loading ? (
-              // Loading placeholder
-              [...Array(6)].map((_, index) => (
-                <li key={index} className="animate-pulse">
-                  <div className="h-8 w-48 bg-gray-300 rounded mb-2"></div>
-                  <div className="h-6 w-32 bg-gray-200 rounded"></div>
-                </li>
-              ))
-            ) : (
-              // Dynamic navigation items
-              navigationItems.map((item) => (
-                <li key={item.id}>
-                  <Link to={item.href} className="block group">
-                    <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
-                      {item.titleTeReo}
-                    </h2>
-                    <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
-                      {item.titleEnglish}
-                    </h2>
-                  </Link>
-                </li>
-              ))
-            )}
+            {loading
+              ? // Loading placeholder
+                [...Array(6)].map((_, index) => (
+                  <li key={index} className="animate-pulse">
+                    <div className="h-8 w-48 bg-gray-300 rounded mb-2"></div>
+                    <div className="h-6 w-32 bg-gray-200 rounded"></div>
+                  </li>
+                ))
+              : // Dynamic navigation items
+                navigationItems.map((item) => (
+                  <li key={item.id}>
+                    <Link to={item.href} className="block group">
+                      <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
+                        {item.titleTeReo}
+                      </h2>
+                      <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
+                        {item.titleEnglish}
+                      </h2>
+                    </Link>
+                  </li>
+                ))}
           </ul>
         </div>
 

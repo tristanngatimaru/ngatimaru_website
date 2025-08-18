@@ -68,37 +68,69 @@ function Navbar() {
             </div>
           ) : (
             // Dynamic navigation items
-            navigationItems.map((item, index) => (
-              <Link
-                key={item.id}
-                to={item.href}
-                className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
-              >
-                <div className="items-center flex flex-col">
-                  {/* Top text container */}
-                  <div className="overflow-hidden h-6 w-full flex justify-center">
-                    <h3
-                      className={`text-base pb-0.5 transition-transform duration-700 ease-in-out ${
-                        index % 3 === 0 ? "delay-500" : index % 3 === 1 ? "delay-300" : ""
-                      } ${isAppeared ? "translate-y-0" : "translate-y-6"}`}
-                    >
-                      {item.titleTeReo}
-                    </h3>
-                  </div>
+            navigationItems.map((item, index) => {
+              // Center outwards animation timing for even number of items
+              const getAnimationDelay = (index, totalItems) => {
+                // For even number of items, find the two middle positions
+                const leftCenter = Math.floor((totalItems - 1) / 2);
+                const rightCenter = Math.ceil((totalItems - 1) / 2);
 
-                  {/* Bottom text container */}
-                  <div className="overflow-hidden h-4 w-full flex justify-center">
-                    <h3
-                      className={`text-xs pt-1 transition-transform duration-700 ease-in-out ${
-                        index % 3 === 0 ? "delay-500" : index % 3 === 1 ? "delay-300" : ""
-                      } ${isAppeared ? "translate-y-0" : "-translate-y-6"}`}
-                    >
-                      {item.titleEnglish}
-                    </h3>
+                // Calculate distance from the center pair
+                const distanceFromCenter = Math.min(
+                  Math.abs(index - leftCenter),
+                  Math.abs(index - rightCenter)
+                );
+
+                // Delay increases based on distance from center pair
+                switch (distanceFromCenter) {
+                  case 0: // The two center items
+                    return "delay-0";
+                  case 1: // First ring out from center
+                    return "delay-300";
+                  case 2: // Second ring out
+                    return "delay-500";
+                  default: // Outermost items
+                    return "delay-700";
+                }
+              };
+
+              const animationDelay = getAnimationDelay(
+                index,
+                navigationItems.length
+              );
+
+              return (
+                <Link
+                  key={item.id}
+                  to={item.href}
+                  className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
+                >
+                  <div className="items-center flex flex-col">
+                    {/* Top text container */}
+                    <div className="overflow-hidden h-6 w-full flex justify-center">
+                      <h3
+                        className={`text-base pb-0.5 transition-transform duration-700 ease-in-out ${animationDelay} ${
+                          isAppeared ? "translate-y-0" : "translate-y-6"
+                        }`}
+                      >
+                        {item.titleTeReo}
+                      </h3>
+                    </div>
+
+                    {/* Bottom text container */}
+                    <div className="overflow-hidden h-4 w-full flex justify-center">
+                      <h3
+                        className={`text-xs pt-1 transition-transform duration-700 ease-in-out ${animationDelay} ${
+                          isAppeared ? "translate-y-0" : "-translate-y-6"
+                        }`}
+                      >
+                        {item.titleEnglish}
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))
+                </Link>
+              );
+            })
           )}
         </nav>
       </div>

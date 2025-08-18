@@ -3,6 +3,7 @@ import Footer from "../components/footer";
 import HeroHeader from "../components/header";
 import { getRegisterContent } from "@/api/siteContent";
 import FadeInOnLoad from "../components/loadonstartanimation";
+import FadeInSection from "../components/fadeinanimation";
 
 // Lazy load the RegistrationForm component
 const RegistrationForm = lazy(() => import("../components/RegistrationForm"));
@@ -67,79 +68,87 @@ function Register() {
           {/* Main Content Section */}
           <div className="max-w-4xl mx-auto">
             {content.Content && (
-              <div className="bg-white rounded-lg text-center p-6 md:p-8 mb-8">
-                <div className="prose prose-lg max-w-none">
-                  {content.Content.split("\n\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="text-gray-700 leading-relaxed mb-4 last:mb-0"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
+              <FadeInSection direction="up">
+                <div className="bg-white rounded-lg text-center p-6 md:p-8 mb-8">
+                  <div className="prose prose-lg max-w-none">
+                    {content.Content.split("\n\n").map((paragraph, index) => (
+                      <p
+                        key={index}
+                        className="text-gray-700 leading-relaxed mb-4 last:mb-0"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </FadeInSection>
             )}
 
             {/* Post Information Section */}
             {content.PostInfo && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 md:p-8 mb-8">
-                <h3 className="text-xl font-roboto-medium text-emerald-800 mb-4">
-                  Important Information
-                </h3>
-                <div className="prose max-w-none">
-                  {content.PostInfo.split("\n\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="text-emerald-700 leading-relaxed mb-4 last:mb-0"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
+              <FadeInSection direction="up">
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 md:p-8 mb-8">
+                  <h3 className="text-xl font-roboto-medium text-emerald-800 mb-4">
+                    Important Information
+                  </h3>
+                  <div className="prose max-w-none">
+                    {content.PostInfo.split("\n\n").map((paragraph, index) => (
+                      <p
+                        key={index}
+                        className="text-emerald-700 leading-relaxed mb-4 last:mb-0"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </FadeInSection>
             )}
 
             {/* Registration Form Toggle */}
             {!showForm ? (
-              <div className="text-center">
-                <button
-                  onClick={() => setShowForm(true)}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-roboto-medium px-8 py-4 rounded-lg text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
-                >
-                  Start Registration Application
-                </button>
-                <p className="mt-4 text-gray-600 text-sm">
-                  Ready to join Te Rūnanga o Ngāti Maru? Click above to begin
-                  your registration.
-                </p>
-              </div>
-            ) : (
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-roboto-medium text-gray-800">
-                    Registration Application
-                  </h3>
+              <FadeInSection direction="up">
+                <div className="text-center">
                   <button
-                    onClick={() => setShowForm(false)}
-                    className="text-gray-500 hover:text-gray-700 text-sm underline"
+                    onClick={() => setShowForm(true)}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-roboto-medium px-8 py-4 rounded-lg text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
                   >
-                    ← Back to Information
+                    Start Registration Application
                   </button>
+                  <p className="mt-4 text-gray-600 text-sm">
+                    Ready to join Te Rūnanga o Ngāti Maru? Click above to begin
+                    your registration.
+                  </p>
                 </div>
-                <Suspense
-                  fallback={
-                    <div className="flex items-center justify-center p-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-                      <span className="ml-2 text-gray-600">
-                        Loading registration form...
-                      </span>
-                    </div>
-                  }
-                >
-                  <RegistrationForm />
-                </Suspense>
-              </div>
+              </FadeInSection>
+            ) : (
+              <FadeInSection direction="up">
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-2xl font-roboto-medium text-gray-800">
+                      Registration Application
+                    </h3>
+                    <button
+                      onClick={() => setShowForm(false)}
+                      className="text-gray-500 hover:text-gray-700 text-sm underline"
+                    >
+                      ← Back to Information
+                    </button>
+                  </div>
+                  <Suspense
+                    fallback={
+                      <div className="flex items-center justify-center p-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+                        <span className="ml-2 text-gray-600">
+                          Loading registration form...
+                        </span>
+                      </div>
+                    }
+                  >
+                    <RegistrationForm />
+                  </Suspense>
+                </div>
+              </FadeInSection>
             )}
           </div>
         </div>

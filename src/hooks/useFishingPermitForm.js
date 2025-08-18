@@ -171,5 +171,6 @@ export const useFishingPermitForm = () => {
     removeSpecies,
     validateForm,
     resetForm,
+    setFormData,
   };
 };

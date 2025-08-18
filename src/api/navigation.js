@@ -9,9 +9,13 @@ export async function getNavigationData() {
   const navigationStart = performance.now();
 
   try {
-    const rawData = await fetchContentType("navigation-bar", {
-      populate: "*"
-    }, true);
+    const rawData = await fetchContentType(
+      "navigation-bar",
+      {
+        populate: "*",
+      },
+      true
+    );
 
     const navigationEnd = performance.now();
     console.log(
@@ -20,23 +24,27 @@ export async function getNavigationData() {
 
     // Transform and filter the navigation data
     if (rawData?.Navigation && Array.isArray(rawData.Navigation)) {
-      const transformedNavigation = rawData.Navigation
-        .filter(item => item.Visible) // Only include visible items
-        .map(item => ({
+      const transformedNavigation = rawData.Navigation.filter(
+        (item) => item.Visible
+      ) // Only include visible items
+        .map((item) => ({
           id: item.id,
           href: transformHref(item.href),
           titleEnglish: item.TitleEnglish,
           titleTeReo: item.TitleTeReo,
-          visible: item.Visible
+          visible: item.Visible,
         }));
 
-      console.log(`🧭 Navigation: Transformed ${transformedNavigation.length} navigation items`);
+      console.log(
+        `🧭 Navigation: Transformed ${transformedNavigation.length} navigation items`
+      );
       return transformedNavigation;
     }
 
-    console.warn("🧭 Navigation: No navigation data found, returning empty array");
+    console.warn(
+      "🧭 Navigation: No navigation data found, returning empty array"
+    );
     return [];
-
   } catch (error) {
     const navigationEnd = performance.now();
     console.error(
@@ -57,17 +65,17 @@ export async function getNavigationData() {
  */
 function transformHref(href) {
   if (!href) return "/";
-  
+
   // Convert localhost URLs to relative paths
   if (href.includes("localhost:5173")) {
     return href.replace(/^https?:\/\/localhost:5173/, "") || "/";
   }
-  
+
   // If it's already a relative path, return as is
   if (href.startsWith("/")) {
     return href;
   }
-  
+
   // If it's an external URL, return as is
   return href;
 }
@@ -83,42 +91,42 @@ function getFallbackNavigation() {
       href: "/",
       titleEnglish: "HOME",
       titleTeReo: "KAINGA",
-      visible: true
+      visible: true,
     },
     {
       id: 2,
       href: "/about",
       titleEnglish: "ABOUT US",
       titleTeReo: "KO WAI",
-      visible: true
+      visible: true,
     },
     {
       id: 3,
       href: "/bookingmataiwhetu",
       titleEnglish: "BOOKING MĀTAI WHETŪ",
       titleTeReo: "RĀHITA MĀTAI WHETŪ",
-      visible: true
+      visible: true,
     },
     {
       id: 4,
       href: "/fishingpermit",
       titleEnglish: "FISHING PERMIT",
       titleTeReo: "RIHITI HĪ IKA",
-      visible: true
+      visible: true,
     },
     {
       id: 5,
       href: "/documents",
       titleEnglish: "DOCUMENTS",
       titleTeReo: "NGĀ TUHINGA",
-      visible: true
+      visible: true,
     },
     {
       id: 6,
       href: "/register",
       titleEnglish: "REGISTER",
       titleTeReo: "RĒHITA",
-      visible: true
-    }
+      visible: true,
+    },
   ];
 }
