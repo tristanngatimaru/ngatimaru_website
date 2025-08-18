@@ -202,11 +202,38 @@ export async function getPageContent(pageName) {
 }
 
 /**
- * Gets the home page content
+ * Gets the home page content (optimized to load only home page)
  * @returns {Promise<Object>} The home page content
  */
 export async function getHomeContent() {
-  return getPageContent("home");
+  console.log("🏠 getHomeContent: Starting optimized home page load...");
+  const startTime = performance.now();
+
+  try {
+    const config = PAGE_CONFIGS["home"];
+    if (!config) {
+      console.warn("⚠️ No configuration found for home page");
+      return {};
+    }
+
+    // Fetch only home page content (not all pages)
+    const result = await fetchContentType(
+      config.contentType,
+      { populate: config.populate },
+      true
+    );
+
+    // Transform the data using home-specific transformation
+    const homeContent = transformHomeData(result, config.defaultContent);
+
+    const loadTime = performance.now() - startTime;
+    console.log(`✅ getHomeContent: Completed (${loadTime.toFixed(2)}ms)`);
+
+    return homeContent;
+  } catch (error) {
+    console.error("❌ getHomeContent: Error loading home content:", error);
+    return PAGE_CONFIGS["home"]?.defaultContent || {};
+  }
 }
 
 /**

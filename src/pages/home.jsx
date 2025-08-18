@@ -7,7 +7,7 @@ import HamburgerNav from "../components/hamburgerNav";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 // Removed static Icons import - all images should be dynamic from Strapi
-import { loadPageContent } from "../api/lazyContentLoader";
+import { getHomeContent } from "../api/siteContent";
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -59,8 +59,8 @@ function Home() {
       const startTime = performance.now();
 
       try {
-        // Load only home page content (not all pages)
-        const homeData = await loadPageContent("home");
+        // Use original working method for home page
+        const homeData = await getHomeContent();
         setContent(homeData);
 
         const loadTime = performance.now() - startTime;
