@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-// eslint-disable-next-line no-unused-vars
-import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
 
 export default function HamburgerNav() {
-  const buttonControls = useAnimation();
   const [expanded, setExpanded] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [buttonRotation, setButtonRotation] = useState(0);
 
   useEffect(() => {
     const handleScrollAndResize = () => {
@@ -27,17 +25,17 @@ export default function HamburgerNav() {
 
   useEffect(() => {
     if (!showMenu) {
-      buttonControls.start({ rotate: 0, transition: { duration: 2 } });
+      setButtonRotation(0);
       setExpanded(false);
     }
-  }, [showMenu, buttonControls]);
+  }, [showMenu]);
 
-  const handleClick = async () => {
+  const handleClick = () => {
     if (!expanded) {
-      await buttonControls.start({ rotate: 90, transition: { duration: 2 } });
+      setButtonRotation(90);
       setExpanded(true);
     } else {
-      await buttonControls.start({ rotate: 0, transition: { duration: 2 } });
+      setButtonRotation(0);
       setExpanded(false);
     }
   };
@@ -46,21 +44,22 @@ export default function HamburgerNav() {
     <>
       {/* Hamburger Circle (the background circle, animatable later) */}
       <div>
-        <motion.div
-          initial={{ opacity: 0 }}
+        <div
           onClick={handleClick}
-          animate={{ opacity: showMenu ? 0.7 : 0 }}
-          className={`fixed top-10 right-10 z-40 w-16 h-16 bg-gray-300  rounded-full shadow-lg cursor-pointer transition-opacity  `}
+          className={`fixed top-10 right-10 z-40 w-16 h-16 bg-gray-300 rounded-full shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out ${
+            showMenu ? "opacity-70" : "opacity-0 pointer-events-none"
+          }`}
           style={{
             transformOrigin: "center",
-            pointerEvents: showMenu ? "auto" : "none",
+            transform: `rotate(${buttonRotation}deg)`,
+            transition: "transform 2s ease-in-out, opacity 0.5s ease-in-out",
           }}
-        ></motion.div>
+        ></div>
 
-        <motion.div
-          initial={{ translateX: "100%" }}
-          animate={{ translateX: expanded ? "20%" : "100%" }}
-          className="z-40 w-[30rem] h-full bg-white fixed right-0"
+        <div
+          className={`z-40 w-[30rem] h-full bg-white fixed right-0 transition-transform duration-500 ease-in-out ${
+            expanded ? "translate-x-[20%]" : "translate-x-full"
+          }`}
         >
           <ul className="font-roboto-light pl-10 pt-40 space-y-8 w-full flex flex-col gap-2">
             <li>
@@ -134,13 +133,13 @@ export default function HamburgerNav() {
               </Link>
             </li>
           </ul>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="fixed top-14 right-14 z-50 w-8 h-8 flex items-center justify-center cursor-pointer hover:scale-110 ease-in-out duration-200"
+        <div
+          className={`fixed top-14 right-14 z-50 w-8 h-8 flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-200 ${
+            showMenu ? "opacity-70" : "opacity-0"
+          }`}
           onClick={handleClick}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: showMenu ? 0.7 : 0 }}
         >
           <div
             className={`duration-200 ease-in-out absolute w-4 h-1 bg-black rounded translate-x-[7px] ${
@@ -184,19 +183,18 @@ export default function HamburgerNav() {
                 : "rotate-0 -translate-y-2 translate-x-[7px]"
             }`}
           ></div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Overlay */}
-      {expanded && (
-        <motion.div
-          onClick={handleClick}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black z-30 "
-        />
-      )}
+      <div
+        onClick={handleClick}
+        className={`fixed inset-0 bg-black z-30 transition-opacity duration-300 ease-in-out ${
+          expanded
+            ? "opacity-30 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+      />
     </>
   );
 }

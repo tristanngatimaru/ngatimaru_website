@@ -15,15 +15,30 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  optimizeDeps: {
+    include: [
+      "react",
+      "react-dom", 
+      "react-router-dom",
+      "axios",
+      "qs"
+    ],
+  },
   build: {
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Vendor libraries
+          // Vendor libraries - be more specific to avoid conflicts
           if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("react-dom")) {
+            // Keep React ecosystem together
+            if (id.includes("react") && !id.includes("react-router")) {
               return "vendor-react";
             }
+            if (id.includes("react-router")) {
+              return "vendor-router";
+            }
+            
+            // UI libraries
             if (
               id.includes("@radix-ui") ||
               id.includes("class-variance-authority") ||
@@ -33,16 +48,20 @@ export default defineConfig({
             ) {
               return "vendor-ui";
             }
+            
+            // API libraries
             if (id.includes("axios") || id.includes("qs")) {
               return "vendor-api";
             }
-            if (id.includes("framer-motion") || id.includes("embla-carousel")) {
-              return "vendor-animation";
+            
+            // Animation libraries
+            if (id.includes("embla-carousel")) {
+              return "vendor-carousel";
             }
-            if (id.includes("react-router")) {
-              return "vendor-router";
-            }
-            return "vendor-misc";
+            
+            // Let Rollup handle other smaller dependencies automatically
+            // This prevents chunking conflicts
+            return undefined;
           }
 
           // Large form components

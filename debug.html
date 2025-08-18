@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Production Debug Helper</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      .debug-section {
+        background: white;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border-left: 4px solid #007acc;
+      }
+      .error {
+        border-left-color: #dc3545;
+      }
+      .warning {
+        border-left-color: #ffc107;
+      }
+      .success {
+        border-left-color: #28a745;
+      }
+      pre {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 3px;
+        overflow-x: auto;
+      }
+      button {
+        background: #007acc;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      button:hover {
+        background: #005a9e;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔍 Production Build Debug Helper</h1>
+
+    <div class="debug-section">
+      <h3>Environment Check</h3>
+      <div id="env-check">Checking environment variables...</div>
+    </div>
+
+    <div class="debug-section">
+      <h3>API Connectivity Test</h3>
+      <button onclick="testApiConnection()">Test Strapi Connection</button>
+      <div id="api-test-result"></div>
+    </div>
+
+    <div class="debug-section">
+      <h3>Console Logs</h3>
+      <button onclick="showConsoleLogs()">Show Recent Console Messages</button>
+      <pre id="console-logs"></pre>
+    </div>
+
+    <div class="debug-section">
+      <h3>JavaScript Errors</h3>
+      <div id="js-errors">No JavaScript errors detected yet.</div>
+    </div>
+
+    <div class="debug-section">
+      <h3>Quick Actions</h3>
+      <button onclick="window.location.href='/'">Go to Main Site</button>
+      <button onclick="location.reload()">Reload This Page</button>
+      <button onclick="clearCacheAndReload()">Clear Cache & Reload</button>
+    </div>
+
+    <script>
+      // Capture console logs
+      const originalLog = console.log;
+      const originalError = console.error;
+      const originalWarn = console.warn;
+      const logs = [];
+
+      console.log = function(...args) {
+          logs.push({type: 'log', message: args.join(' '), timestamp: new Date().toISOString()});
+          originalLog.apply(console, args);
+      };
+
+      console.error = function(...args) {
+          logs.push({type: 'error', message: args.join(' '), timestamp: new Date().toISOString()});
+          originalError.apply(console, args);
+          displayError(args.join(' '));
+      };
+
+      console.warn = function(...args) {
+          logs.push({type: 'warn', message: args.join(' '), timestamp: new Date().toISOString()});
+          originalWarn.apply(console, args);
+      };
+
+      // Global error handler
+      window.addEventListener('error', (event) => {
+          const errorMsg = `Error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
+          logs.push({type: 'error', message: errorMsg, timestamp: new Date().toISOString()});
+          displayError(errorMsg);
+      });
+
+      window.addEventListener('unhandledrejection', (event) => {
+          const errorMsg = `Unhandled Promise Rejection: ${event.reason}`;
+          logs.push({type: 'error', message: errorMsg, timestamp: new Date().toISOString()});
+          displayError(errorMsg);
+      });
+
+      function displayError(message) {
+          const errorsDiv = document.getElementById('js-errors');
+          const errorElement = document.createElement('div');
+          errorElement.className = 'debug-section error';
+          errorElement.innerHTML = `<strong>JavaScript Error:</strong> ${message}`;
+          errorsDiv.appendChild(errorElement);
+      }
+
+      // Check environment variables
+      function checkEnvironment() {
+          const envDiv = document.getElementById('env-check');
+          let html = '<ul>';
+
+          // Try to access environment variables (these will only be available if they start with VITE_)
+          const envVars = {
+              'VITE_STRAPI_API_URL': 'Environment variable for Strapi API URL',
+              'VITE_STRAPI_API_TOKEN': 'Environment variable for Strapi API Token'
+          };
+
+          // Note: In production, these might not be directly accessible
+          html += '<li><strong>Mode:</strong> ' + (typeof import !== 'undefined' ? 'Module environment' : 'Script environment') + '</li>';
+          html += '<li><strong>Location:</strong> ' + window.location.href + '</li>';
+          html += '<li><strong>User Agent:</strong> ' + navigator.userAgent + '</li>';
+
+          html += '</ul>';
+          html += '<p><em>Note: Environment variables are not directly accessible in the browser for security reasons. Check the browser console for detailed logs from the application.</em></p>';
+
+          envDiv.innerHTML = html;
+      }
+
+      // Test API connection
+      async function testApiConnection() {
+          const resultDiv = document.getElementById('api-test-result');
+          resultDiv.innerHTML = '<p>Testing API connection...</p>';
+
+          try {
+              // Try to access the Strapi API URL from environment
+              const apiUrl = 'https://colorful-animal-7c45d1cc5a.strapiapp.com/api/home';
+
+              console.log('Testing API connection to:', apiUrl);
+
+              const response = await fetch(apiUrl, {
+                  method: 'GET',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer a58f6decb132ca208709cefa62c594ab247284715424efc3f032bbd6fb654b5e633897ace5d63436e1870722457cf142b70a1479c4c90e72dba299962b7839110c6379aecb254fd120053b083687ea9fcf50d4008e0f6b1b825d0d735cdb35fd2be35114e1345e8331f902aa42544de62af7f08d8db2ef057e3df1181124b366'
+                  }
+              });
+
+              console.log('API Response status:', response.status);
+
+              if (response.ok) {
+                  const data = await response.json();
+                  resultDiv.innerHTML = `
+                      <div class="debug-section success">
+                          <h4>✅ API Connection Successful</h4>
+                          <p><strong>Status:</strong> ${response.status} ${response.statusText}</p>
+                          <p><strong>Response size:</strong> ${JSON.stringify(data).length} characters</p>
+                          <details>
+                              <summary>View Response Data</summary>
+                              <pre>${JSON.stringify(data, null, 2)}</pre>
+                          </details>
+                      </div>
+                  `;
+              } else {
+                  const errorText = await response.text();
+                  resultDiv.innerHTML = `
+                      <div class="debug-section error">
+                          <h4>❌ API Connection Failed</h4>
+                          <p><strong>Status:</strong> ${response.status} ${response.statusText}</p>
+                          <p><strong>Error:</strong> ${errorText}</p>
+                      </div>
+                  `;
+              }
+          } catch (error) {
+              console.error('API Test Error:', error);
+              resultDiv.innerHTML = `
+                  <div class="debug-section error">
+                      <h4>❌ API Connection Error</h4>
+                      <p><strong>Error:</strong> ${error.message}</p>
+                      <p>This could indicate a network issue, CORS problem, or incorrect API URL.</p>
+                  </div>
+              `;
+          }
+      }
+
+      function showConsoleLogs() {
+          const logsDiv = document.getElementById('console-logs');
+          if (logs.length === 0) {
+              logsDiv.textContent = 'No console logs captured yet.';
+              return;
+          }
+
+          const recentLogs = logs.slice(-20); // Show last 20 logs
+          logsDiv.innerHTML = recentLogs.map(log =>
+              `[${log.timestamp}] ${log.type.toUpperCase()}: ${log.message}`
+          ).join('\n');
+      }
+
+      function clearCacheAndReload() {
+          if ('caches' in window) {
+              caches.keys().then(function(names) {
+                  names.forEach(function(name) {
+                      caches.delete(name);
+                  });
+              }).then(function() {
+                  window.location.reload(true);
+              });
+          } else {
+              window.location.reload(true);
+          }
+      }
+
+      // Initialize checks
+      checkEnvironment();
+
+      // Auto-test API connection after 2 seconds
+      setTimeout(testApiConnection, 2000);
+    </script>
+  </body>
+</html>
