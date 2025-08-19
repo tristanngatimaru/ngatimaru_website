@@ -88,12 +88,12 @@ export default async function fetchContentType(
 
     // Store the promise
     pendingRequests.set(cacheKey, requestPromise);
-    
+
     const result = await requestPromise;
-    
+
     // Clean up pending request
     pendingRequests.delete(cacheKey);
-    
+
     return result;
   } catch (error) {
     // Clean up pending request on error

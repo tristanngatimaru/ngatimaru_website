@@ -43,7 +43,7 @@ export async function getBlogPost(documentId) {
         },
         populate: {
           HeroMainImage: true,
-          SecondaryImage: true, 
+          SecondaryImage: true,
           ThirdImage: true,
           ExtraMediaContent: true,
           // Only populate essential fields instead of "*"
