@@ -216,23 +216,79 @@ export async function getHomeContent() {
       return {};
     }
 
-    // Fetch only home page content (not all pages)
-    const result = await fetchContentType(
-      config.contentType,
-      { populate: config.populate },
-      true
+    console.log("📊 API Request timing breakdown:");
+
+    // Step 1: Measure API call preparation
+    const prepTime = performance.now();
+    console.log(`  1. API preparation: ${(prepTime - startTime).toFixed(2)}ms`);
+
+    // Step 2: Optimized populate - only load what's immediately needed
+    const optimizedPopulate = {
+      HeaderSection: {
+        populate: {
+          BackgroundHeaderImage: {
+            fields: ["url", "alternativeText"], // Only load essential image fields
+          },
+        },
+      },
+      MihiSection: {
+        populate: {
+          Image: {
+            fields: ["url", "alternativeText"], // Only load essential image fields
+          },
+        },
+      },
+      Button: {
+        fields: ["EnglishLabel", "TeReoLabel", "href"], // Only load essential button fields
+      },
+    };
+
+    // Step 3: Fetch with timeout and retry logic
+    const apiStartTime = performance.now();
+    const result = await Promise.race([
+      fetchContentType(
+        config.contentType,
+        { populate: optimizedPopulate },
+        true
+      ),
+      new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error("API timeout after 10 seconds")),
+          10000
+        )
+      ),
+    ]);
+
+    const apiEndTime = performance.now();
+    console.log(
+      `  2. API fetch completed: ${(apiEndTime - apiStartTime).toFixed(2)}ms`
     );
 
-    // Transform the data using home-specific transformation
+    // Step 4: Transform the data
+    const transformStartTime = performance.now();
     const homeContent = transformHomeData(result, config.defaultContent);
+    const transformEndTime = performance.now();
+    console.log(
+      `  3. Data transformation: ${(transformEndTime - transformStartTime).toFixed(2)}ms`
+    );
 
-    const loadTime = performance.now() - startTime;
-    console.log(`✅ getHomeContent: Completed (${loadTime.toFixed(2)}ms)`);
+    const totalTime = performance.now() - startTime;
+    console.log(
+      `✅ getHomeContent: Completed (${totalTime.toFixed(2)}ms total)`
+    );
 
     return homeContent;
   } catch (error) {
-    console.error("❌ getHomeContent: Error loading home content:", error);
-    return PAGE_CONFIGS["home"]?.defaultContent || {};
+    const errorTime = performance.now() - startTime;
+    console.error(
+      `❌ getHomeContent: Error after ${errorTime.toFixed(2)}ms:`,
+      error
+    );
+
+    // Return default content for better user experience
+    const defaultContent = PAGE_CONFIGS["home"]?.defaultContent || {};
+    console.log("🔄 getHomeContent: Returning default content for better UX");
+    return defaultContent;
   }
 }
 

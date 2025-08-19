@@ -11,7 +11,9 @@ export async function getFooterData() {
       {
         populate: {
           FooterColumn: {
-            populate: "*",
+            populate: {
+              Content: true, // Only populate content, not everything
+            },
           },
         },
       },

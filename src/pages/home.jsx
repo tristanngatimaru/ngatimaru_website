@@ -58,9 +58,18 @@ function Home() {
       console.log("🚀 Starting home page content load...");
       const startTime = performance.now();
 
+      // Set up a timeout to show fallback content if API is too slow
+      const slowLoadingTimeout = setTimeout(() => {
+        console.log(
+          "⚠️ API taking longer than expected, showing basic page..."
+        );
+        // Could set some basic content here if needed
+      }, 5000); // 5 second warning
+
       try {
         // Use original working method for home page
         const homeData = await getHomeContent();
+        clearTimeout(slowLoadingTimeout);
         setContent(homeData);
 
         const loadTime = performance.now() - startTime;
@@ -68,8 +77,25 @@ function Home() {
           `✅ Home content loaded successfully (${loadTime.toFixed(2)}ms)`
         );
       } catch (error) {
+        clearTimeout(slowLoadingTimeout);
         console.error("❌ Error loading home content:", error);
         setError(error);
+
+        // Set fallback content to prevent infinite loading
+        const fallbackContent = {
+          HeaderSection: {
+            TeReoTitle: "Ngāti Maru",
+            EnglishTitle: "Welcome",
+            BackgroundHeaderImage: { url: null },
+          },
+          MihiSection: {
+            Title: "Loading...",
+            MihiShortened: "Please wait while we load the content.",
+            Image: { url: null },
+          },
+          Button: [],
+        };
+        setContent(fallbackContent);
       } finally {
         setLoading(false);
       }

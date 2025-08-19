@@ -74,4 +74,27 @@ export const trackAPICall = async (apiName, apiCall) => {
 export const initPerformanceTracking = () => {
   console.log("🔍 Performance tracking initialized");
   trackPageLoad();
+
+  // Track slow network conditions
+  if ("connection" in navigator) {
+    const connection = navigator.connection;
+    console.log(
+      `📶 Network Info: ${connection.effectiveType}, ${connection.downlink}Mbps`
+    );
+
+    if (
+      connection.effectiveType === "slow-2g" ||
+      connection.effectiveType === "2g"
+    ) {
+      console.warn("⚠️ Slow network detected - expect longer load times");
+    }
+  }
+
+  // Track memory usage
+  if ("memory" in performance) {
+    const memory = performance.memory;
+    console.log(
+      `💾 Memory: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB used of ${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)}MB limit`
+    );
+  }
 };

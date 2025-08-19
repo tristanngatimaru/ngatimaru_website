@@ -10,7 +10,10 @@ export async function getBlogPosts(params = {}) {
     const response = await fetchContentType(
       "blog-posts",
       {
-        populate: "*", // This will populate all fields, including nested relations
+        populate: {
+          HeroMainImage: true,
+          // Only populate essential fields instead of "*"
+        },
         sort: ["publishedAt:desc"],
         ...params,
       },
@@ -38,7 +41,13 @@ export async function getBlogPost(documentId) {
             $eq: documentId,
           },
         },
-        populate: "*", // This will populate all fields, including nested relations
+        populate: {
+          HeroMainImage: true,
+          SecondaryImage: true, 
+          ThirdImage: true,
+          ExtraMediaContent: true,
+          // Only populate essential fields instead of "*"
+        },
       },
       true
     );

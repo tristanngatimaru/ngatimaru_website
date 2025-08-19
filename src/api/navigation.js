@@ -12,7 +12,9 @@ export async function getNavigationData() {
     const rawData = await fetchContentType(
       "navigation-bar",
       {
-        populate: "*",
+        populate: {
+          Navigation: true, // Only populate navigation items, not everything
+        },
       },
       true
     );
