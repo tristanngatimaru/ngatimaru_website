@@ -34,7 +34,12 @@ export const PAGE_CONFIGS = {
     contentType: "matai-whetu-page",
     populate: {
       HeaderSection: {
-        populate: "*",
+        populate: {
+          BackgroundHeaderImage: {
+            fields: ["url", "alternativeText"],
+          },
+        },
+        fields: ["TeReoTitle", "EnglishTitle"],
       },
       Tikanga: true,
     },
@@ -44,7 +49,12 @@ export const PAGE_CONFIGS = {
     contentType: "fishing-permit",
     populate: {
       HeaderSection: {
-        populate: "*",
+        populate: {
+          BackgroundHeaderImage: {
+            fields: ["url", "alternativeText"],
+          },
+        },
+        fields: ["TeReoTitle", "EnglishTitle"],
       },
     },
     defaultContent: {
@@ -109,13 +119,27 @@ export const PAGE_CONFIGS = {
     contentType: "about",
     populate: {
       Header: {
-        populate: "*",
+        populate: {
+          BackgroundHeaderImage: {
+            fields: ["url", "alternativeText"],
+          },
+        },
+        fields: ["TeReoTitle", "EnglishTitle"],
       },
       FaceCard: {
-        populate: "*",
+        populate: {
+          Image: {
+            fields: ["url", "alternativeText"],
+          },
+        },
+        fields: ["Name", "Detail"],
       },
-      SidePanelImageOne: true,
-      SidePanelImageTwo: true,
+      SidePanelImageOne: {
+        fields: ["url", "alternativeText"],
+      },
+      SidePanelImageTwo: {
+        fields: ["url", "alternativeText"],
+      },
     },
     defaultContent: {
       Header: {
@@ -147,11 +171,14 @@ export const PAGE_CONFIGS = {
     populate: {
       HeaderSection: {
         populate: {
-          BackgroundHeaderImage: true,
+          BackgroundHeaderImage: {
+            fields: ["url", "alternativeText"],
+          },
         },
+        fields: ["TeReoTitle", "EnglishTitle"],
       },
       Documentation: {
-        populate: "*",
+        fields: ["name", "url", "size", "ext", "mime"], // Only essential file data
       },
     },
     defaultContent: {
@@ -172,7 +199,12 @@ export const PAGE_CONFIGS = {
     contentType: "register",
     populate: {
       HeaderSection: {
-        populate: "*",
+        populate: {
+          BackgroundHeaderImage: {
+            fields: ["url", "alternativeText"],
+          },
+        },
+        fields: ["TeReoTitle", "EnglishTitle"],
       },
     },
     defaultContent: {
@@ -222,24 +254,26 @@ export async function getHomeContent() {
     const prepTime = performance.now();
     console.log(`  1. API preparation: ${(prepTime - startTime).toFixed(2)}ms`);
 
-    // Step 2: Optimized populate - only load what's immediately needed
+    // Step 2: Optimized populate - only load what's immediately needed for first render
     const optimizedPopulate = {
       HeaderSection: {
         populate: {
           BackgroundHeaderImage: {
-            fields: ["url", "alternativeText"], // Only load essential image fields
+            fields: ["url", "alternativeText"], // Only essential fields
           },
         },
+        fields: ["TeReoTitle", "EnglishTitle"], // Only text fields needed
       },
       MihiSection: {
         populate: {
           Image: {
-            fields: ["url", "alternativeText"], // Only load essential image fields
+            fields: ["url", "alternativeText"], // Only essential fields
           },
         },
+        fields: ["Title", "MihiShortened", "FullMihi"], // Only text fields needed
       },
       Button: {
-        fields: ["EnglishLabel", "TeReoLabel", "href"], // Only load essential button fields
+        fields: ["EnglishLabel", "TeReoLabel", "href"], // Only essential fields
       },
     };
 
@@ -253,8 +287,8 @@ export async function getHomeContent() {
       ),
       new Promise((_, reject) =>
         setTimeout(
-          () => reject(new Error("API timeout after 10 seconds")),
-          10000
+          () => reject(new Error("API timeout after 5 seconds")),
+          5000
         )
       ),
     ]);
