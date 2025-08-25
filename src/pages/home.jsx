@@ -221,20 +221,22 @@ function Home() {
         <FadeInSection>
           <div
             ref={targetRef}
-            className="h-[500px] pt-20 lg:pt-0 flex flex-row overflow-hidden"
+            className="min-h-[500px] pt-20 lg:pt-0 flex flex-col lg:flex-row"
           >
-            <SmartImage
-              src={content.MihiSection?.Image?.url}
-              alt={
-                content.MihiSection?.Image?.alternativeText ||
-                "Mihi section image"
-              }
-              context="mihi"
-              className="object-cover w-1/2 h-full lg:block hidden"
-              loading="lazy"
-            />
+            <div className="hidden lg:block lg:w-1/2 lg:h-[500px]">
+              <SmartImage
+                src={content.MihiSection?.Image?.url}
+                alt={
+                  content.MihiSection?.Image?.alternativeText ||
+                  "Mihi section image"
+                }
+                context="mihi"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
 
-            <div className="w-screen lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center">
+            <div className="w-full lg:w-1/2 min-h-[400px] lg:h-[500px] bg-white flex flex-col items-center justify-center py-6 px-8 lg:px-18 text-center">
               <p className="font-roboto-light text-3xl pb-10">
                 {content.MihiSection?.Title}
               </p>

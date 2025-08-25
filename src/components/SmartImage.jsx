@@ -7,7 +7,6 @@ import carvingCloseup from "../assets/images/headerimages/carvingcloseup.png";
 import coromandel from "../assets/images/headerimages/coromandel top.png";
 import korowai from "../assets/images/headerimages/korowai.png";
 import mataiWhetu from "../assets/images/headerimages/matai whetu.png";
-import mihiBackground from "../assets/images/headerimages/mihi background.png";
 import pohutukawa from "../assets/images/headerimages/pohutakawaflowers.png";
 import shells from "../assets/images/headerimages/shells on a beach.png";
 import veryCloseCarving from "../assets/images/headerimages/veryclosecarving.png";
@@ -16,7 +15,7 @@ import veryCloseCarving from "../assets/images/headerimages/veryclosecarving.png
 const fallbackImages = {
   header: beachIsland,
   hero: korowai,
-  mihi: mihiBackground,
+  mihi: korowai, // Changed to use korowai for mihi section
   about: carvingCloseup,
   background: mataiWhetu,
   carving: veryCloseCarving,
