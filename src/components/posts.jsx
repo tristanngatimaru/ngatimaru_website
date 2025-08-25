@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// Removed static Arrow import - all images should be dynamic from Strapi
 import { getBlogPosts } from "../api/blogPosts";
 import { strapiImage } from "../api/strapiImage";
+import SmartImage from "./SmartImage";
+
+// Optimized loading component
+const PostsLoader = () => (
+  <div className="w-full h-[300px] bg-gray-100 animate-pulse flex items-center justify-center">
+    <div className="text-gray-500">Loading posts...</div>
+  </div>
+);
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -38,8 +45,7 @@ function Posts() {
         }));
 
         setPosts(transformedPosts);
-      } catch (err) {
-        console.error(err);
+      } catch {
         setError("Failed to load posts.");
       } finally {
         setLoading(false);
@@ -49,8 +55,8 @@ function Posts() {
     loadPosts();
   }, []);
 
-  if (loading) return <p className="text-center">Loading posts...</p>;
-  if (error) return <p className="text-center text-red-600">{error}</p>;
+  if (loading) return <PostsLoader />;
+  if (error) return <p className="text-center text-red-600 p-8">{error}</p>;
 
   return (
     <div>
@@ -60,22 +66,13 @@ function Posts() {
             key={post.id}
             className="relative w-full h-[300px] shadow-lg group overflow-hidden"
           >
-            {post.heroMainImage ? (
-              <img
-                src={post.heroMainImage}
-                alt={post.title || "Post image"}
-                className="w-full h-[300px] object-cover transition duration-500 group-hover:scale-105 group-hover:blur-sm group-hover:brightness-75"
-                onError={(e) => {
-                  console.warn("Image failed to load:", post.heroMainImage);
-                  e.target.src = ""; // Clear the broken image
-                  e.target.classList.add("bg-gray-500");
-                }}
-              />
-            ) : (
-              <div className="w-full h-[300px] bg-gray-500 flex items-center justify-center text-white">
-                No Image Available
-              </div>
-            )}
+            <SmartImage
+              src={post.heroMainImage}
+              alt={post.title || "Post image"}
+              context="post"
+              className="w-full h-[300px] object-cover transition duration-500 group-hover:scale-105 group-hover:blur-sm group-hover:brightness-75"
+              loading="lazy"
+            />
 
             <div className="absolute inset-0 bg-opacity-40 flex items-center">
               <div className="p-6 text-left max-w-md">

@@ -286,10 +286,7 @@ export async function getHomeContent() {
         true
       ),
       new Promise((_, reject) =>
-        setTimeout(
-          () => reject(new Error("API timeout after 5 seconds")),
-          5000
-        )
+        setTimeout(() => reject(new Error("API timeout after 5 seconds")), 5000)
       ),
     ]);
 

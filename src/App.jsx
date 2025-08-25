@@ -1,10 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 // Performance monitoring
 const logPerformance = (label, startTime) => {
+  // Only log in development or for significantly slow operations
   const endTime = performance.now();
-  console.log(`⚡ ${label}: ${(endTime - startTime).toFixed(2)}ms`);
+  const duration = endTime - startTime;
+  if (import.meta.env.DEV && duration > 1000) {
+    console.log(`${label}: ${duration.toFixed(2)}ms`);
+  }
 };
 
 // Lazy load page components with performance tracking
@@ -64,17 +68,31 @@ const Register = lazy(() => {
   });
 });
 
-// Optimized loading component
+// Optimized loading component with better UX
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
     <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto"></div>
-      <p className="mt-4 text-gray-600 font-roboto-medium">Loading page...</p>
+      <div className="relative">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-emerald-600 mx-auto"></div>
+        <div className="absolute inset-0 rounded-full h-12 w-12 border-4 border-transparent border-l-emerald-400 animate-spin animation-delay-150 mx-auto"></div>
+      </div>
+      <p className="mt-4 text-gray-600 font-roboto-medium animate-pulse">
+        Loading page...
+      </p>
+      <div className="mt-2 w-32 h-1 bg-gray-200 rounded-full mx-auto overflow-hidden">
+        <div className="h-full bg-emerald-600 rounded-full animate-pulse"></div>
+      </div>
     </div>
   </div>
 );
 
 function App() {
+  // Preload critical route on app start
+  useEffect(() => {
+    // Preload home page immediately
+    import("./pages/home");
+  }, []);
+
   return (
     <Router>
       <div className="w-full overflow-x-hidden">

@@ -1,13 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import Navbar from "../components/navbar";
-import Posts from "../components/posts";
-import Footer from "../components/footer";
-import HamburgerNav from "../components/hamburgerNav";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
-// Removed static Icons import - all images should be dynamic from Strapi
+import SmartImage from "../components/SmartImage";
 import { getHomeContent } from "../api/siteContent";
+import { cachedFetch } from "../utils/lazyLoader";
+
+// Lazy load heavy components
+const Navbar = lazy(() => import("../components/navbar"));
+const Posts = lazy(() => import("../components/posts"));
+const Footer = lazy(() => import("../components/footer"));
+const HamburgerNav = lazy(() => import("../components/hamburgerNav"));
 
 function FadeInSection({ children }) {
   const ref = useRef();
@@ -45,6 +48,13 @@ function FadeInSection({ children }) {
   );
 }
 
+// Component loading fallback
+const ComponentLoader = ({ name }) => (
+  <div className="flex items-center justify-center p-4">
+    <div className="animate-pulse text-gray-500">Loading {name}...</div>
+  </div>
+);
+
 function Home() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -55,30 +65,22 @@ function Home() {
 
   useEffect(() => {
     async function loadContent() {
-      console.log("🚀 Starting home page content load...");
-      const startTime = performance.now();
-
       // Set up a timeout to show fallback content if API is too slow
       const slowLoadingTimeout = setTimeout(() => {
-        console.log(
-          "⚠️ API taking longer than expected, showing basic page..."
-        );
         // Could set some basic content here if needed
       }, 5000); // 5 second warning
 
       try {
-        // Use original working method for home page
-        const homeData = await getHomeContent();
+        // Use cached fetch for better performance
+        const homeData = await cachedFetch(
+          "home-content",
+          () => getHomeContent(),
+          10 * 60 * 1000 // Cache for 10 minutes
+        );
         clearTimeout(slowLoadingTimeout);
         setContent(homeData);
-
-        const loadTime = performance.now() - startTime;
-        console.log(
-          `✅ Home content loaded successfully (${loadTime.toFixed(2)}ms)`
-        );
       } catch (error) {
         clearTimeout(slowLoadingTimeout);
-        console.error("❌ Error loading home content:", error);
         setError(error);
 
         // Set fallback content to prevent infinite loading
@@ -140,24 +142,27 @@ function Home() {
   return (
     <div>
       <FadeInOnLoad delay={500} mobileDelay={200}>
-        <HamburgerNav />
+        <Suspense fallback={<ComponentLoader name="Navigation" />}>
+          <HamburgerNav />
+        </Suspense>
+
         <div className="relative w-full h-full overflow-hidden transition-all ease-in-out duration-500">
-          {content.HeaderSection?.BackgroundHeaderImage?.url ? (
-            <img
-              src={content.HeaderSection.BackgroundHeaderImage.url}
-              alt={
-                content.HeaderSection.BackgroundHeaderImage.alternativeText ||
-                "Background header image"
-              }
-              className="w-full h-[800px] object-center object-cover overflow-hidden"
-            />
-          ) : (
-            <div className="w-full h-[800px] bg-gray-200" />
-          )}
+          <SmartImage
+            src={content.HeaderSection?.BackgroundHeaderImage?.url}
+            alt={
+              content.HeaderSection?.BackgroundHeaderImage?.alternativeText ||
+              "Header background"
+            }
+            context="header"
+            className="w-full h-[800px] object-center object-cover overflow-hidden"
+            loading="eager"
+          />
 
           {/* Navbar on top of image */}
           <div className="absolute top-0 left-0 w-full z-50 pt-10">
-            <Navbar />
+            <Suspense fallback={<ComponentLoader name="Navbar" />}>
+              <Navbar />
+            </Suspense>
           </div>
 
           {/* Centered title text */}
@@ -218,18 +223,16 @@ function Home() {
             ref={targetRef}
             className="h-[500px] pt-20 lg:pt-0 flex flex-row overflow-hidden"
           >
-            {content.MihiSection?.Image?.url ? (
-              <img
-                src={content.MihiSection.Image.url}
-                alt={
-                  content.MihiSection.Image.alternativeText ||
-                  "Mihi section image"
-                }
-                className="object-cover w-1/2 h-full lg:block hidden"
-              />
-            ) : (
-              <div className="w-1/2 h-full bg-gray-200 lg:block hidden" />
-            )}
+            <SmartImage
+              src={content.MihiSection?.Image?.url}
+              alt={
+                content.MihiSection?.Image?.alternativeText ||
+                "Mihi section image"
+              }
+              context="mihi"
+              className="object-cover w-1/2 h-full lg:block hidden"
+              loading="lazy"
+            />
 
             <div className="w-screen lg:w-1/2 h-full bg-white flex flex-col items-center justify-center py-6 px-18 text-center">
               <p className="font-roboto-light text-3xl pb-10">
@@ -277,10 +280,14 @@ function Home() {
         </FadeInSection>
 
         <FadeInSection>
-          <Posts />
+          <Suspense fallback={<ComponentLoader name="Posts" />}>
+            <Posts />
+          </Suspense>
         </FadeInSection>
 
-        <Footer />
+        <Suspense fallback={<ComponentLoader name="Footer" />}>
+          <Footer />
+        </Suspense>
       </FadeInOnLoad>
     </div>
   );

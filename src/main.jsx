@@ -3,22 +3,36 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { initPerformanceTracking } from "./utils/performanceTracker.js";
+import { preloadCriticalImages } from "./utils/imageUtils.js";
 
 // Performance monitoring
 const appStartTime = performance.now();
-console.log("🚀 App initialization started...");
 
 // Initialize performance tracking
 initPerformanceTracking();
 
-createRoot(document.getElementById("root")).render(
+// Preload critical images in background
+preloadCriticalImages();
+
+// Get root element and start rendering immediately
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+
+// Render immediately - no delays
+root.render(
   <StrictMode>
     <App />
   </StrictMode>
 );
 
-// Log total initialization time
+// Log performance metrics when fully ready
 window.addEventListener("load", () => {
   const totalTime = performance.now() - appStartTime;
-  console.log(`✅ App fully loaded (${totalTime.toFixed(2)}ms)`);
+
+  // Log performance insights only if significantly slow
+  if (totalTime > 5000) {
+    console.warn(
+      "Consider optimizing: image sizes, API response times, or bundle size"
+    );
+  }
 });
