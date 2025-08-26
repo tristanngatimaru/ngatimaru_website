@@ -5,3 +5,9 @@
 [build.environment]
   # Configure secrets scanning to ignore specific files
   SECRETS_SCAN_OMIT_PATHS = "PRODUCTION_DEBUG_GUIDE.md,debug.html,dist/assets/*.js"
+
+# SPA redirect rule - this fixes the 404 issue when opening URLs directly
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
