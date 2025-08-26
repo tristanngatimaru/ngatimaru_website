@@ -197,7 +197,7 @@ function Fishing() {
           title={content.HeaderSection?.TeReoTitle || "Fishing Permits"}
           subtitle={content.HeaderSection?.EnglishTitle || "Fishing Permits"}
         />
-        <FadeInSection>
+        <FadeInOnLoad delay={800} mobileDelay={600}>
           <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 md:pt-20 font-roboto-light text-center">
             {content.Content
               ? (() => {
@@ -221,8 +221,8 @@ function Fishing() {
                 })()
               : "Fishing permit information will be displayed here."}
           </p>
-        </FadeInSection>
-        <FadeInSection>
+        </FadeInOnLoad>
+        <FadeInOnLoad delay={1000} mobileDelay={800}>
           <div className="w-full flex justify-center items-center py-6 md:py-8 px-4">
             <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 flex flex-col items-center">
               <h2 className="text-xl md:text-2xl font-roboto-bold text-emerald-800 mb-4 text-center">
@@ -235,7 +235,7 @@ function Fishing() {
               </p>
             </div>
           </div>
-        </FadeInSection>
+        </FadeInOnLoad>
         <div className="w-full px-4 sm:px-6 md:px-10 lg:px-20 py-6 md:py-10">
           {/* Success Modal */}
           {showSuccessModal && (

@@ -205,15 +205,35 @@ function Home() {
                   <AppearRefresh delay={2400}>
                     <button
                       onClick={handleScroll}
-                      className="hover:scale-110 active:scale-95 ease-in-out duration-200 hover:outline-white outline-transparent outline-2 rounded-full p-3"
+                      className="hover:scale-110 active:scale-95 ease-in-out duration-300 rounded-full p-3 group"
+                      style={{
+                        animation: "pulse-outline 4s ease-in-out infinite",
+                      }}
                     >
-                      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                        <ChevronDown className="w-6 h-6 text-gray-800" />
+                      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:shadow-white/50 transition-all duration-300">
+                        <ChevronDown className="w-6 h-6 text-gray-800 group-hover:translate-y-1 transition-transform duration-300 ease-out" />
                       </div>
                     </button>
                   </AppearRefresh>
                 </div>
               </div>
+
+              <style jsx>{`
+                @keyframes pulse-outline {
+                  0%,
+                  70%,
+                  100% {
+                    outline: 2px solid transparent;
+                  }
+                  15%,
+                  25% {
+                    outline: 2px solid rgba(255, 255, 255, 0.8);
+                  }
+                  20% {
+                    outline: 2px solid rgba(255, 255, 255, 0.4);
+                  }
+                }
+              `}</style>
             </div>
           </div>
         </div>
@@ -223,7 +243,7 @@ function Home() {
             ref={targetRef}
             className="min-h-[500px] pt-20 lg:pt-0 flex flex-col lg:flex-row"
           >
-            <div className="hidden lg:block lg:w-1/2 lg:h-[500px]">
+            <div className="hidden lg:block lg:w-1/2 lg:h-full">
               <SmartImage
                 src={content.MihiSection?.Image?.url}
                 alt={

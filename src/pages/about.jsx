@@ -68,26 +68,26 @@ function About() {
         {/* page content below */}
 
         <div className=" lg:grid flex flex-col lg:grid-cols-3 grid-cols-2 grid-rows-[500px_auto_auto_auto_500px] md:grid-rows-[700px_auto_auto_auto_700px]">
-          <FadeInSection delay={400} className="row-span-2">
+          <FadeInOnLoad delay={800} mobileDelay={600}>
             <img
               src={content.SidePanelImageOne?.url || "none"}
               alt=""
-              className="h-full object-cover overflow-hidden object-center hidden lg:block"
+              className="h-full object-cover overflow-hidden object-center hidden lg:block row-span-2"
             />
-          </FadeInSection>
+          </FadeInOnLoad>
+
           <div className="lg:col-span-2 lg:row-span-2 lg:p-32 flex ">
             <div className="p-10">
-              <FadeInSection>
+              <FadeInOnLoad delay={800} mobileDelay={600}>
                 <p className="font-roboto-bold text-md lg:text-2xl text-center lg:text-right pb-5 lg:pb-0">
                   {content.ContentHeader || "Description not available"}
                 </p>
                 <p className="font-roboto-light text-xl lg:text-3xl lg:pb-20 align-middle text-center lg:text-right">
                   {content.Content || "About content not available"}
                 </p>
-              </FadeInSection>
+              </FadeInOnLoad>
             </div>
           </div>
-
           {/* Team member cards - Mobile responsive layout */}
           <div className="lg:col-span-3 lg:row-start-3">
             {content.FaceCard && content.FaceCard.length > 0 ? (

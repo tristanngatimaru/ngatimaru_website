@@ -68,7 +68,7 @@ function Register() {
           {/* Main Content Section */}
           <div className="max-w-4xl mx-auto">
             {content.Content && (
-              <FadeInSection direction="up">
+              <FadeInOnLoad delay={800} mobileDelay={600}>
                 <div className="bg-white rounded-lg text-center p-6 md:p-8 mb-8">
                   <div className="prose prose-lg max-w-none">
                     {content.Content.split("\n\n").map((paragraph, index) => (
@@ -81,12 +81,12 @@ function Register() {
                     ))}
                   </div>
                 </div>
-              </FadeInSection>
+              </FadeInOnLoad>
             )}
 
             {/* Post Information Section */}
             {content.PostInfo && (
-              <FadeInSection direction="up">
+              <FadeInOnLoad delay={1000} mobileDelay={800}>
                 <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 md:p-8 mb-8">
                   <h3 className="text-xl font-roboto-medium text-emerald-800 mb-4">
                     Important Information
@@ -102,12 +102,12 @@ function Register() {
                     ))}
                   </div>
                 </div>
-              </FadeInSection>
+              </FadeInOnLoad>
             )}
 
             {/* Registration Form Toggle */}
             {!showForm ? (
-              <FadeInSection direction="up">
+              <FadeInOnLoad delay={1000} mobileDelay={800}>
                 <div className="text-center">
                   <button
                     onClick={() => setShowForm(true)}
@@ -120,7 +120,7 @@ function Register() {
                     your registration.
                   </p>
                 </div>
-              </FadeInSection>
+              </FadeInOnLoad>
             ) : (
               <FadeInSection direction="up">
                 <div>

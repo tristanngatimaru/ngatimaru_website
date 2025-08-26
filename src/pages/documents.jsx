@@ -132,68 +132,134 @@ const Documents = () => {
             </div>
           ) : (
             <div>
-              {Object.keys(documentsByCategory).map((category) => (
-                <FadeInSection key={category} direction="left">
-                  <div className="mb-12 lg:mb-16">
-                    {/* Category Header Section */}
-                    <div className="border-b-2 border-emerald-200 pb-3 mb-6">
-                      <h2 className="text-2xl md:text-3xl font-roboto-medium uppercase text-emerald-800">
-                        {category}
-                      </h2>
-                      <p className="text-emerald-600 font-roboto-light text-lg mt-1">
-                        {documentsByCategory[category]
-                          ? documentsByCategory[category].length
-                          : 0}{" "}
-                        {documentsByCategory[category]?.length === 1
-                          ? "document"
-                          : "documents"}
-                      </p>
-                    </div>
-
-                    {/* Documents Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-                      {documentsByCategory[category].map((doc) => (
-                        <div
-                          key={doc.id}
-                          className="bg-white border border-gray-200 rounded-lg p-5 md:p-6 hover:shadow-lg hover:border-emerald-200 transition-all duration-200 group"
-                        >
-                          <div className="flex justify-between items-center">
-                            <div className="flex-1 min-w-0 pr-4">
-                              <div className="font-roboto-medium text-base md:text-lg text-gray-900 mb-2 leading-tight">
-                                {doc.displayName}
-                              </div>
-                              <div className="flex items-center space-x-3 text-sm text-gray-500">
-                                <span className="bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full text-xs font-medium">
-                                  {doc.ext?.toUpperCase()}
-                                </span>
-                                <span>
-                                  {doc.size
-                                    ? `${Math.round(doc.size / 1024)} KB`
-                                    : "Unknown size"}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="flex-shrink-0">
-                              <a
-                                target="_blank"
-                                href={doc.url}
-                                download
-                                rel="noreferrer"
-                                className="inline-flex items-center justify-center w-12 h-12 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors duration-200 group-hover:scale-105"
-                                title={`Download ${doc.displayName}`}
-                              >
-                                {/* TODO: Replace with dynamic download icon from Strapi */}
-                                <div className="w-6 h-6 bg-emerald-600 rounded flex items-center justify-center text-white text-sm">
-                                  ↓
-                                </div>
-                              </a>
-                            </div>
-                          </div>
+              {Object.keys(documentsByCategory).map((category, index) => (
+                <div key={category}>
+                  {index === 0 ? (
+                    <FadeInOnLoad delay={800} mobileDelay={600}>
+                      <div className="mb-12 lg:mb-16">
+                        {/* Category Header Section */}
+                        <div className="border-b-2 border-emerald-200 pb-3 mb-6">
+                          <h2 className="text-2xl md:text-3xl font-roboto-medium uppercase text-emerald-800">
+                            {category}
+                          </h2>
+                          <p className="text-emerald-600 font-roboto-light text-lg mt-1">
+                            {documentsByCategory[category]
+                              ? documentsByCategory[category].length
+                              : 0}{" "}
+                            {documentsByCategory[category]?.length === 1
+                              ? "document"
+                              : "documents"}
+                          </p>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                </FadeInSection>
+
+                        {/* Documents Grid */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                          {documentsByCategory[category].map((doc) => (
+                            <div
+                              key={doc.id}
+                              className="bg-white border border-gray-200 rounded-lg p-5 md:p-6 hover:shadow-lg hover:border-emerald-200 transition-all duration-200 group"
+                            >
+                              <div className="flex justify-between items-center">
+                                <div className="flex-1 min-w-0 pr-4">
+                                  <div className="font-roboto-medium text-base md:text-lg text-gray-900 mb-2 leading-tight">
+                                    {doc.displayName}
+                                  </div>
+                                  <div className="flex items-center space-x-3 text-sm text-gray-500">
+                                    <span className="bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full text-xs font-medium">
+                                      {doc.ext?.toUpperCase()}
+                                    </span>
+                                    <span>
+                                      {doc.size
+                                        ? `${Math.round(doc.size / 1024)} KB`
+                                        : "Unknown size"}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="flex-shrink-0">
+                                  <a
+                                    target="_blank"
+                                    href={doc.url}
+                                    download
+                                    rel="noreferrer"
+                                    className="inline-flex items-center justify-center w-12 h-12 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors duration-200 group-hover:scale-105"
+                                    title={`Download ${doc.displayName}`}
+                                  >
+                                    {/* TODO: Replace with dynamic download icon from Strapi */}
+                                    <div className="w-6 h-6 bg-emerald-600 rounded flex items-center justify-center text-white text-sm">
+                                      ↓
+                                    </div>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </FadeInOnLoad>
+                  ) : (
+                    <FadeInSection direction="left">
+                      <div className="mb-12 lg:mb-16">
+                        {/* Category Header Section */}
+                        <div className="border-b-2 border-emerald-200 pb-3 mb-6">
+                          <h2 className="text-2xl md:text-3xl font-roboto-medium uppercase text-emerald-800">
+                            {category}
+                          </h2>
+                          <p className="text-emerald-600 font-roboto-light text-lg mt-1">
+                            {documentsByCategory[category]
+                              ? documentsByCategory[category].length
+                              : 0}{" "}
+                            {documentsByCategory[category]?.length === 1
+                              ? "document"
+                              : "documents"}
+                          </p>
+                        </div>
+
+                        {/* Documents Grid */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                          {documentsByCategory[category].map((doc) => (
+                            <div
+                              key={doc.id}
+                              className="bg-white border border-gray-200 rounded-lg p-5 md:p-6 hover:shadow-lg hover:border-emerald-200 transition-all duration-200 group"
+                            >
+                              <div className="flex justify-between items-center">
+                                <div className="flex-1 min-w-0 pr-4">
+                                  <div className="font-roboto-medium text-base md:text-lg text-gray-900 mb-2 leading-tight">
+                                    {doc.displayName}
+                                  </div>
+                                  <div className="flex items-center space-x-3 text-sm text-gray-500">
+                                    <span className="bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full text-xs font-medium">
+                                      {doc.ext?.toUpperCase()}
+                                    </span>
+                                    <span>
+                                      {doc.size
+                                        ? `${Math.round(doc.size / 1024)} KB`
+                                        : "Unknown size"}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="flex-shrink-0">
+                                  <a
+                                    target="_blank"
+                                    href={doc.url}
+                                    download
+                                    rel="noreferrer"
+                                    className="inline-flex items-center justify-center w-12 h-12 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors duration-200 group-hover:scale-105"
+                                    title={`Download ${doc.displayName}`}
+                                  >
+                                    {/* TODO: Replace with dynamic download icon from Strapi */}
+                                    <div className="w-6 h-6 bg-emerald-600 rounded flex items-center justify-center text-white text-sm">
+                                      ↓
+                                    </div>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </FadeInSection>
+                  )}
+                </div>
               ))}
             </div>
           )}
