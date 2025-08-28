@@ -260,9 +260,31 @@ function Home() {
               <p className="font-roboto-light text-3xl pb-10">
                 {content.MihiSection?.Title}
               </p>
-              <p className="font-roboto-light text-xl md:text-3xl">
-                {content.MihiSection?.MihiShortened}
-              </p>
+              <div className="font-roboto-light text-xl md:text-3xl">
+                {content.MihiSection?.MihiShortened
+                  ? (() => {
+                      const sentences = content.MihiSection.MihiShortened.split(
+                        "."
+                      )
+                        .map((s) => s.trim())
+                        .filter(Boolean);
+                      const groups = [];
+                      for (let i = 0; i < sentences.length; i += 2) {
+                        groups.push(
+                          sentences.slice(i, i + 2).join(". ") +
+                            (i + 2 < sentences.length ? "." : "")
+                        );
+                      }
+                      return groups.map((group, idx) => (
+                        <span key={idx}>
+                          {group}
+                          <br />
+                          <br />
+                        </span>
+                      ));
+                    })()
+                  : ""}
+              </div>
               <p className="font-roboto-light text-3xl pt-10 pb-5">Full Mihi</p>
               <button
                 onClick={expandMihi}
@@ -283,9 +305,29 @@ function Home() {
             }`}
           >
             <div className="p-4 flex flex-col gap-12 px-10 lg:px-40 py-20 items-center">
-              <p className="text-center text-2xl font-roboto-light">
-                {content.MihiSection?.FullMihi}
-              </p>
+              <div className="text-center text-2xl font-roboto-light">
+                {content.MihiSection?.FullMihi
+                  ? (() => {
+                      const sentences = content.MihiSection.FullMihi.split(".")
+                        .map((s) => s.trim())
+                        .filter(Boolean);
+                      const groups = [];
+                      for (let i = 0; i < sentences.length; i += 3) {
+                        groups.push(
+                          sentences.slice(i, i + 3).join(". ") +
+                            (i + 3 < sentences.length ? "." : "")
+                        );
+                      }
+                      return groups.map((group, idx) => (
+                        <span key={idx}>
+                          {group}
+                          <br />
+                          <br />
+                        </span>
+                      ));
+                    })()
+                  : ""}
+              </div>
 
               <div>
                 <button
