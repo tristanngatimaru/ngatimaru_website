@@ -260,7 +260,7 @@ function Home() {
               <p className="font-roboto-light text-3xl pb-10">
                 {content.MihiSection?.Title}
               </p>
-              <div className="font-roboto-light text-xl md:text-3xl">
+              <div className="font-roboto-light text-xl ">
                 {content.MihiSection?.MihiShortened
                   ? (() => {
                       const sentences = content.MihiSection.MihiShortened.split(
@@ -285,7 +285,7 @@ function Home() {
                     })()
                   : ""}
               </div>
-              <p className="font-roboto-light text-3xl pt-10 pb-5">Full Mihi</p>
+              <p className="font-roboto-light text-xl pt-10 pb-5">Full Mihi</p>
               <button
                 onClick={expandMihi}
                 className={`hover:outline-black active:scale-95 hover:scale-110 ease-in-out outline-transparent outline-2 rounded-full p-3 transition-all duration-300 ${
