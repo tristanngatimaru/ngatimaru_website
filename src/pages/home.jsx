@@ -241,9 +241,9 @@ function Home() {
         <FadeInSection>
           <div
             ref={targetRef}
-            className="min-h-[500px] pt-20 lg:pt-0 flex flex-col lg:flex-row"
+            className="pt-20 lg:pt-0 flex flex-col lg:flex-row"
           >
-            <div className="hidden lg:block lg:w-1/2 lg:h-full">
+            <div className="hidden lg:block lg:w-1/2">
               <SmartImage
                 src={content.MihiSection?.Image?.url}
                 alt={
