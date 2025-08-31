@@ -256,11 +256,11 @@ function Home() {
               />
             </div>
 
-            <div className="w-full lg:w-1/2 min-h-[400px] lg:h-[500px] bg-white flex flex-col items-center justify-center py-6 px-8 lg:px-18 text-center">
-              <p className="font-roboto-light text-3xl pb-10">
+            <div className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center py-8 px-6 lg:px-10 text-center">
+              <p className="font-roboto-light text-2xl lg:text-3xl pb-4">
                 {content.MihiSection?.Title}
               </p>
-              <div className="font-roboto-light text-xl ">
+              <div className="font-roboto-light text-base lg:text-lg leading-relaxed max-w-prose">
                 {content.MihiSection?.MihiShortened
                   ? (() => {
                       const sentences = content.MihiSection.MihiShortened.split(
@@ -278,14 +278,18 @@ function Home() {
                       return groups.map((group, idx) => (
                         <span key={idx}>
                           {group}
-                          <br />
-                          <br />
+                          {idx < groups.length - 1 && (
+                            <>
+                              <br />
+                              <br />
+                            </>
+                          )}
                         </span>
                       ));
                     })()
                   : ""}
               </div>
-              <p className="font-roboto-light text-xl pt-10 pb-5">Full Mihi</p>
+              <p className="font-roboto-light text-lg pt-6 pb-3">Full Mihi</p>
               <button
                 onClick={expandMihi}
                 className={`hover:outline-black active:scale-95 hover:scale-110 ease-in-out outline-transparent outline-2 rounded-full p-3 transition-all duration-300 ${
