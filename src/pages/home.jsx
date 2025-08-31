@@ -243,7 +243,7 @@ function Home() {
             ref={targetRef}
             className="pt-20 lg:pt-0 flex flex-col lg:flex-row"
           >
-            <div className="hidden lg:block lg:w-1/2">
+            <div className="hidden lg:flex lg:w-1/2">
               <SmartImage
                 src={content.MihiSection?.Image?.url}
                 alt={
