@@ -291,7 +291,7 @@ function Home() {
               isExpanded ? "max-h-[400vh]" : "max-h-0"
             }`}
           >
-            <div className="p-4 flex flex-col gap-12 px-10 lg:px-40 py-20 items-center">
+            <div className="p-4 flex flex-col gap-12 px-10 lg:px-40 xl:px-96 py-20 items-center">
               <div className="text-center text-base lg:text-lg font-roboto-light">
                 {content.MihiSection?.FullMihi
                   ? (() => {
