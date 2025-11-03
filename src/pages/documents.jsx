@@ -100,7 +100,7 @@ const Documents = () => {
           subtitle={content.HeaderSection?.EnglishTitle || "Documents"}
         />
 
-        <div className="py-6 md:py-10 lg:py-20 px-4 sm:px-6 md:px-10 lg:px-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-10 lg:py-20">
           {/* 🐛 DEBUG INFO - Toggle with DEBUG_MODE flag above */}
           {DEBUG_MODE && (
             <>

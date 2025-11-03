@@ -199,15 +199,17 @@ function Fishing() {
           subtitle={content.HeaderSection?.EnglishTitle || "Fishing Permits"}
         />
         <FadeInOnLoad delay={800} mobileDelay={600}>
-          <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 xl:px-96 pt-10 md:pt-20 font-roboto-light text-center">
-            {content.Content
-              ? formatTextWithLineBreaks(content.Content)
-              : "Fishing permit information will be displayed here."}
-          </p>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 pt-10 md:pt-20 pb-10">
+            <p className="text-lg text-gray-700 font-roboto-light text-center">
+              {content.Content
+                ? formatTextWithLineBreaks(content.Content)
+                : "Fishing permit information will be displayed here."}
+            </p>
+          </div>
         </FadeInOnLoad>
         <FadeInOnLoad delay={1000} mobileDelay={800}>
-          <div className="w-full flex justify-center items-center py-6 md:py-8 px-4">
-            <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 flex flex-col items-center">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8 flex flex-col items-center">
               <h2 className="text-xl md:text-2xl font-roboto-bold text-emerald-800 mb-4 text-center">
                 Application Instructions
               </h2>
@@ -219,7 +221,7 @@ function Fishing() {
             </div>
           </div>
         </FadeInOnLoad>
-        <div className="w-full px-4 sm:px-6 md:px-10 lg:px-20 py-6 md:py-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-10">
           {/* Success Modal */}
           {showSuccessModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -316,15 +318,6 @@ function Fishing() {
               </div>
             </FadeInSection>
             <FadeInSection direction="left">
-              <div className="lg:col-span-1">
-                <FishingPersonalDetails
-                  formData={formData}
-                  handleChange={handleChange}
-                  errors={errors}
-                />
-              </div>
-            </FadeInSection>
-            <FadeInSection direction="right">
               <div className="lg:col-span-1">
                 <FishingPurposeDetails
                   formData={formData}

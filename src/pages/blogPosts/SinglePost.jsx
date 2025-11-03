@@ -89,7 +89,9 @@ const SinglePost = () => {
           <HamburgerNav />
 
           {/* Hero section */}
-          <div className="relative">
+          <div
+            className={`relative ${post.heroMainImage ? "min-h-[500px]" : "min-h-[300px] bg-gray-800"}`}
+          >
             {post.heroMainImage && (
               <img
                 src={post.heroMainImage}
@@ -98,7 +100,9 @@ const SinglePost = () => {
               />
             )}
 
-            <div className="absolute flex flex-col w-full top-1/4 pt-20 z-20">
+            <div
+              className={`${post.heroMainImage ? "absolute" : "relative"} flex flex-col w-full ${post.heroMainImage ? "top-1/4 pt-20" : "py-20"} z-20`}
+            >
               <div className="overflow-hidden h-[80px] w-full flex justify-center">
                 <AppearRefresh delay={2000}>
                   <div className="uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-roboto-thin text-white text-center">
@@ -122,11 +126,11 @@ const SinglePost = () => {
 
           {/* Main content */}
           <div className="flex flex-col gap-10 items-center w-full py-20   mx-auto text-lg leading-relaxed whitespace-pre-line font-roboto-light text-center ">
-            {post.contentPartOne && (
+            {post.contentPartOne && post.contentPartOne.trim() && (
               <div className="max-w-5/6">{post.contentPartOne}</div>
             )}
 
-            {post.excerptOne && (
+            {post.excerptOne && post.excerptOne.trim() && (
               <div className="text-center text-3xl max-w-5/6">
                 "{post.excerptOne}"
               </div>
@@ -140,23 +144,25 @@ const SinglePost = () => {
               />
             )}
 
-            {post.contentPartTwo && (
+            {post.contentPartTwo && post.contentPartTwo.trim() && (
               <div className="max-w-5/6">{post.contentPartTwo}</div>
             )}
 
-            {post.excerptTwo && (
+            {post.excerptTwo && post.excerptTwo.trim() && (
               <div className="text-center text-3xl max-w-5/6">
                 "{post.excerptTwo}"
               </div>
             )}
 
-            <img
-              src={post.thirdImage}
-              alt="Third"
-              className="w-full my-8 h-[400px] object-cover"
-            />
+            {post.thirdImage && (
+              <img
+                src={post.thirdImage}
+                alt="Third"
+                className="w-full my-8 h-[400px] object-cover"
+              />
+            )}
 
-            {post.contentPartThree && (
+            {post.contentPartThree && post.contentPartThree.trim() && (
               <div className="max-w-5/6">{post.contentPartThree}</div>
             )}
 

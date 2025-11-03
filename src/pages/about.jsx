@@ -164,19 +164,22 @@ function About() {
           <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
             <div className="p-6 lg:p-10">
               <FadeInSection delay={400}>
-                <div className="text-center mb-8">
-                  <h2 className="font-roboto-bold text-2xl lg:text-3xl text-gray-800 mb-3">
-                    {content.TrusteesTitle || "Trustees"}
-                  </h2>
-                </div>
-                <div className="trustees-container">
-                  {content.TrusteesList ? (
-                    formatTrusteesThreeColumn(content.TrusteesList)
-                  ) : (
-                    <div className="text-center text-gray-600 font-roboto-light text-lg italic">
-                      Trustees information not available
-                    </div>
-                  )}
+                {/* Mobile section with inner shadow and extra spacing */}
+                <div className="lg:shadow-none shadow-inner bg-gray-50 lg:bg-transparent  lg:rounded-none py-12 lg:py-0 px-6 lg:px-0 my-8 lg:my-0">
+                  <div className="text-center mb-8">
+                    <h2 className="font-roboto-bold text-2xl lg:text-3xl text-gray-800 mb-3">
+                      {content.TrusteesTitle || "Trustees"}
+                    </h2>
+                  </div>
+                  <div className="trustees-container">
+                    {content.TrusteesList ? (
+                      formatTrusteesThreeColumn(content.TrusteesList)
+                    ) : (
+                      <div className="text-center text-gray-600 font-roboto-light text-lg italic">
+                        Trustees information not available
+                      </div>
+                    )}
+                  </div>
                 </div>
               </FadeInSection>
             </div>
