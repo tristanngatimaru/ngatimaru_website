@@ -5,6 +5,10 @@ import FaceCard from "../components/facecard";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import HeroHeader from "../components/header";
 import { getAboutContent } from "../api/siteContent";
+import {
+  formatTextWithLineBreaks,
+  formatTrusteesThreeColumn,
+} from "../utils/textFormatter";
 
 // src/pages/about.jsx
 function About() {
@@ -31,7 +35,7 @@ function About() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading about page...</div>
+        <div className="text-base lg:text-lg">Loading about page...</div>
       </div>
     );
   }
@@ -40,7 +44,7 @@ function About() {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">
+        <div className="text-base lg:text-lg">
           Error loading content. Please try again later.
         </div>
       </div>
@@ -51,7 +55,7 @@ function About() {
   if (!content) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">No about content available</div>
+        <div className="text-base lg:text-lg">No about content available</div>
       </div>
     );
   }
@@ -76,14 +80,18 @@ function About() {
             />
           </FadeInOnLoad>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-32 flex ">
-            <div className="p-10">
+          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
+            <div className="p-6 lg:p-10">
               <FadeInOnLoad delay={800} mobileDelay={600}>
-                <p className="font-roboto-bold text-md lg:text-2xl text-center lg:text-right pb-5 lg:pb-0">
-                  {content.ContentHeader || "Description not available"}
+                <p className="font-roboto-bold text-lg lg:text-xl text-center lg:text-right pb-5 lg:pb-0">
+                  {content.ContentHeader
+                    ? formatTextWithLineBreaks(content.ContentHeader)
+                    : "Description not available"}
                 </p>
-                <p className="font-roboto-light text-xl lg:text-3xl lg:pb-20 align-middle text-center lg:text-right">
-                  {content.Content || "About content not available"}
+                <p className="font-roboto-light text-base lg:text-lg align-middle text-center lg:text-right">
+                  {content.Content
+                    ? formatTextWithLineBreaks(content.Content)
+                    : "About content not available"}
                 </p>
               </FadeInOnLoad>
             </div>
@@ -153,15 +161,23 @@ function About() {
             )}
           </div>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-32 flex ">
-            <div className="p-10">
+          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
+            <div className="p-6 lg:p-10">
               <FadeInSection delay={400}>
-                <p className="font-roboto-bold text-xl lg:text-3xl pb-20 align-middle text-center">
-                  {content.TrusteesTitle || "Trustees"}
-                </p>
-                <p className="font-roboto-light text-md lg:text-2xl text-center">
-                  {content.TrusteesList || "Trustees information not available"}
-                </p>
+                <div className="text-center mb-8">
+                  <h2 className="font-roboto-bold text-2xl lg:text-3xl text-gray-800 mb-3">
+                    {content.TrusteesTitle || "Trustees"}
+                  </h2>
+                </div>
+                <div className="trustees-container">
+                  {content.TrusteesList ? (
+                    formatTrusteesThreeColumn(content.TrusteesList)
+                  ) : (
+                    <div className="text-center text-gray-600 font-roboto-light text-lg italic">
+                      Trustees information not available
+                    </div>
+                  )}
+                </div>
               </FadeInSection>
             </div>
           </div>

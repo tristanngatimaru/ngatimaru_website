@@ -6,6 +6,7 @@ import FadeInOnLoad from "@/components/loadonstartanimation";
 import { getBookingMataiWhetuContent } from "@/api/siteContent";
 import { useMataiWhetuForm } from "../hooks/useMataiWhetuForm";
 import FadeInSection from "@/components/fadeinanimation";
+import { formatTextWithLineBreaks } from "../utils/textFormatter.jsx";
 
 // Lazy load form components
 const PersonalDetails = lazy(
@@ -362,27 +363,9 @@ const MataiWhetu = () => {
           }
         />
         <FadeInOnLoad delay={800} mobileDelay={600}>
-          <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 md:pt-20 font-roboto-light text-center">
+          <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 xl:px-96 pt-10 md:pt-20 font-roboto-light text-center">
             {content.Content
-              ? (() => {
-                  const sentences = content.Content.split(".")
-                    .map((s) => s.trim())
-                    .filter(Boolean);
-                  const groups = [];
-                  for (let i = 0; i < sentences.length; i += 3) {
-                    groups.push(
-                      sentences.slice(i, i + 3).join(". ") +
-                        (i + 3 < sentences.length ? "." : "")
-                    );
-                  }
-                  return groups.map((group, idx) => (
-                    <span key={idx}>
-                      {group}
-                      <br />
-                      <br />
-                    </span>
-                  ));
-                })()
+              ? formatTextWithLineBreaks(content.Content)
               : "none here"}
           </p>
         </FadeInOnLoad>
@@ -400,21 +383,20 @@ const MataiWhetu = () => {
             </div>
           </div>
         </FadeInOnLoad>
-        {/* Autofill button */}
         <div className="w-full px-4 sm:px-6 md:px-10 lg:px-20 py-6 md:py-10 grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-10">
-          <div className="xl:col-span-2">
-            <AutofillTestButton handleChange={handleChange} />
-          </div>
-
-          {/* Main form */}
-
-          <div className="order-1 xl:order-1">
+          {/* Main form - Left side on desktop */}
+          <div className="xl:col-start-1">
             <FadeInSection direction="left">
+              {/* Autofill button */}
+              <div className="mb-6">
+                <AutofillTestButton handleChange={handleChange} />
+              </div>
+
               <form
                 onSubmit={handleSubmit}
-                className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5"
+                className="grid grid-cols-1 gap-4 md:gap-5"
               >
-                <div className="sm:col-span-2">
+                <div>
                   <Suspense fallback={<FormSectionLoader />}>
                     <PersonalDetails
                       formData={formData}
@@ -425,7 +407,7 @@ const MataiWhetu = () => {
                   </Suspense>
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <Suspense fallback={<FormSectionLoader />}>
                     <OrganisationDetails
                       formData={formData}
@@ -436,7 +418,7 @@ const MataiWhetu = () => {
                   </Suspense>
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <PersonResponsible
                     formData={formData}
                     handleChange={handleChange}
@@ -445,7 +427,7 @@ const MataiWhetu = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <BookingDates
                     formData={formData}
                     handleChange={handleChange}
@@ -454,7 +436,7 @@ const MataiWhetu = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <WharenuiSection
                     formData={formData}
                     handleChange={handleChange}
@@ -463,7 +445,7 @@ const MataiWhetu = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <WharekaiSection
                     formData={formData}
                     handleChange={handleChange}
@@ -472,7 +454,7 @@ const MataiWhetu = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <AblutionSection
                     formData={formData}
                     handleChange={handleChange}
@@ -481,7 +463,7 @@ const MataiWhetu = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <Acknowledgements
                     formData={formData}
                     handleChange={handleChange}
@@ -490,7 +472,7 @@ const MataiWhetu = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <FileAcknowledgement
                     formData={formData}
                     handleChange={handleChange}
@@ -500,7 +482,7 @@ const MataiWhetu = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <SubmitReviewButton
                     isFormComplete={isFormComplete()}
                     onClick={handleSubmit}
@@ -510,7 +492,7 @@ const MataiWhetu = () => {
                 </div>
 
                 {missingFields.length > 0 && (
-                  <div className="sm:col-span-2 max-w-4xl mx-auto mb-6 md:mb-10 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                  <div className="max-w-4xl mx-auto mb-6 md:mb-10 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                     <strong className="font-bold">
                       Please complete the following fields:
                     </strong>
@@ -525,14 +507,14 @@ const MataiWhetu = () => {
             </FadeInSection>
           </div>
 
-          {/* Booking summary */}
-          <FadeInSection direction="right">
-            <div className="order-2 xl:order-2">
+          {/* Booking summary - Right side on desktop */}
+          <div className="xl:col-start-2">
+            <FadeInSection direction="right">
               <div className="sticky top-4">
                 <BookingSummary formData={formData} />
               </div>
-            </div>
-          </FadeInSection>
+            </FadeInSection>
+          </div>
         </div>
 
         <Footer />

@@ -8,6 +8,7 @@ import FishingPurposeDetails from "../components/formSections/FishingPurposeDeta
 import FishingSpeciesDetails from "../components/formSections/FishingSpeciesDetails";
 import FadeInOnLoad from "@/components/loadonstartanimation";
 import FadeInSection from "@/components/fadeinanimation";
+import { formatTextWithLineBreaks } from "../utils/textFormatter.jsx";
 
 function Fishing() {
   const [content, setContent] = useState(null);
@@ -198,27 +199,9 @@ function Fishing() {
           subtitle={content.HeaderSection?.EnglishTitle || "Fishing Permits"}
         />
         <FadeInOnLoad delay={800} mobileDelay={600}>
-          <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 pt-10 md:pt-20 font-roboto-light text-center">
+          <p className="text-lg text-gray-700 px-4 sm:px-8 md:px-12 lg:px-20 xl:px-96 pt-10 md:pt-20 font-roboto-light text-center">
             {content.Content
-              ? (() => {
-                  const sentences = content.Content.split(".")
-                    .map((s) => s.trim())
-                    .filter(Boolean);
-                  const groups = [];
-                  for (let i = 0; i < sentences.length; i += 3) {
-                    groups.push(
-                      sentences.slice(i, i + 3).join(". ") +
-                        (i + 3 < sentences.length ? "." : "")
-                    );
-                  }
-                  return groups.map((group, idx) => (
-                    <span key={idx}>
-                      {group}
-                      <br />
-                      <br />
-                    </span>
-                  ));
-                })()
+              ? formatTextWithLineBreaks(content.Content)
               : "Fishing permit information will be displayed here."}
           </p>
         </FadeInOnLoad>

@@ -12,7 +12,7 @@ const SubmitReviewButton = ({ onClick }) => {
         onClick={onClick}
         className="px-6 py-3 bg-emerald-700 text-white rounded hover:bg-emerald-800 transition"
       >
-        Review & Submit
+        Submit
       </button>
     </div>
   );

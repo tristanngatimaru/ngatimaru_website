@@ -4,6 +4,10 @@ import HeroHeader from "../components/header";
 import { getRegisterContent } from "@/api/siteContent";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import FadeInSection from "../components/fadeinanimation";
+import {
+  formatParagraphsWithLineBreaks,
+  formatContentWithBullets,
+} from "../utils/textFormatter.jsx";
 
 // Lazy load the RegistrationForm component
 const RegistrationForm = lazy(() => import("../components/RegistrationForm"));
@@ -32,7 +36,7 @@ function Register() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading register page...</div>
+        <div className="text-base lg:text-lg">Loading register page...</div>
       </div>
     );
   }
@@ -40,7 +44,7 @@ function Register() {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-red-600">
+        <div className="text-base lg:text-lg text-red-600">
           Error loading register page. Please try again later.
         </div>
       </div>
@@ -50,7 +54,9 @@ function Register() {
   if (!content) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">No register content available</div>
+        <div className="text-base lg:text-lg">
+          No register content available
+        </div>
       </div>
     );
   }
@@ -71,14 +77,7 @@ function Register() {
               <FadeInOnLoad delay={800} mobileDelay={600}>
                 <div className="bg-white rounded-lg text-center p-6 md:p-8 mb-8">
                   <div className="prose prose-lg max-w-none">
-                    {content.Content.split("\n\n").map((paragraph, index) => (
-                      <p
-                        key={index}
-                        className="text-gray-700 leading-relaxed mb-4 last:mb-0"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
+                    {formatContentWithBullets(content.Content)}
                   </div>
                 </div>
               </FadeInOnLoad>
@@ -92,14 +91,10 @@ function Register() {
                     Important Information
                   </h3>
                   <div className="prose max-w-none">
-                    {content.PostInfo.split("\n\n").map((paragraph, index) => (
-                      <p
-                        key={index}
-                        className="text-emerald-700 leading-relaxed mb-4 last:mb-0"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
+                    {formatParagraphsWithLineBreaks(
+                      content.PostInfo,
+                      "text-emerald-700 text-base lg:text-lg leading-relaxed mb-4 last:mb-0"
+                    )}
                   </div>
                 </div>
               </FadeInOnLoad>
@@ -116,8 +111,8 @@ function Register() {
                     Start Registration Application
                   </button>
                   <p className="mt-4 text-gray-600 text-sm">
-                    Ready to join Te Rūnanga o Ngāti Maru? Click above to begin
-                    your registration.
+                    Ready to join Ngāti Maru Rūnanga? Click above to begin your
+                    registration.
                   </p>
                 </div>
               </FadeInOnLoad>

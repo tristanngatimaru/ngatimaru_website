@@ -5,6 +5,7 @@ import AppearRefresh from "../components/appearrefresh";
 import SmartImage from "../components/SmartImage";
 import { getHomeContent } from "../api/siteContent";
 import { cachedFetch } from "../utils/lazyLoader";
+import { formatTextWithLineBreaks } from "../utils/textFormatter.jsx";
 
 // Lazy load heavy components
 const Navbar = lazy(() => import("../components/navbar"));
@@ -121,13 +122,13 @@ function Home() {
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+        <div className="text-base lg:text-lg">Loading...</div>
       </div>
     );
   if (error)
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">
+        <div className="text-base lg:text-lg">
           Error loading content. Please try again later.
         </div>
       </div>
@@ -135,7 +136,7 @@ function Home() {
   if (!content)
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">No content available</div>
+        <div className="text-base lg:text-lg">No content available</div>
       </div>
     );
 
@@ -257,39 +258,21 @@ function Home() {
             </div>
 
             <div className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center py-8 px-6 lg:px-10 text-center">
-              <p className="font-roboto-light text-2xl lg:text-3xl pb-4">
+              <p className="font-roboto-light text-xl lg:text-2xl pb-4">
                 {content.MihiSection?.Title}
               </p>
               <div className="font-roboto-light text-base lg:text-lg leading-relaxed max-w-prose">
                 {content.MihiSection?.MihiShortened
                   ? (() => {
-                      const sentences = content.MihiSection.MihiShortened.split(
-                        "."
-                      )
-                        .map((s) => s.trim())
-                        .filter(Boolean);
-                      const groups = [];
-                      for (let i = 0; i < sentences.length; i += 2) {
-                        groups.push(
-                          sentences.slice(i, i + 2).join(". ") +
-                            (i + 2 < sentences.length ? "." : "")
-                        );
-                      }
-                      return groups.map((group, idx) => (
-                        <span key={idx}>
-                          {group}
-                          {idx < groups.length - 1 && (
-                            <>
-                              <br />
-                              <br />
-                            </>
-                          )}
-                        </span>
-                      ));
+                      return formatTextWithLineBreaks(
+                        content.MihiSection.MihiShortened
+                      );
                     })()
                   : ""}
               </div>
-              <p className="font-roboto-light text-lg pt-6 pb-3">Full Mihi</p>
+              <p className="font-roboto-light text-base lg:text-lg pt-6 pb-3">
+                Full Mihi
+              </p>
               <button
                 onClick={expandMihi}
                 className={`hover:outline-black active:scale-95 hover:scale-110 ease-in-out outline-transparent outline-2 rounded-full p-3 transition-all duration-300 ${
@@ -309,26 +292,12 @@ function Home() {
             }`}
           >
             <div className="p-4 flex flex-col gap-12 px-10 lg:px-40 py-20 items-center">
-              <div className="text-center text-2xl font-roboto-light">
+              <div className="text-center text-base lg:text-lg font-roboto-light">
                 {content.MihiSection?.FullMihi
                   ? (() => {
-                      const sentences = content.MihiSection.FullMihi.split(".")
-                        .map((s) => s.trim())
-                        .filter(Boolean);
-                      const groups = [];
-                      for (let i = 0; i < sentences.length; i += 3) {
-                        groups.push(
-                          sentences.slice(i, i + 3).join(". ") +
-                            (i + 3 < sentences.length ? "." : "")
-                        );
-                      }
-                      return groups.map((group, idx) => (
-                        <span key={idx}>
-                          {group}
-                          <br />
-                          <br />
-                        </span>
-                      ));
+                      return formatTextWithLineBreaks(
+                        content.MihiSection.FullMihi
+                      );
                     })()
                   : ""}
               </div>
