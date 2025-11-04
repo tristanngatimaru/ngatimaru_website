@@ -5,8 +5,7 @@ import App from "./App.jsx";
 import { initPerformanceTracking } from "./utils/performanceTracker.js";
 import { preloadCriticalImages } from "./utils/imageUtils.js";
 
-// Performance monitoring
-const appStartTime = performance.now();
+// Performance monitoring disabled for production
 
 // Initialize performance tracking
 initPerformanceTracking();
@@ -25,14 +24,4 @@ root.render(
   </StrictMode>
 );
 
-// Log performance metrics when fully ready
-window.addEventListener("load", () => {
-  const totalTime = performance.now() - appStartTime;
-
-  // Log performance insights only if significantly slow
-  if (totalTime > 5000) {
-    console.warn(
-      "Consider optimizing: image sizes, API response times, or bundle size"
-    );
-  }
-});
+// Performance tracking disabled for production

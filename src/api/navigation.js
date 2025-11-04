@@ -5,9 +5,6 @@ import fetchContentType from "./fetchContentType";
  * @returns {Promise<Array>} Array of navigation items
  */
 export async function getNavigationData() {
-  console.log("🧭 Navigation: Fetching navigation data from API...");
-  const navigationStart = performance.now();
-
   try {
     const rawData = await fetchContentType(
       "navigation-bar",
@@ -17,11 +14,6 @@ export async function getNavigationData() {
         },
       },
       true
-    );
-
-    const navigationEnd = performance.now();
-    console.log(
-      `🧭 Navigation: API call completed (${(navigationEnd - navigationStart).toFixed(2)}ms)`
     );
 
     // Transform and filter the navigation data
@@ -37,25 +29,12 @@ export async function getNavigationData() {
           visible: item.Visible,
         }));
 
-      console.log(
-        `🧭 Navigation: Transformed ${transformedNavigation.length} navigation items`
-      );
       return transformedNavigation;
     }
 
-    console.warn(
-      "🧭 Navigation: No navigation data found, returning empty array"
-    );
     return [];
-  } catch (error) {
-    const navigationEnd = performance.now();
-    console.error(
-      `❌ Navigation: Error fetching navigation data (${(navigationEnd - navigationStart).toFixed(2)}ms):`,
-      error
-    );
-
+  } catch {
     // Return fallback navigation data
-    console.log("🧭 Navigation: Using fallback navigation data");
     return getFallbackNavigation();
   }
 }

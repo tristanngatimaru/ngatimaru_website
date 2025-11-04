@@ -58,8 +58,7 @@ const OptimizedImage = ({
       url.searchParams.set("quality", quality.toString());
 
       return url.toString();
-    } catch (error) {
-      console.warn("Error generating optimized image URL:", error);
+    } catch {
       return strapiImage(baseImage);
     }
   };
@@ -80,7 +79,6 @@ const OptimizedImage = ({
 
   const handleError = () => {
     setError(true);
-    console.warn("Failed to load image:", image);
   };
 
   // Don't render if no image

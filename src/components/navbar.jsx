@@ -26,11 +26,10 @@ function Navbar() {
   useEffect(() => {
     async function loadNavigationData() {
       try {
-        console.log("🧭 Navbar: Loading navigation data...");
         const navData = await getNavigationData();
         setNavigationItems(navData);
-      } catch (error) {
-        console.error("🧭 Navbar: Error loading navigation:", error);
+      } catch {
+        // Navigation loading failed, will use defaults
       } finally {
         setLoading(false);
       }

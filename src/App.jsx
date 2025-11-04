@@ -2,13 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 
 // Performance monitoring
-const logPerformance = (label, startTime) => {
-  // Only log in development or for significantly slow operations
-  const endTime = performance.now();
-  const duration = endTime - startTime;
-  if (import.meta.env.DEV && duration > 1000) {
-    console.log(`${label}: ${duration.toFixed(2)}ms`);
-  }
+const logPerformance = () => {
+  // Performance tracking disabled for production
 };
 
 // Lazy load page components with performance tracking

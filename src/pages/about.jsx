@@ -22,7 +22,6 @@ function About() {
         const aboutData = await getAboutContent();
         setContent(aboutData);
       } catch (err) {
-        console.error("Error loading about content:", err);
         setError(err);
       } finally {
         setLoading(false);

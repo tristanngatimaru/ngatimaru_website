@@ -116,7 +116,6 @@ const MataiWhetu = () => {
         const bookingData = await getBookingMataiWhetuContent();
         setContent(bookingData);
       } catch (err) {
-        console.error("Error loading booking content:", err);
         setError(err);
       } finally {
         setLoading(false);
@@ -153,9 +152,6 @@ const MataiWhetu = () => {
 
   const submitBooking = async () => {
     try {
-      console.log("🚀 Starting booking submission...");
-      console.log("📝 Form data:", formData);
-
       const payload = {
         data: {
           firstName: formData.firstName,
@@ -184,14 +180,7 @@ const MataiWhetu = () => {
         },
       };
 
-      console.log("📦 Payload:", payload);
-
-      // Use the confirmed endpoint from Postman
       const apiUrl = `${import.meta.env.VITE_STRAPI_API_URL.replace(/\/$/, "")}/api/matai-whetu-applications`;
-      console.log("🌐 API URL:", apiUrl);
-
-      // Since public role has create permission, try without auth first
-      console.log("🧪 Trying without authentication (public access)...");
 
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -201,56 +190,25 @@ const MataiWhetu = () => {
         body: JSON.stringify(payload),
       });
 
-      console.log("📡 Response status:", response.status);
-      console.log("📡 Response ok:", response.ok);
-
       if (response.ok) {
-        const responseData = await response.json();
-        console.log("✅ Booking submitted successfully:", responseData);
         setShowSuccessModal(true);
         return;
       }
 
-      // Handle errors with detailed logging
-      let errorData;
-      try {
-        errorData = await response.json();
-        console.error("❌ Error response:", errorData);
-      } catch (jsonError) {
-        console.error("❌ Could not parse error response:", jsonError.message);
-      }
-
+      // Handle errors
       if (response.status === 403) {
-        console.error(
-          "❌ 403 Forbidden - even though public role has create permission"
-        );
-        console.error("📋 Possible causes:");
-        console.error(
-          "1. Field validation errors (check required fields in Strapi)"
-        );
-        console.error("2. Content type configuration issues");
-        console.error("3. Strapi validation rules not met");
-
-        if (errorData?.error?.details) {
-          console.error("📝 Validation details:", errorData.error.details);
-        }
-        if (errorData?.error?.message) {
-          console.error("📝 Error message:", errorData.error.message);
-        }
-
         setSubmitError(
-          `Permission denied (403). This might be a field validation issue.\n\nDetails: ${errorData?.error?.message || "Check console for more info"}`
+          "Permission denied. Please check all required fields are completed and try again."
         );
         setShowErrorModal(true);
       } else {
-        setSubmitError(
-          `Error submitting booking: ${response.status} - ${errorData?.error?.message || "Unknown error"}`
-        );
+        setSubmitError("Error submitting booking. Please try again later.");
         setShowErrorModal(true);
       }
-    } catch (error) {
-      console.error("❌ Network/fetch error:", error);
-      setSubmitError(`Network error: ${error.message}`);
+    } catch {
+      setSubmitError(
+        "Network error. Please check your connection and try again."
+      );
       setShowErrorModal(true);
     }
   };

@@ -24,7 +24,6 @@ function Register() {
         const registerData = await getRegisterContent();
         setContent(registerData);
       } catch (err) {
-        console.error("Error loading register content:", err);
         setError(err);
       } finally {
         setLoading(false);

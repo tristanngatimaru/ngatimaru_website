@@ -98,7 +98,6 @@ export default async function fetchContentType(
   } catch (error) {
     // Clean up pending request on error
     pendingRequests.delete(cacheKey);
-    console.error("FetchContentTypeError:", error);
     throw error; // Re-throw to handle in components
   }
 }

@@ -18,8 +18,6 @@ export const loadLazyFonts = () => {
   }, 100);
 
   document.head.appendChild(link);
-
-  console.log("🎨 Lazy fonts loaded");
 };
 
 /**
@@ -40,8 +38,6 @@ export const preloadCriticalFonts = () => {
     link.href = fontUrl;
     document.head.appendChild(link);
   });
-
-  console.log("🎨 Critical fonts preloaded");
 };
 
 /**

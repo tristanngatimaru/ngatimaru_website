@@ -20,8 +20,7 @@ export async function getBlogPosts(params = {}) {
       false
     );
     return response.data || [];
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
+  } catch {
     return [];
   }
 }
@@ -52,8 +51,7 @@ export async function getBlogPost(documentId) {
       true
     );
     return response || null;
-  } catch (error) {
-    console.error("Error fetching blog post:", error);
+  } catch {
     return null;
   }
 }

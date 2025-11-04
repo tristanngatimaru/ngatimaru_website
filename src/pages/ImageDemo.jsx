@@ -82,12 +82,8 @@ const ImageDemo = () => {
                   context={test.context}
                   className="w-full h-full object-cover"
                   loading="lazy"
-                  onLoad={() =>
-                    console.log(`✅ ${test.name} - API image loaded`)
-                  }
-                  onError={() =>
-                    console.log(`❌ ${test.name} - API failed, using fallback`)
-                  }
+                  onLoad={() => {}}
+                  onError={() => {}}
                 />
               </div>
               <div className="p-4">

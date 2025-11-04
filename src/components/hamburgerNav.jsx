@@ -37,11 +37,10 @@ export default function HamburgerNav() {
   useEffect(() => {
     async function loadNavigationData() {
       try {
-        console.log("🧭 HamburgerNav: Loading navigation data...");
         const navData = await getNavigationData();
         setNavigationItems(navData);
-      } catch (error) {
-        console.error("🧭 HamburgerNav: Error loading navigation:", error);
+      } catch {
+        // Navigation loading failed, will use defaults
       } finally {
         setLoading(false);
       }

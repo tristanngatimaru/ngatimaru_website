@@ -51,7 +51,6 @@ const Documents = () => {
         // Force state update with a new object reference
         setDocumentsByCategory({ ...sortedGrouped });
       } catch (err) {
-        console.error("Error loading documents content:", err);
         setError(err);
       } finally {
         setLoading(false);

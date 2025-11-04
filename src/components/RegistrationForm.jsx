@@ -269,8 +269,6 @@ const RegistrationForm = () => {
     setSubmitError(null);
 
     try {
-      console.log("🚀 Starting registration submission...");
-      console.log("📝 Form data:", formData);
 
       // Create clean data object with only the fields Strapi expects
       const cleanFormData = {
@@ -330,13 +328,8 @@ const RegistrationForm = () => {
         };
       }
 
-      console.log("📦 Payload:", { data: cleanFormData });
-
       // Use environment variable for API URL with proper endpoint
       const apiUrl = `${import.meta.env.VITE_STRAPI_API_URL.replace(/\/$/, "")}/api/register-applications`;
-      console.log("🌐 API URL:", apiUrl);
-
-      console.log("🧪 Trying registration submission...");
 
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -350,31 +343,14 @@ const RegistrationForm = () => {
         }),
       });
 
-      console.log("📡 Response status:", response.status);
-      console.log("📡 Response ok:", response.ok);
-
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("❌ Error response:", errorText);
 
         let errorData;
         try {
           errorData = JSON.parse(errorText);
-        } catch (parseError) {
-          console.error(
-            "❌ Could not parse error response:",
-            parseError.message
-          );
-        }
-
-        // Log validation errors for troubleshooting
-        if (errorData?.error?.details?.errors) {
-          console.error("📝 Validation details:", errorData.error.details);
-          errorData.error.details.errors.forEach((err, index) => {
-            console.error(
-              `Validation Error ${index + 1}: ${err.path} - ${err.message}`
-            );
-          });
+        } catch {
+          // Could not parse error response
         }
 
         throw new Error(
@@ -382,11 +358,9 @@ const RegistrationForm = () => {
         );
       }
 
-      const result = await response.json();
-      console.log("✅ Registration submitted successfully:", result);
+      await response.json();
       setShowSuccessModal(true);
     } catch (error) {
-      console.error("💥 Registration submission failed:", error.message);
       setSubmitError(error.message);
       setShowErrorModal(true);
     } finally {

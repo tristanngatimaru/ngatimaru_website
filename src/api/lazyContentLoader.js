@@ -11,23 +11,16 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
  * @returns {Promise<Object>} The page content
  */
 export async function loadPageContent(pageName) {
-  console.log(`🚀 Loading content for page: ${pageName}`);
-  const startTime = performance.now();
-
   // Check cache first
   const cacheKey = pageName;
   const cached = pageCache.get(cacheKey);
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-    console.log(
-      `✅ Cache hit for ${pageName} (${(performance.now() - startTime).toFixed(2)}ms)`
-    );
     return cached.data;
   }
 
   try {
     const config = PAGE_CONFIGS[pageName];
     if (!config) {
-      console.warn(`⚠️ No configuration found for page: ${pageName}`);
       return {};
     }
 
@@ -47,12 +40,8 @@ export async function loadPageContent(pageName) {
       timestamp: Date.now(),
     });
 
-    const loadTime = performance.now() - startTime;
-    console.log(`✅ Loaded ${pageName} content (${loadTime.toFixed(2)}ms)`);
-
     return pageContent;
-  } catch (error) {
-    console.error(`❌ Error loading ${pageName} content:`, error);
+  } catch {
     return {};
   }
 }
@@ -62,9 +51,6 @@ export async function loadPageContent(pageName) {
  * @returns {Promise<Object>} Essential site content
  */
 export async function loadEssentialContent() {
-  console.log("🚀 Loading essential content for initial page load...");
-  const startTime = performance.now();
-
   try {
     // Load only home page and navigation content
     const essentialPages = ["home", "navigation"];
@@ -79,17 +65,12 @@ export async function loadEssentialContent() {
       if (results[index].status === "fulfilled") {
         content[pageName] = results[index].value;
       } else {
-        console.error(`❌ Failed to load ${pageName}:`, results[index].reason);
         content[pageName] = {};
       }
     });
 
-    const loadTime = performance.now() - startTime;
-    console.log(`✅ Essential content loaded (${loadTime.toFixed(2)}ms)`);
-
     return content;
-  } catch (error) {
-    console.error("❌ Error loading essential content:", error);
+  } catch {
     return {};
   }
 }
@@ -100,8 +81,8 @@ export async function loadEssentialContent() {
  */
 export function preloadPageContent(pageName) {
   // Don't await - just start loading in background
-  loadPageContent(pageName).catch((error) => {
-    console.warn(`⚠️ Failed to preload ${pageName}:`, error);
+  loadPageContent(pageName).catch(() => {
+    // Preload failed silently
   });
 }
 
@@ -123,5 +104,4 @@ export function getCachedContent(pageName) {
  */
 export function clearPageCache() {
   pageCache.clear();
-  console.log("🧹 Page cache cleared");
 }

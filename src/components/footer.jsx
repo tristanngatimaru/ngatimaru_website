@@ -7,13 +7,10 @@ function Footer() {
 
   useEffect(() => {
     const loadFooterData = async () => {
-      console.log("🔍 Footer: Starting to load footer data...");
       try {
         const data = await getFooterData();
-        console.log("✅ Footer: Successfully loaded data:", data);
         setFooterData(data);
       } catch (error) {
-        console.error("❌ Footer: Failed to load footer data:", error);
         // Fallback data will be used from getFooterData
         const fallbackData = {
           copyright: "© 2025 Ngāti Maru. All rights reserved.",
@@ -40,11 +37,9 @@ function Footer() {
             },
           ],
         };
-        console.log("🔄 Footer: Using fallback data:", fallbackData);
         setFooterData(fallbackData);
       } finally {
         setIsLoading(false);
-        console.log("🏁 Footer: Loading completed");
       }
     };
 
@@ -53,7 +48,6 @@ function Footer() {
 
   // Render loading state
   if (isLoading) {
-    console.log("⏳ Footer: Rendering loading state");
     return (
       <div className="flex w-full justify-center px-4 sm:px-8 lg:px-20 items-center py-6 lg:py-10 bg-gray-300">
         <div className="font-roboto-light text-base sm:text-lg lg:text-xl">
@@ -120,8 +114,6 @@ function Footer() {
       </div>
     );
   };
-
-  console.log("🎨 Footer: Rendering footer with data:", footerData);
 
   return (
     <div className="flex flex-col w-full bg-gray-300">

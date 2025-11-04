@@ -61,8 +61,7 @@ const SinglePost = () => {
         };
 
         setPost(transformedPost);
-      } catch (err) {
-        console.error("Failed to fetch post:", err);
+      } catch {
         setError("Failed to load post");
       } finally {
         setLoading(false);

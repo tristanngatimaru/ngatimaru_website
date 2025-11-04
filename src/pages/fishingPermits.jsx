@@ -74,7 +74,6 @@ function Fishing() {
         const fishingData = await getFishingPermitContent();
         setContent(fishingData);
       } catch (err) {
-        console.error("Error loading fishing permit content:", err);
         setError(err);
       } finally {
         setLoading(false);
@@ -94,9 +93,6 @@ function Fishing() {
     setSubmitError("");
 
     try {
-      console.log("🚀 Starting fishing permit submission...");
-      console.log("📝 Form data:", formData);
-
       // Prepare the data according to Strapi API format
       const payload = {
         data: {
@@ -124,13 +120,7 @@ function Fishing() {
         },
       };
 
-      console.log("📦 Payload:", payload);
-
-      // Use environment variable for API URL
       const apiUrl = `${import.meta.env.VITE_STRAPI_API_URL.replace(/\/$/, "")}/api/fishing-permit-applications`;
-      console.log("🌐 API URL:", apiUrl);
-
-      console.log("🧪 Trying fishing permit submission...");
 
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -140,24 +130,14 @@ function Fishing() {
         body: JSON.stringify(payload),
       });
 
-      console.log("📡 Response status:", response.status);
-
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("❌ Error response:", errorText);
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
+        throw new Error("Submission failed");
       }
-
-      const result = await response.json();
-      console.log("✅ Success response:", result);
 
       setShowSuccessModal(true);
       resetForm();
-    } catch (err) {
-      console.error("💥 Error submitting fishing permit application:", err);
-      setSubmitError(
-        err.message || "Failed to submit application. Please try again."
-      );
+    } catch {
+      setSubmitError("Failed to submit application. Please try again.");
       setShowErrorModal(true);
     } finally {
       setSubmitting(false);

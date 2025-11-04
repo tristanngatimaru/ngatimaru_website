@@ -238,21 +238,11 @@ export async function getPageContent(pageName) {
  * @returns {Promise<Object>} The home page content
  */
 export async function getHomeContent() {
-  console.log("🏠 getHomeContent: Starting optimized home page load...");
-  const startTime = performance.now();
-
   try {
     const config = PAGE_CONFIGS["home"];
     if (!config) {
-      console.warn("⚠️ No configuration found for home page");
       return {};
     }
-
-    console.log("📊 API Request timing breakdown:");
-
-    // Step 1: Measure API call preparation
-    const prepTime = performance.now();
-    console.log(`  1. API preparation: ${(prepTime - startTime).toFixed(2)}ms`);
 
     // Step 2: Optimized populate - only load what's immediately needed for first render
     const optimizedPopulate = {
@@ -278,7 +268,6 @@ export async function getHomeContent() {
     };
 
     // Step 3: Fetch with timeout and retry logic
-    const apiStartTime = performance.now();
     const result = await Promise.race([
       fetchContentType(
         config.contentType,
@@ -290,35 +279,13 @@ export async function getHomeContent() {
       ),
     ]);
 
-    const apiEndTime = performance.now();
-    console.log(
-      `  2. API fetch completed: ${(apiEndTime - apiStartTime).toFixed(2)}ms`
-    );
-
     // Step 4: Transform the data
-    const transformStartTime = performance.now();
     const homeContent = transformHomeData(result, config.defaultContent);
-    const transformEndTime = performance.now();
-    console.log(
-      `  3. Data transformation: ${(transformEndTime - transformStartTime).toFixed(2)}ms`
-    );
-
-    const totalTime = performance.now() - startTime;
-    console.log(
-      `✅ getHomeContent: Completed (${totalTime.toFixed(2)}ms total)`
-    );
 
     return homeContent;
-  } catch (error) {
-    const errorTime = performance.now() - startTime;
-    console.error(
-      `❌ getHomeContent: Error after ${errorTime.toFixed(2)}ms:`,
-      error
-    );
-
+  } catch {
     // Return default content for better user experience
     const defaultContent = PAGE_CONFIGS["home"]?.defaultContent || {};
-    console.log("🔄 getHomeContent: Returning default content for better UX");
     return defaultContent;
   }
 }
@@ -424,21 +391,6 @@ export function transformPageData(pageName, rawData) {
  * @returns {Object} Transformed home data
  */
 function transformHomeData(homeContent, defaultContent) {
-  // Validate required fields and log missing ones
-  const requiredFields = {
-    HeaderSection: ["TeReoTitle", "EnglishTitle", "BackgroundHeaderImage"],
-    MihiSection: ["Title", "MihiShortened", "FullMihi", "Image"],
-    Button: ["EnglishLabel", "TeReoLabel", "href"],
-  };
-
-  Object.entries(requiredFields).forEach(([section, fields]) => {
-    fields.forEach((field) => {
-      if (!homeContent[section]?.[field]) {
-        console.warn(`⚠️ Missing required field: ${section}.${field}`);
-      }
-    });
-  });
-
   // Extract data from potentially nested Strapi response
   const extractField = (section, field) => {
     return (
@@ -753,27 +705,15 @@ export async function loadSiteContent() {
       const rawData = result.status === "fulfilled" ? result.value : null;
 
       if (!rawData) {
-        console.warn(
-          `⚠️ No ${pageName} data received from Strapi, using defaults`
-        );
+        // Using default content
       }
 
       allContent[pageName] = transformPageData(pageName, rawData);
     });
 
     return allContent;
-  } catch (error) {
-    console.error("❌ Error loading site content:", error);
-    if (error.response) {
-      console.error("❌ Strapi response status:", error.response.status);
-      console.error("❌ Strapi error details:", error.response.data);
-    }
-    if (!import.meta.env.VITE_STRAPI_API_URL) {
-      console.error("❌ Missing VITE_STRAPI_API_URL environment variable");
-    }
-    if (!import.meta.env.VITE_STRAPI_API_TOKEN) {
-      console.error("❌ Missing VITE_STRAPI_API_TOKEN environment variable");
-    }
+  } catch {
+    // Error loading content, using defaults
 
     // Return default content for all pages
     const fallbackContent = {};

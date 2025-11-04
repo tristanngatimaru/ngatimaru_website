@@ -219,7 +219,7 @@ function Home() {
                 </div>
               </div>
 
-              <style jsx>{`
+              <style>{`
                 @keyframes pulse-outline {
                   0%,
                   70%,
