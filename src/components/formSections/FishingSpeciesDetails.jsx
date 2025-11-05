@@ -165,7 +165,11 @@ const FishingSpeciesDetails = ({
                   min="1"
                   value={species.AmountRequested}
                   onChange={(e) =>
-                    handleSpeciesChange(index, "AmountRequested", e.target.value)
+                    handleSpeciesChange(
+                      index,
+                      "AmountRequested",
+                      e.target.value
+                    )
                   }
                   className={`bg-gray-50 border ${
                     errors[`Species_${index}_AmountRequested`]

@@ -180,7 +180,8 @@ export const useFishingPermitForm = () => {
         newErrors[`Species_${index}_AreaLanded`] = "Area landed is required";
       }
       if (!species.AmountRequested || species.AmountRequested <= 0) {
-        newErrors[`Species_${index}_AmountRequested`] = "Amount requested is required and must be greater than 0";
+        newErrors[`Species_${index}_AmountRequested`] =
+          "Amount requested is required and must be greater than 0";
       }
     });
 

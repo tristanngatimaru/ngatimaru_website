@@ -138,6 +138,7 @@ function Fishing() {
             HarvestMethodDrop: species.HarvestMethodDrop,
             AreaTaken: species.AreaTaken,
             AreaLanded: species.AreaLanded,
+            AmountRequested: parseInt(species.AmountRequested, 10) || 0,
           })),
         },
       };
