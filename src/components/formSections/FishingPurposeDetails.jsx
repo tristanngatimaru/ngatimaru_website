@@ -73,7 +73,7 @@ const FishingPurposeDetails = ({ formData, handleChange, errors }) => {
         {/* Location to be used at */}
         <div className="sm:col-span-2">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Location/Venue to be Used At <span className="text-red-500">*</span>
+            To be used at (Address) <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -82,17 +82,17 @@ const FishingPurposeDetails = ({ formData, handleChange, errors }) => {
             className={`bg-gray-50 border ${
               errors.ToBeUsedAt ? "border-red-500" : "border-gray-300"
             } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
-            placeholder="Where will the fishing take place"
+            placeholder="Enter the address where the hui will take place"
           />
           {errors.ToBeUsedAt && (
             <p className="text-red-600 text-sm mt-1">{errors.ToBeUsedAt}</p>
           )}
         </div>
 
-        {/* Date to be used */}
+        {/* Date of Hui */}
         <div className="sm:col-span-1">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Date to be Used When <span className="text-red-500">*</span>
+            Date of Hui <span className="text-red-500">*</span>
           </label>
           <input
             type="date"

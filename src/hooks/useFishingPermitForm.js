@@ -34,6 +34,7 @@ export const useFishingPermitForm = () => {
         HarvestMethodDrop: "",
         AreaTaken: "",
         AreaLanded: "",
+        AmountRequested: "",
       },
     ],
   });
@@ -105,6 +106,7 @@ export const useFishingPermitForm = () => {
           HarvestMethodDrop: "",
           AreaTaken: "",
           AreaLanded: "",
+          AmountRequested: "",
         },
       ],
     }));
@@ -177,6 +179,9 @@ export const useFishingPermitForm = () => {
       if (!species.AreaLanded.trim()) {
         newErrors[`Species_${index}_AreaLanded`] = "Area landed is required";
       }
+      if (!species.AmountRequested || species.AmountRequested <= 0) {
+        newErrors[`Species_${index}_AmountRequested`] = "Amount requested is required and must be greater than 0";
+      }
     });
 
     setErrors(newErrors);
@@ -210,6 +215,7 @@ export const useFishingPermitForm = () => {
           HarvestMethodDrop: "",
           AreaTaken: "",
           AreaLanded: "",
+          AmountRequested: "",
         },
       ],
     });

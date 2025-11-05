@@ -29,7 +29,7 @@ const FishingPersonalDetails = ({ formData, handleChange, errors }) => {
         {formData.ApplyingUnderMaoriRights && (
           <div className="sm:col-span-2">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Iwi Claim
+              What Iwi are you claiming under?
             </label>
             <input
               type="text"
@@ -38,7 +38,7 @@ const FishingPersonalDetails = ({ formData, handleChange, errors }) => {
               className={`bg-gray-50 border ${
                 errors.IwiClaim ? "border-red-500" : "border-gray-300"
               } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
-              placeholder="Enter your iwi claim details"
+              placeholder="Enter the iwi you are claiming under"
             />
             {errors.IwiClaim && (
               <p className="text-red-600 text-sm mt-1">{errors.IwiClaim}</p>

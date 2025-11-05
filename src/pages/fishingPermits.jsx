@@ -68,12 +68,14 @@ function Fishing() {
           HarvestMethodDrop: "Rod and Line",
           AreaTaken: "Coromandel Peninsula Waters",
           AreaLanded: "Mercury Bay",
+          AmountRequested: "15",
         },
         {
           SpeciesName: "Kahawai",
           HarvestMethodDrop: "Net",
           AreaTaken: "Thames Estuary",
           AreaLanded: "Thames Wharf",
+          AmountRequested: "25",
         },
       ],
     };
