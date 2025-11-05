@@ -74,22 +74,33 @@ const FishingSpeciesDetails = ({
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Harvest Method <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  value={species.HarvestMethod}
+                <select
+                  value={species.HarvestMethodDrop}
                   onChange={(e) =>
-                    handleSpeciesChange(index, "HarvestMethod", e.target.value)
+                    handleSpeciesChange(
+                      index,
+                      "HarvestMethodDrop",
+                      e.target.value
+                    )
                   }
                   className={`bg-gray-50 border ${
-                    errors[`Species_${index}_HarvestMethod`]
+                    errors[`Species_${index}_HarvestMethodDrop`]
                       ? "border-red-500"
                       : "border-gray-300"
                   } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
-                  placeholder="e.g., Rod and Line, Net, Trap/Pot, Spear"
-                />
-                {errors[`Species_${index}_HarvestMethod`] && (
+                >
+                  <option value="">Select harvest method</option>
+                  <option value="Rod and Line">Rod and Line</option>
+                  <option value="Net">Net</option>
+                  <option value="Trap/Pot">Trap/Pot</option>
+                  <option value="Spear">Spear</option>
+                  <option value="Hand Collection">Hand Collection</option>
+                  <option value="Dive">Dive</option>
+                  <option value="Other">Other</option>
+                </select>
+                {errors[`Species_${index}_HarvestMethodDrop`] && (
                   <p className="text-red-600 text-sm mt-1">
-                    {errors[`Species_${index}_HarvestMethod`]}
+                    {errors[`Species_${index}_HarvestMethodDrop`]}
                   </p>
                 )}
               </div>
@@ -140,31 +151,6 @@ const FishingSpeciesDetails = ({
                 {errors[`Species_${index}_AreaLanded`] && (
                   <p className="text-red-600 text-sm mt-1">
                     {errors[`Species_${index}_AreaLanded`]}
-                  </p>
-                )}
-              </div>
-
-              {/* Time of Harvest */}
-              <div className="sm:col-span-2">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Time of Harvest <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="datetime-local"
-                  value={species.TimeOfHarves}
-                  onChange={(e) =>
-                    handleSpeciesChange(index, "TimeOfHarves", e.target.value)
-                  }
-                  className={`bg-gray-50 border ${
-                    errors[`Species_${index}_TimeOfHarves`]
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
-                  min={new Date().toISOString().slice(0, 16)}
-                />
-                {errors[`Species_${index}_TimeOfHarves`] && (
-                  <p className="text-red-600 text-sm mt-1">
-                    {errors[`Species_${index}_TimeOfHarves`]}
                   </p>
                 )}
               </div>

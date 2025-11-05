@@ -17,15 +17,23 @@ export const useFishingPermitForm = () => {
     ToBeUsedAt: "",
     ToBeUsedWhen: "",
     VenueContactNumber: "",
+    TimeOfHarvest: "",
+
+    // Harvesters - array of harvester objects
+    Harvesters: [
+      {
+        FirstName: "",
+        LastName: "",
+      },
+    ],
 
     // Species - array of species objects
     Species: [
       {
         SpeciesName: "",
-        HarvestMethod: "",
+        HarvestMethodDrop: "",
         AreaTaken: "",
         AreaLanded: "",
-        TimeOfHarves: "",
       },
     ],
   });
@@ -47,6 +55,37 @@ export const useFishingPermitForm = () => {
     }
   };
 
+  const handleHarvesterChange = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      Harvesters: prev.Harvesters.map((harvester, i) =>
+        i === index ? { ...harvester, [field]: value } : harvester
+      ),
+    }));
+  };
+
+  const addHarvester = () => {
+    setFormData((prev) => ({
+      ...prev,
+      Harvesters: [
+        ...prev.Harvesters,
+        {
+          FirstName: "",
+          LastName: "",
+        },
+      ],
+    }));
+  };
+
+  const removeHarvester = (index) => {
+    if (formData.Harvesters.length > 1) {
+      setFormData((prev) => ({
+        ...prev,
+        Harvesters: prev.Harvesters.filter((_, i) => i !== index),
+      }));
+    }
+  };
+
   const handleSpeciesChange = (index, field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -63,10 +102,9 @@ export const useFishingPermitForm = () => {
         ...prev.Species,
         {
           SpeciesName: "",
-          HarvestMethod: "",
+          HarvestMethodDrop: "",
           AreaTaken: "",
           AreaLanded: "",
-          TimeOfHarves: "",
         },
       ],
     }));
@@ -109,14 +147,26 @@ export const useFishingPermitForm = () => {
     if (!formData.ToBeUsedWhen) newErrors.ToBeUsedWhen = "Date is required";
     if (!formData.VenueContactNumber.trim())
       newErrors.VenueContactNumber = "Venue contact number is required";
+    if (!formData.TimeOfHarvest)
+      newErrors.TimeOfHarvest = "Time of harvest is required";
+
+    // Validate harvesters
+    formData.Harvesters.forEach((harvester, index) => {
+      if (!harvester.FirstName.trim()) {
+        newErrors[`Harvesters_${index}_FirstName`] = "First name is required";
+      }
+      if (!harvester.LastName.trim()) {
+        newErrors[`Harvesters_${index}_LastName`] = "Last name is required";
+      }
+    });
 
     // Validate species
     formData.Species.forEach((species, index) => {
       if (!species.SpeciesName.trim()) {
         newErrors[`Species_${index}_SpeciesName`] = "Species name is required";
       }
-      if (!species.HarvestMethod.trim()) {
-        newErrors[`Species_${index}_HarvestMethod`] =
+      if (!species.HarvestMethodDrop.trim()) {
+        newErrors[`Species_${index}_HarvestMethodDrop`] =
           "Harvest method is required";
       }
       if (!species.AreaTaken.trim()) {
@@ -124,10 +174,6 @@ export const useFishingPermitForm = () => {
       }
       if (!species.AreaLanded.trim()) {
         newErrors[`Species_${index}_AreaLanded`] = "Area landed is required";
-      }
-      if (!species.TimeOfHarves) {
-        newErrors[`Species_${index}_TimeOfHarves`] =
-          "Time of harvest is required";
       }
     });
 
@@ -149,13 +195,19 @@ export const useFishingPermitForm = () => {
       ToBeUsedAt: "",
       ToBeUsedWhen: "",
       VenueContactNumber: "",
+      TimeOfHarvest: "",
+      Harvesters: [
+        {
+          FirstName: "",
+          LastName: "",
+        },
+      ],
       Species: [
         {
           SpeciesName: "",
-          HarvestMethod: "",
+          HarvestMethodDrop: "",
           AreaTaken: "",
           AreaLanded: "",
-          TimeOfHarves: "",
         },
       ],
     });
@@ -166,6 +218,9 @@ export const useFishingPermitForm = () => {
     formData,
     errors,
     handleChange,
+    handleHarvesterChange,
+    addHarvester,
+    removeHarvester,
     handleSpeciesChange,
     addSpecies,
     removeSpecies,

@@ -5,6 +5,7 @@ import { getFishingPermitContent } from "@/api/siteContent";
 import { useFishingPermitForm } from "../hooks/useFishingPermitForm";
 import FishingPersonalDetails from "../components/formSections/FishingPersonalDetails";
 import FishingPurposeDetails from "../components/formSections/FishingPurposeDetails";
+import FishingHarvesters from "../components/formSections/FishingHarvesters";
 import FishingSpeciesDetails from "../components/formSections/FishingSpeciesDetails";
 import FadeInOnLoad from "@/components/loadonstartanimation";
 import FadeInSection from "@/components/fadeinanimation";
@@ -23,6 +24,9 @@ function Fishing() {
     formData,
     errors,
     handleChange,
+    handleHarvesterChange,
+    addHarvester,
+    removeHarvester,
     handleSpeciesChange,
     addSpecies,
     removeSpecies,
@@ -44,22 +48,31 @@ function Fishing() {
       PurposeForFishing: true,
       NumberAttending: "5",
       ToBeUsedAt: "Community Marae",
-      ToBeUsedWhen: "2025-09-15",
+      ToBeUsedWhen: "2025-12-15",
       VenueContactNumber: "07 867 9104",
+      TimeOfHarvest: "2025-12-15T08:00",
+      Harvesters: [
+        {
+          FirstName: "John",
+          LastName: "Tester",
+        },
+        {
+          FirstName: "Jane",
+          LastName: "Smith",
+        },
+      ],
       Species: [
         {
           SpeciesName: "Snapper",
-          HarvestMethod: "Rod and Line",
+          HarvestMethodDrop: "Rod and Line",
           AreaTaken: "Coromandel Peninsula Waters",
           AreaLanded: "Mercury Bay",
-          TimeOfHarves: "2025-09-15T08:00",
         },
         {
           SpeciesName: "Kahawai",
-          HarvestMethod: "Net",
+          HarvestMethodDrop: "Net",
           AreaTaken: "Thames Estuary",
           AreaLanded: "Thames Wharf",
-          TimeOfHarves: "2025-09-15T14:00",
         },
       ],
     };
@@ -110,13 +123,11 @@ function Fishing() {
           ToBeUsedAt: formData.ToBeUsedAt,
           ToBeUsedWhen: formData.ToBeUsedWhen,
           VenueContactNumber: formData.VenueContactNumber,
-          // Convert datetime-local to ISO string for TimeOfHarves
-          Species: formData.Species.map((species) => ({
-            ...species,
-            TimeOfHarves: species.TimeOfHarves
-              ? new Date(species.TimeOfHarves).toISOString()
-              : null,
-          })),
+          TimeOfHarvest: formData.TimeOfHarvest
+            ? new Date(formData.TimeOfHarvest).toISOString()
+            : null,
+          Harvesters: formData.Harvesters,
+          Species: formData.Species,
         },
       };
 
@@ -306,6 +317,18 @@ function Fishing() {
                 />
               </div>
             </FadeInSection>
+
+            <div className="lg:col-span-2">
+              <FadeInSection>
+                <FishingHarvesters
+                  formData={formData}
+                  handleHarvesterChange={handleHarvesterChange}
+                  addHarvester={addHarvester}
+                  removeHarvester={removeHarvester}
+                  errors={errors}
+                />
+              </FadeInSection>
+            </div>
 
             <div className="lg:col-span-2">
               <FadeInSection>

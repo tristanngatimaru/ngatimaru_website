@@ -88,9 +88,9 @@ const FishingPurposeDetails = ({ formData, handleChange, errors }) => {
         </div>
 
         {/* Date to be used */}
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-1">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Date of Fishing <span className="text-red-500">*</span>
+            Date to be Used When <span className="text-red-500">*</span>
           </label>
           <input
             type="date"
@@ -103,6 +103,25 @@ const FishingPurposeDetails = ({ formData, handleChange, errors }) => {
           />
           {errors.ToBeUsedWhen && (
             <p className="text-red-600 text-sm mt-1">{errors.ToBeUsedWhen}</p>
+          )}
+        </div>
+
+        {/* Time of Harvest */}
+        <div className="sm:col-span-1">
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Time of Harvest <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="datetime-local"
+            value={formData.TimeOfHarvest}
+            onChange={(e) => handleChange("TimeOfHarvest")(e.target.value)}
+            className={`bg-gray-50 border ${
+              errors.TimeOfHarvest ? "border-red-500" : "border-gray-300"
+            } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
+            min={new Date().toISOString().slice(0, 16)}
+          />
+          {errors.TimeOfHarvest && (
+            <p className="text-red-600 text-sm mt-1">{errors.TimeOfHarvest}</p>
           )}
         </div>
       </div>
