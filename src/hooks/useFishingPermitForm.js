@@ -12,7 +12,7 @@ export const useFishingPermitForm = () => {
     StreetAddress: "",
 
     // Fishing Purpose
-    PurposeForFishing: false,
+    PurposeForHui: "",
     NumberAttending: "",
     ToBeUsedAt: "",
     ToBeUsedWhen: "",
@@ -140,6 +140,8 @@ export const useFishingPermitForm = () => {
     }
 
     // Required fishing purpose fields
+    if (!formData.PurposeForHui.trim())
+      newErrors.PurposeForHui = "Purpose for hui is required";
     if (!formData.NumberAttending.trim())
       newErrors.NumberAttending = "Number attending is required";
     if (!formData.ToBeUsedAt.trim())
@@ -190,7 +192,7 @@ export const useFishingPermitForm = () => {
       EmailAddress: "",
       PhoneNumber: "",
       StreetAddress: "",
-      PurposeForFishing: false,
+      PurposeForHui: "",
       NumberAttending: "",
       ToBeUsedAt: "",
       ToBeUsedWhen: "",

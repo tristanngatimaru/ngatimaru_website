@@ -8,21 +8,23 @@ const FishingPurposeDetails = ({ formData, handleChange, errors }) => {
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Purpose for Fishing */}
+        {/* Purpose for Hui */}
         <div className="sm:col-span-2">
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={formData.PurposeForFishing}
-              onChange={(e) =>
-                handleChange("PurposeForFishing")(e.target.checked)
-              }
-              className="rounded border-gray-300 text-emerald-600 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
-            />
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Commercial/Customary Fishing Purpose
-            </label>
-          </div>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            Purpose for Hui <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={formData.PurposeForHui}
+            onChange={(e) => handleChange("PurposeForHui")(e.target.value)}
+            className={`bg-gray-50 border ${
+              errors.PurposeForHui ? "border-red-500" : "border-gray-300"
+            } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 min-h-[100px]`}
+            placeholder="Describe the purpose of this hui and how the harvested seafood will be used"
+            rows="4"
+          />
+          {errors.PurposeForHui && (
+            <p className="text-red-600 text-sm mt-1">{errors.PurposeForHui}</p>
+          )}
         </div>
 
         {/* Number Attending */}

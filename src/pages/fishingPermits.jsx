@@ -45,7 +45,8 @@ function Fishing() {
       EmailAddress: "john.tester@example.com",
       PhoneNumber: "021 123 4567",
       StreetAddress: "123 Test Street, Test Town, 1234",
-      PurposeForFishing: true,
+      PurposeForHui:
+        "This hui is for our annual whānau gathering where we will share traditional kai moana with our community. The harvested seafood will be prepared using customary methods and shared among 50+ whānau members to celebrate our cultural heritage and strengthen our connection to the moana.",
       NumberAttending: "5",
       ToBeUsedAt: "Community Marae",
       ToBeUsedWhen: "2025-12-15",
@@ -116,7 +117,7 @@ function Fishing() {
           EmailAddress: formData.EmailAddress,
           PhoneNumber: formData.PhoneNumber,
           StreetAddress: formData.StreetAddress,
-          PurposeForFishing: formData.PurposeForFishing,
+          PurposeForHui: formData.PurposeForHui,
           NumberAttending: formData.NumberAttending,
           ToBeUsedAt: formData.ToBeUsedAt,
           ToBeUsedWhen: formData.ToBeUsedWhen,
