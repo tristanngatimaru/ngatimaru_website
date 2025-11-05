@@ -109,16 +109,14 @@ function Fishing() {
       // Prepare the data according to Strapi API format
       const payload = {
         data: {
-          ApplyingUnderMaoriRights: formData.ApplyingUnderMaoriRights
-            ? true
-            : false,
+          ApplyingUnderMaoriRights: formData.ApplyingUnderMaoriRights,
           IwiClaim: formData.IwiClaim || "",
           FirstName: formData.FirstName,
           LastName: formData.LastName,
           EmailAddress: formData.EmailAddress,
           PhoneNumber: formData.PhoneNumber,
           StreetAddress: formData.StreetAddress,
-          PurposeForFishing: formData.PurposeForFishing ? true : false,
+          PurposeForFishing: formData.PurposeForFishing,
           NumberAttending: formData.NumberAttending,
           ToBeUsedAt: formData.ToBeUsedAt,
           ToBeUsedWhen: formData.ToBeUsedWhen,
@@ -126,8 +124,18 @@ function Fishing() {
           TimeOfHarvest: formData.TimeOfHarvest
             ? new Date(formData.TimeOfHarvest).toISOString()
             : null,
-          Harvesters: formData.Harvesters,
-          Species: formData.Species,
+          // Format Harvesters as repeatable component
+          Harvesters: formData.Harvesters.map((harvester) => ({
+            FirstName: harvester.FirstName,
+            LastName: harvester.LastName,
+          })),
+          // Format Species as repeatable component
+          Species: formData.Species.map((species) => ({
+            SpeciesName: species.SpeciesName,
+            HarvestMethodDrop: species.HarvestMethodDrop,
+            AreaTaken: species.AreaTaken,
+            AreaLanded: species.AreaLanded,
+          })),
         },
       };
 
@@ -142,13 +150,20 @@ function Fishing() {
       });
 
       if (!response.ok) {
-        throw new Error("Submission failed");
+        const errorData = await response.json();
+        console.error("Strapi API Error:", errorData);
+        throw new Error(
+          `Submission failed: ${errorData.error?.message || response.statusText}`
+        );
       }
 
       setShowSuccessModal(true);
       resetForm();
-    } catch {
-      setSubmitError("Failed to submit application. Please try again.");
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitError(
+        error.message || "Failed to submit application. Please try again."
+      );
       setShowErrorModal(true);
     } finally {
       setSubmitting(false);
