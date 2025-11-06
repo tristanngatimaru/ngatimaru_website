@@ -18,6 +18,7 @@ export const useFishingPermitForm = () => {
     ToBeUsedWhen: "",
     VenueContactNumber: "",
     TimeOfHarvest: "",
+    PermitPickupTime: "",
 
     // Harvesters - array of harvester objects
     Harvesters: [
@@ -153,6 +154,8 @@ export const useFishingPermitForm = () => {
       newErrors.VenueContactNumber = "Venue contact number is required";
     if (!formData.TimeOfHarvest)
       newErrors.TimeOfHarvest = "Time of harvest is required";
+    if (!formData.PermitPickupTime)
+      newErrors.PermitPickupTime = "Permit pickup time is required";
 
     // Validate harvesters
     formData.Harvesters.forEach((harvester, index) => {
@@ -204,6 +207,7 @@ export const useFishingPermitForm = () => {
       ToBeUsedWhen: "",
       VenueContactNumber: "",
       TimeOfHarvest: "",
+      PermitPickupTime: "",
       Harvesters: [
         {
           FirstName: "",

@@ -52,6 +52,7 @@ function Fishing() {
       ToBeUsedWhen: "2025-12-15",
       VenueContactNumber: "07 867 9104",
       TimeOfHarvest: "2025-12-15T08:00",
+      PermitPickupTime: "2025-12-14T14:00",
       Harvesters: [
         {
           FirstName: "John",
@@ -126,6 +127,9 @@ function Fishing() {
           VenueContactNumber: formData.VenueContactNumber,
           TimeOfHarvest: formData.TimeOfHarvest
             ? new Date(formData.TimeOfHarvest).toISOString()
+            : null,
+          PermitPickupTime: formData.PermitPickupTime
+            ? new Date(formData.PermitPickupTime).toISOString()
             : null,
           // Format Harvesters as repeatable component
           Harvesters: formData.Harvesters.map((harvester) => ({
