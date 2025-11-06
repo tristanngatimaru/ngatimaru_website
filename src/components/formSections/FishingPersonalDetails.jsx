@@ -4,7 +4,7 @@ const FishingPersonalDetails = ({ formData, handleChange, errors }) => {
   return (
     <div className="mb-5 w-full">
       <h3 className="text-xl font-roboto-bold text-emerald-800 mb-4">
-        Personal Details
+        Permit Holder Details
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
