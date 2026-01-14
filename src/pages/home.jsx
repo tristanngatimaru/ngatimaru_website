@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, lazy, Suspense } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
@@ -63,6 +64,7 @@ function Home() {
   const [isAppear, setAppear] = useState(false);
   const isMobile = window.innerWidth < 1024;
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadContent() {
@@ -183,14 +185,13 @@ function Home() {
                 <div className="overflow-hidden h-[80px] w-full flex justify-center">
                   <div className="transition-all duration-1000 ease-in-out">
                     <AppearRefresh delay={2200}>
-                      <a href={content.Button[0].href}>
-                        <button
-                          className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out group relative"
-                          title={content.Button[0].TeReoLabel}
-                        >
-                          <span>{content.Button[0].EnglishLabel}</span>
-                        </button>
-                      </a>
+                      <button
+                        onClick={() => navigate("/register")}
+                        className="text-center outline-2 outline-white rounded-full text-white font-bold w-[200px] h-[60px] m-2 font-roboto-thin text-2xl hover:scale-105 duration-200 ease-in-out group relative cursor-pointer"
+                        title={content.Button[0].TeReoLabel}
+                      >
+                        <span>{content.Button[0].EnglishLabel}</span>
+                      </button>
                     </AppearRefresh>
                   </div>
                 </div>
