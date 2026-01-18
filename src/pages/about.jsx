@@ -70,16 +70,16 @@ function About() {
 
         {/* page content below */}
 
-        <div className="lg:grid flex flex-col lg:grid-cols-3">
+        <div className="lg:grid flex flex-col lg:grid-cols-3 lg:grid-rows-[auto_auto_auto_auto]">
           <FadeInOnLoad delay={800} mobileDelay={600}>
             <img
               src={content.SidePanelImageOne?.url || "none"}
               alt=""
-              className="w-full min-h-[500px] lg:min-h-full object-cover object-center hidden lg:block lg:row-span-2"
+              className="h-full w-full object-cover object-center hidden lg:block lg:row-span-2"
             />
           </FadeInOnLoad>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center min-h-[500px] lg:min-h-[700px]">
+          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
             <div className="p-6 lg:p-10 flex-1 flex flex-col justify-center">
               <FadeInOnLoad delay={800} mobileDelay={600}>
                 <p className="font-roboto-bold text-lg lg:text-xl text-center lg:text-right pb-5 lg:pb-0">
@@ -160,7 +160,7 @@ function About() {
             )}
           </div>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center min-h-[500px] lg:min-h-[700px]">
+          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
             <div className="p-6 lg:p-10 flex-1 flex flex-col justify-center">
               <FadeInSection delay={400}>
                 {/* Mobile section with inner shadow and extra spacing */}
@@ -184,12 +184,12 @@ function About() {
             </div>
           </div>
 
-          <div className="hidden lg:block">
+          <div className="lg:row-span-2 hidden lg:block">
             <FadeInSection>
               <img
                 src={content.SidePanelImageTwo?.url || "placeholder"}
                 alt=""
-                className="w-full min-h-[500px] lg:min-h-full object-cover object-center"
+                className="h-full w-full object-cover object-center"
               />
             </FadeInSection>
           </div>
