@@ -70,17 +70,17 @@ function About() {
 
         {/* page content below */}
 
-        <div className=" lg:grid flex flex-col lg:grid-cols-3 grid-cols-2 grid-rows-[500px_auto_auto_auto_500px] md:grid-rows-[700px_auto_auto_auto_700px]">
+        <div className="lg:grid flex flex-col lg:grid-cols-3">
           <FadeInOnLoad delay={800} mobileDelay={600}>
             <img
               src={content.SidePanelImageOne?.url || "none"}
               alt=""
-              className="h-full object-cover overflow-hidden object-center hidden lg:block row-span-2"
+              className="w-full min-h-[500px] lg:min-h-full object-cover object-center hidden lg:block lg:row-span-2"
             />
           </FadeInOnLoad>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
-            <div className="p-6 lg:p-10">
+          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center min-h-[500px] lg:min-h-[700px]">
+            <div className="p-6 lg:p-10 flex-1 flex flex-col justify-center">
               <FadeInOnLoad delay={800} mobileDelay={600}>
                 <p className="font-roboto-bold text-lg lg:text-xl text-center lg:text-right pb-5 lg:pb-0">
                   {content.ContentHeader
@@ -160,8 +160,8 @@ function About() {
             )}
           </div>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
-            <div className="p-6 lg:p-10">
+          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center min-h-[500px] lg:min-h-[700px]">
+            <div className="p-6 lg:p-10 flex-1 flex flex-col justify-center">
               <FadeInSection delay={400}>
                 {/* Mobile section with inner shadow and extra spacing */}
                 <div className="lg:shadow-none shadow-inner bg-gray-50 lg:bg-transparent  lg:rounded-none py-12 lg:py-0 px-6 lg:px-0 my-8 lg:my-0">
@@ -184,12 +184,12 @@ function About() {
             </div>
           </div>
 
-          <div className="row-span-2 col-start-3 row-start-4 hidden lg:block">
+          <div className="hidden lg:block">
             <FadeInSection>
               <img
                 src={content.SidePanelImageTwo?.url || "placeholder"}
                 alt=""
-                className=" h-full object-cover overflow-hidden object-center"
+                className="w-full min-h-[500px] lg:min-h-full object-cover object-center"
               />
             </FadeInSection>
           </div>
