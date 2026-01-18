@@ -60,7 +60,7 @@ function About() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <FadeInOnLoad delay={500} mobileDelay={200}>
         <HeroHeader
           image={content.Header?.BackgroundHeaderImage?.url || null} // TODO: Load from Strapi, no static fallback
@@ -70,17 +70,19 @@ function About() {
 
         {/* page content below */}
 
-        <div className="lg:grid flex flex-col lg:grid-cols-3 lg:grid-rows-[auto_auto_auto_auto]">
+        <div className="h-full lg:grid flex flex-col lg:grid-cols-3 lg:grid-rows-[auto_auto_auto]">
           <FadeInOnLoad delay={800} mobileDelay={600}>
-            <img
-              src={content.SidePanelImageOne?.url || "none"}
-              alt=""
-              className="h-full w-full object-cover object-center hidden lg:block lg:row-span-2"
-            />
+            <div className="lg:h-full bg-red-500 hidden lg:block lg:row-span-1">
+              <img
+                src={content.SidePanelImageOne?.url || "none"}
+                alt=""
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
           </FadeInOnLoad>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
-            <div className="p-6 lg:p-10 flex-1 flex flex-col justify-center">
+          <div className="lg:col-span-2 lg:row-span-1 lg:p-16 flex flex-col justify-center">
+            <div className="p-6 lg:p-10">
               <FadeInOnLoad delay={800} mobileDelay={600}>
                 <p className="font-roboto-bold text-lg lg:text-xl text-center lg:text-right pb-5 lg:pb-0">
                   {content.ContentHeader
@@ -96,7 +98,7 @@ function About() {
             </div>
           </div>
           {/* Team member cards - Mobile responsive layout */}
-          <div className="lg:col-span-3 lg:row-start-3">
+          <div className="lg:col-span-3 lg:row-start-2 ">
             {content.FaceCard && content.FaceCard.length > 0 ? (
               // Dynamic team members from Strapi
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-0 px-4 lg:px-0">
@@ -160,11 +162,11 @@ function About() {
             )}
           </div>
 
-          <div className="lg:col-span-2 lg:row-span-2 lg:p-16 flex flex-col justify-center">
-            <div className="p-6 lg:p-10 flex-1 flex flex-col justify-center">
+          <div className="lg:col-span-2 lg:row-span-1  lg:p-16 flex flex-col justify-center">
+            <div className="p-6 lg:p-10">
               <FadeInSection delay={400}>
                 {/* Mobile section with inner shadow and extra spacing */}
-                <div className="lg:shadow-none shadow-inner bg-gray-50 lg:bg-transparent  lg:rounded-none py-12 lg:py-0 px-6 lg:px-0 my-8 lg:my-0">
+                <div className="lg:shadow-none shadow-inner  lg:bg-transparent  lg:rounded-none py-12 lg:py-0 px-6 lg:px-0 my-8 lg:my-0">
                   <div className="text-center mb-8">
                     <h2 className="font-roboto-bold text-2xl lg:text-3xl text-gray-800 mb-3">
                       {content.TrusteesTitle || "Trustees"}
@@ -184,13 +186,15 @@ function About() {
             </div>
           </div>
 
-          <div className="lg:row-span-2 hidden lg:block">
+          <div className="row-span-1 col-start-3 row-start-3 hidden lg:block">
             <FadeInSection>
-              <img
-                src={content.SidePanelImageTwo?.url || "placeholder"}
-                alt=""
-                className="h-full w-full object-cover object-center"
-              />
+              <div className="h-full">
+                <img
+                  src={content.SidePanelImageTwo?.url || "placeholder"}
+                  alt=""
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
             </FadeInSection>
           </div>
         </div>
