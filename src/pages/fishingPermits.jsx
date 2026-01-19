@@ -266,6 +266,10 @@ function Fishing() {
                   Your fishing permit application has been received and is being
                   processed.
                 </p>
+                <p className="text-gray-600 mb-4">
+                  All 📍 Permits to be picked up from Ngāti Maru Office, 111
+                  Queen Street Thames.
+                </p>
                 <div className="flex justify-end">
                   <button
                     onClick={() => setShowSuccessModal(false)}
