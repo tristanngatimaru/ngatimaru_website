@@ -22,7 +22,7 @@ function Posts() {
         const data = await getBlogPosts({
           sort: ["publishedAt:desc"],
           pagination: {
-            limit: 2,
+            limit: 3,
           },
         });
 
