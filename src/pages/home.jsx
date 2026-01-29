@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import FadeInOnLoad from "../components/loadonstartanimation";
 import AppearRefresh from "../components/appearrefresh";
 import SmartImage from "../components/SmartImage";
+import FadeInSection from "../components/fadeinanimation";
 import { getHomeContent } from "../api/siteContent";
 import { cachedFetch } from "../utils/lazyLoader";
 import { formatTextWithLineBreaks } from "../utils/textFormatter.jsx";
@@ -13,42 +14,6 @@ const Navbar = lazy(() => import("../components/navbar"));
 const Posts = lazy(() => import("../components/posts"));
 const Footer = lazy(() => import("../components/footer"));
 const HamburgerNav = lazy(() => import("../components/hamburgerNav"));
-
-function FadeInSection({ children }) {
-  const ref = useRef();
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      {
-        threshold: 0.5,
-      }
-    );
-
-    const currentRef = ref.current;
-    if (currentRef) observer.observe(currentRef);
-
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-[2000ms] ease-in-out ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
-      }`}
-    >
-      {children}
-    </div>
-  );
-}
 
 // Component loading fallback
 const ComponentLoader = ({ name }) => (
