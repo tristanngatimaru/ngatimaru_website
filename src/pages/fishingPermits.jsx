@@ -32,58 +32,7 @@ function Fishing() {
     removeSpecies,
     validateForm,
     resetForm,
-    setFormData,
   } = useFishingPermitForm();
-
-  // Autofill function for testing
-  const autofillTestData = () => {
-    const testData = {
-      ApplyingUnderMaoriRights: true,
-      IwiClaim: "Test Iwi Claim for Testing Purposes",
-      FirstName: "John",
-      LastName: "Tester",
-      EmailAddress: "john.tester@example.com",
-      PhoneNumber: "021 123 4567",
-      StreetAddress: "123 Test Street, Test Town, 1234",
-      PurposeForHui:
-        "This hui is for our annual whānau gathering where we will share traditional kai moana with our community. The harvested seafood will be prepared using customary methods and shared among 50+ whānau members to celebrate our cultural heritage and strengthen our connection to the moana.",
-      NumberAttending: "5",
-      ToBeUsedAt: "Community Marae",
-      ToBeUsedWhen: "2025-12-15",
-      VenueContactNumber: "07 867 9104",
-      TimeOfHarvest: "2025-12-15T08:00",
-      PermitPickupTime: "2025-12-14T14:00",
-      Harvesters: [
-        {
-          FirstName: "John",
-          LastName: "Tester",
-        },
-        {
-          FirstName: "Jane",
-          LastName: "Smith",
-        },
-      ],
-      Species: [
-        {
-          SpeciesName: "Snapper",
-          HarvestMethodDrop: "Rod and Line",
-          AreaTaken: "Coromandel Peninsula Waters",
-          AreaLanded: "Mercury Bay",
-          AmountRequested: "15",
-        },
-        {
-          SpeciesName: "Kahawai",
-          HarvestMethodDrop: "Net",
-          AreaTaken: "Thames Estuary",
-          AreaLanded: "Thames Wharf",
-          AmountRequested: "25",
-        },
-      ],
-    };
-
-    // Set the entire form data with test values
-    setFormData(testData);
-  };
 
   useEffect(() => {
     async function loadContent() {
@@ -161,7 +110,7 @@ function Fishing() {
         const errorData = await response.json();
         console.error("Strapi API Error:", errorData);
         throw new Error(
-          `Submission failed: ${errorData.error?.message || response.statusText}`
+          `Submission failed: ${errorData.error?.message || response.statusText}`,
         );
       }
 
@@ -170,7 +119,7 @@ function Fishing() {
     } catch (error) {
       console.error("Form submission error:", error);
       setSubmitError(
-        error.message || "Failed to submit application. Please try again."
+        error.message || "Failed to submit application. Please try again.",
       );
       setShowErrorModal(true);
     } finally {
@@ -371,14 +320,6 @@ function Fishing() {
 
             {/* Submit Button */}
             <div className="lg:col-span-2 flex flex-col sm:flex-row justify-end mt-6 md:mt-10 space-y-3 sm:space-y-0 sm:space-x-4">
-              <button
-                type="button"
-                onClick={autofillTestData}
-                className="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                disabled={submitting}
-              >
-                Autofill Test Data
-              </button>
               <button
                 type="button"
                 onClick={resetForm}

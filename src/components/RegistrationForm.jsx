@@ -76,81 +76,6 @@ const RegistrationForm = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  // Autofill function for testing
-  const autofillTestData = () => {
-    const testData = {
-      // Personal Information
-      PersonalSalutaion: "Mr",
-      PersonalGender: "Male",
-      PersonalBirthDate: "1985-03-15",
-      PersonalFirstName: "Tane",
-      PersonalLastName: "Mahuta",
-      PersonalMaidenName: "",
-      PersonalAKA: "TM",
-      PersonalOccupation: "Cultural Advisor",
-      PersonalSpouce: true,
-      PersonalContactDetails: "Available weekdays 9-5",
-      PersonalPostalAddress: "123 Maori Street, Thames, 3500",
-      PersonalHomePhone: "07 867 1234",
-      PersonalWorkPhone: "07 867 5678",
-      PersonalMobilePhone: "021 234 5678",
-      PersonalEmail: "tane.mahuta@example.com",
-
-      // Hapu & Iwi Information
-      PrincipleHapu: "Te Ahumua",
-      PrincipleOtherIwiAffiliation: "Ngāti Porou",
-      PrincipleMarae: "Tararu Marae",
-      OtherHapu: "Ngati Te Aute",
-      OtherIwiAffiliation: "Tainui",
-      OtherMarae: "Hotunui Marae",
-      DecendantAffiliation: "Ngati Maru Descendant",
-
-      // Genealogy - Father's Side (Men)
-      FatherGreatGrandFatherMen: "Wiremu Mahuta",
-      FatherGreatGrandMotherMen: "Hohepa Mahuta",
-      FatherGrandFather: "Rangi Mahuta",
-      Father: "Tama Mahuta",
-
-      // Genealogy - Father's Side (Women)
-      FatherGreatGrandFatherWomen: "Mere Mahuta",
-      FatherGreatGrandMotherWomen: "Aroha Mahuta",
-      FatherGrandMother: "Hinewai Mahuta",
-
-      // Genealogy - Mother's Side (Men)
-      MotherGreatGrandFatherMen: "Pita Wharekawa",
-      MotherGreatGrandMotherMen: "Tamati Wharekawa",
-      MotherGrandFather: "Hone Wharekawa",
-
-      // Genealogy - Mother's Side (Women)
-      MotherGreatGrandFatherWomen: "Whina Wharekawa",
-      MotherGreatGrandMotherWomen: "Maata Wharekawa",
-      MotherGrandMother: "Hinemoa Wharekawa",
-      Mother: "Kiri Wharekawa",
-
-      // Additional Information
-      AdditionalInformation:
-        "Test registration for development purposes. Active in community events and cultural preservation.",
-      AgreeToTerms: true,
-
-      // Spouse Details
-      SpouseSalutation: "Mrs",
-      SpouseGender: "Female",
-      SpouseDateOfBirth: "1987-07-22",
-      SpouseFirstName: "Aroha",
-      SpouseLastName: "Mahuta",
-      SpouseMaidenName: "Smith",
-      SpouseAlsoKnownAs: "A",
-      SpouseIwi: "Ngāti Maru",
-
-      // Postal Address
-      PostalAddress: true,
-      PostalAddressYes: "PO Box 123, Thames, 3540",
-    };
-
-    // Set the entire form data with test values
-    setFormData(testData);
-  };
-
   const totalSteps = 5;
 
   // Predefined options from Strapi validation
@@ -269,7 +194,6 @@ const RegistrationForm = () => {
     setSubmitError(null);
 
     try {
-
       // Create clean data object with only the fields Strapi expects
       const cleanFormData = {
         PersonalSalutaion: formData.PersonalSalutaion,
@@ -354,7 +278,7 @@ const RegistrationForm = () => {
         }
 
         throw new Error(
-          `HTTP ${response.status}: ${errorData?.error?.message || errorText}`
+          `HTTP ${response.status}: ${errorData?.error?.message || errorText}`,
         );
       }
 
@@ -1011,7 +935,7 @@ const RegistrationForm = () => {
                   onChange={(e) =>
                     handleInputChange(
                       "PrincipleOtherIwiAffiliation",
-                      e.target.value
+                      e.target.value,
                     )
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
@@ -1115,7 +1039,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "FatherGreatGrandFatherMen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1132,7 +1056,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "FatherGreatGrandMotherMen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1149,7 +1073,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "FatherGreatGrandFatherWomen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1166,7 +1090,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "FatherGreatGrandMotherWomen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1261,7 +1185,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "MotherGreatGrandFatherMen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1278,7 +1202,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "MotherGreatGrandMotherMen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1295,7 +1219,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "MotherGreatGrandFatherWomen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1312,7 +1236,7 @@ const RegistrationForm = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "MotherGreatGrandMotherWomen",
-                          e.target.value
+                          e.target.value,
                         )
                       }
                       className="w-full text-sm px-2 py-1 border border-emerald-300 rounded focus:ring-emerald-500 focus:border-emerald-500"
@@ -1525,36 +1449,30 @@ const RegistrationForm = () => {
           >
             Previous
           </button>
-
-          <button
-            onClick={autofillTestData}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600"
-            disabled={isSubmitting}
-          >
-            Autofill Test Data
-          </button>
         </div>
 
-        {currentStep < totalSteps ? (
-          <button
-            onClick={nextStep}
-            className="px-6 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700"
-          >
-            Next Step
-          </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !formData.AgreeToTerms}
-            className={`px-6 py-2 rounded-lg font-medium ${
-              isSubmitting || !formData.AgreeToTerms
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-emerald-600 text-white hover:bg-emerald-700"
-            }`}
-          >
-            {isSubmitting ? "Submitting..." : "Submit Registration"}
-          </button>
-        )}
+        <div>
+          {currentStep < totalSteps ? (
+            <button
+              onClick={nextStep}
+              className="px-6 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700"
+            >
+              Next Step
+            </button>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting || !formData.AgreeToTerms}
+              className={`px-6 py-2 rounded-lg font-medium ${
+                isSubmitting || !formData.AgreeToTerms
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-emerald-600 text-white hover:bg-emerald-700"
+              }`}
+            >
+              {isSubmitting ? "Submitting..." : "Submit Registration"}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

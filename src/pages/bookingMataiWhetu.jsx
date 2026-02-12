@@ -10,32 +10,32 @@ import { formatTextWithLineBreaks } from "../utils/textFormatter.jsx";
 
 // Lazy load form components
 const PersonalDetails = lazy(
-  () => import("../components/formSections/PersonalDetails")
+  () => import("../components/formSections/PersonalDetails"),
 );
 const OrganisationDetails = lazy(
-  () => import("../components/formSections/OrganisationDetails")
+  () => import("../components/formSections/OrganisationDetails"),
 );
 const PersonResponsible = lazy(
-  () => import("../components/formSections/PersonResponsible")
+  () => import("../components/formSections/PersonResponsible"),
 );
 const BookingDates = lazy(
-  () => import("../components/formSections/BookingDates")
+  () => import("../components/formSections/BookingDates"),
 );
 const WharenuiSection = lazy(
-  () => import("../components/formSections/WharenuiSection")
+  () => import("../components/formSections/WharenuiSection"),
 );
 const Acknowledgements = lazy(
-  () => import("../components/formSections/Acknowledgement")
+  () => import("../components/formSections/Acknowledgement"),
 );
 const BookingSummary = lazy(() => import("../components/bookingsummary"));
 const AblutionSection = lazy(
-  () => import("../components/formSections/AblutionSection")
+  () => import("../components/formSections/AblutionSection"),
 );
 const WharekaiSection = lazy(
-  () => import("../components/formSections/WharekaiSection")
+  () => import("../components/formSections/WharekaiSection"),
 );
 const FileAcknowledgement = lazy(
-  () => import("../components/formSections/FileAcknowledgement")
+  () => import("../components/formSections/FileAcknowledgement"),
 );
 
 // Loading component for form sections
@@ -45,51 +45,6 @@ const FormSectionLoader = () => (
     <span className="ml-2 text-sm text-gray-600">Loading...</span>
   </div>
 );
-
-// Autofill button that uses your curried handleChange properly
-const AutofillTestButton = ({ handleChange }) => {
-  const autofillData = {
-    firstName: "Hemi",
-    lastName: "Ngata",
-    phone: "0211234567",
-    email: "hemi.ngata@example.com",
-    organisationName: "Te Ao Mārama Trust",
-    detailsOfWhanauOrOrganisation:
-      "Local community trust organising whāfnau wānanga.",
-    powhiri: "Yes, we have waewae tapu",
-    firstNameResponsible: "Moana",
-    lastNameResponsible: "Ranginui",
-    phoneResponsible: "0227654321",
-    emailResponsible: "moana.r@example.com",
-    bookingPurpose: "Whānau reunion and kapa haka wānanga.",
-    bookingFrom: "2025-09-15",
-    bookingTo: "2025-09-17",
-    firstNameWharenui: "Tama",
-    lastNameWharenui: "Te Ao",
-    firstNameWharekai: "Rangi",
-    lastNameWharekai: "Whenua",
-    ablutionFirstName: "Aroha",
-    ablutionLastName: "Kōwhai",
-    agreedToTerms: true,
-    readTikangaInfoSheet: false,
-  };
-
-  const handleAutofill = () => {
-    Object.entries(autofillData).forEach(([key, value]) => {
-      handleChange(key)(value);
-    });
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={handleAutofill}
-      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-4"
-    >
-      Autofill Test Data
-    </button>
-  );
-};
 
 const MataiWhetu = () => {
   const {
@@ -198,7 +153,7 @@ const MataiWhetu = () => {
       // Handle errors
       if (response.status === 403) {
         setSubmitError(
-          "Permission denied. Please check all required fields are completed and try again."
+          "Permission denied. Please check all required fields are completed and try again.",
         );
         setShowErrorModal(true);
       } else {
@@ -207,7 +162,7 @@ const MataiWhetu = () => {
       }
     } catch {
       setSubmitError(
-        "Network error. Please check your connection and try again."
+        "Network error. Please check your connection and try again.",
       );
       setShowErrorModal(true);
     }
@@ -347,11 +302,6 @@ const MataiWhetu = () => {
           {/* Main form - Left side on desktop */}
           <div className="xl:col-start-1">
             <FadeInSection direction="left">
-              {/* Autofill button */}
-              <div className="mb-6">
-                <AutofillTestButton handleChange={handleChange} />
-              </div>
-
               <form
                 onSubmit={handleSubmit}
                 className="grid grid-cols-1 gap-4 md:gap-5"

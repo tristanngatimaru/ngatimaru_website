@@ -61,7 +61,7 @@ export const useFishingPermitForm = () => {
     setFormData((prev) => ({
       ...prev,
       Harvesters: prev.Harvesters.map((harvester, i) =>
-        i === index ? { ...harvester, [field]: value } : harvester
+        i === index ? { ...harvester, [field]: value } : harvester,
       ),
     }));
   };
@@ -92,7 +92,7 @@ export const useFishingPermitForm = () => {
     setFormData((prev) => ({
       ...prev,
       Species: prev.Species.map((species, i) =>
-        i === index ? { ...species, [field]: value } : species
+        i === index ? { ...species, [field]: value } : species,
       ),
     }));
   };
@@ -239,6 +239,5 @@ export const useFishingPermitForm = () => {
     removeSpecies,
     validateForm,
     resetForm,
-    setFormData,
   };
 };
