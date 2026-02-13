@@ -213,7 +213,7 @@ function Fishing() {
                 </div>
                 <p className="text-gray-600 mb-4">
                   Your fishing permit application has been received and is being
-                  processed.
+                  processed. We will contact you soon.
                 </p>
                 <p className="text-gray-600 mb-4">
                   All 📍 Permits to be picked up from Ngāti Maru Office, 111

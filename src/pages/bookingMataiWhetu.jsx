@@ -213,7 +213,7 @@ const MataiWhetu = () => {
               </div>
               <p className="text-gray-600 mb-4">
                 Your Matai Whetu booking has been received and is being
-                processed.
+                processed. We will contact you shortly.
               </p>
               <div className="flex justify-end">
                 <button
