@@ -10,7 +10,14 @@ const Documents = () => {
   // 🔧 DEBUG MODE - Set to true to show debug info, false to hide
   const DEBUG_MODE = false;
 
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState({
+    HeaderSection: {
+      TeReoTitle: "",
+      EnglishTitle: "",
+      BackgroundHeaderImage: { url: null },
+    },
+    Documentation: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [documentsByCategory, setDocumentsByCategory] = useState({});
@@ -35,10 +42,10 @@ const Documents = () => {
             return acc;
           }, {}) || {};
 
-        // Sort categories to put "Annual report" first
+        // Sort categories to put "Rūnanga Pānui" first
         const sortedCategories = Object.keys(grouped).sort((a, b) => {
-          if (a.toLowerCase().includes("annual report")) return -1;
-          if (b.toLowerCase().includes("annual report")) return 1;
+          if (a.toLowerCase().includes("rūnanga pānui")) return -1;
+          if (b.toLowerCase().includes("rūnanga pānui")) return 1;
           return a.localeCompare(b);
         });
 
@@ -66,8 +73,8 @@ const Documents = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading documents...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-emerald-600"></div>
       </div>
     );
   }
@@ -78,14 +85,6 @@ const Documents = () => {
         <div className="text-xl text-red-600">
           Error loading documents. Please try again later.
         </div>
-      </div>
-    );
-  }
-
-  if (!content) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">No documents content available</div>
       </div>
     );
   }

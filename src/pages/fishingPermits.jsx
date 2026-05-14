@@ -12,7 +12,14 @@ import FadeInSection from "@/components/fadeinanimation";
 import { formatTextWithLineBreaks } from "../utils/textFormatter.jsx";
 
 function Fishing() {
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState({
+    HeaderSection: {
+      TeReoTitle: "",
+      EnglishTitle: "",
+      BackgroundHeaderImage: { url: null },
+    },
+    Content: "",
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -129,8 +136,8 @@ function Fishing() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading fishing permit content...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-emerald-600"></div>
       </div>
     );
   }
@@ -141,14 +148,6 @@ function Fishing() {
         <div className="text-xl text-red-600">
           Error loading fishing permit content. Please try again later.
         </div>
-      </div>
-    );
-  }
-
-  if (!content) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">No fishing permit content available</div>
       </div>
     );
   }

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getNavigationData } from "../api/navigation";
 
 export default function HamburgerNav() {
@@ -92,14 +91,14 @@ export default function HamburgerNav() {
               : // Dynamic navigation items
                 navigationItems.map((item) => (
                   <li key={item.id}>
-                    <Link to={item.href} className="block group">
+                    <a href={item.href} className="block group">
                       <h2 className="text-2xl font-roboto-regular absolute w-full bg-white z-10">
                         {item.titleTeReo}
                       </h2>
                       <h2 className="text-xl group-hover:translate-y-8 duration-200 ease-in-out z-0">
                         {item.titleEnglish}
                       </h2>
-                    </Link>
+                    </a>
                   </li>
                 ))}
           </ul>

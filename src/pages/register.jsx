@@ -13,7 +13,15 @@ import {
 const RegistrationForm = lazy(() => import("../components/RegistrationForm"));
 
 function Register() {
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState({
+    HeaderSection: {
+      TeReoTitle: "",
+      EnglishTitle: "",
+      BackgroundHeaderImage: { url: null },
+    },
+    Content: "",
+    PostInfo: "",
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -34,8 +42,8 @@ function Register() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-base lg:text-lg">Loading register page...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-emerald-600"></div>
       </div>
     );
   }
@@ -45,16 +53,6 @@ function Register() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-base lg:text-lg text-red-600">
           Error loading register page. Please try again later.
-        </div>
-      </div>
-    );
-  }
-
-  if (!content) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-base lg:text-lg">
-          No register content available
         </div>
       </div>
     );
@@ -91,7 +89,7 @@ function Register() {
                 <div className="prose max-w-none">
                   {formatParagraphsWithLineBreaks(
                     content.PostInfo,
-                    "text-emerald-700 text-base lg:text-lg leading-relaxed mb-4 last:mb-0"
+                    "text-emerald-700 text-base lg:text-lg leading-relaxed mb-4 last:mb-0",
                   )}
                 </div>
               </div>
@@ -143,6 +141,12 @@ function Register() {
               </div>
             </FadeInSection>
           )}
+          <div>
+            {/* add in a written version of the registration form here. make it a click to download */}
+            <FadeInSection>
+              <div></div>
+            </FadeInSection>
+          </div>
         </div>
 
         <Footer />

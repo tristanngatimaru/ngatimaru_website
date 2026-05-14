@@ -229,8 +229,20 @@ export const PAGE_CONFIGS = {
  * @returns {Promise<Object>} The page content
  */
 export async function getPageContent(pageName) {
-  const allContent = await loadSiteContent();
-  return allContent[pageName] || PAGE_CONFIGS[pageName]?.defaultContent || {};
+  const config = PAGE_CONFIGS[pageName];
+  if (!config) {
+    return {};
+  }
+  try {
+    const result = await fetchContentType(
+      config.contentType,
+      { populate: config.populate },
+      true,
+    );
+    return transformPageData(pageName, result);
+  } catch {
+    return config.defaultContent || {};
+  }
 }
 
 /**
@@ -272,10 +284,13 @@ export async function getHomeContent() {
       fetchContentType(
         config.contentType,
         { populate: optimizedPopulate },
-        true
+        true,
       ),
       new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("API timeout after 5 seconds")), 5000)
+        setTimeout(
+          () => reject(new Error("API timeout after 5 seconds")),
+          5000,
+        ),
       ),
     ]);
 
@@ -422,7 +437,7 @@ function transformHomeData(homeContent, defaultContent) {
         defaultContent.HeaderSection.EnglishTitle,
       BackgroundHeaderImage: transformImage(
         homeContent.HeaderSection?.BackgroundHeaderImage ||
-          homeContent.HeaderSection?.data?.BackgroundHeaderImage
+          homeContent.HeaderSection?.data?.BackgroundHeaderImage,
       ),
     },
     MihiSection: {
@@ -436,7 +451,7 @@ function transformHomeData(homeContent, defaultContent) {
         extractField(homeContent.MihiSection, "FullMihi") ||
         defaultContent.MihiSection.FullMihi,
       Image: transformImage(
-        homeContent.MihiSection?.Image || homeContent.MihiSection?.data?.Image
+        homeContent.MihiSection?.Image || homeContent.MihiSection?.data?.Image,
       ),
     },
     Button: (() => {
@@ -474,7 +489,7 @@ function transformAboutData(aboutContent, defaultContent) {
         aboutContent.Header?.EnglishTitle ||
         defaultContent.Header?.EnglishTitle,
       BackgroundHeaderImage: transformImage(
-        aboutContent.Header?.BackgroundHeaderImage
+        aboutContent.Header?.BackgroundHeaderImage,
       ),
     },
     FaceCard: Array.isArray(aboutContent.FaceCard)
@@ -512,7 +527,7 @@ function transformMataiWhetuData(mataiWhetuContent, defaultContent) {
         mataiWhetuContent.HeaderSection?.EnglishTitle ||
         defaultContent.HeaderSection?.EnglishTitle,
       BackgroundHeaderImage: transformImage(
-        mataiWhetuContent.HeaderSection?.BackgroundHeaderImage
+        mataiWhetuContent.HeaderSection?.BackgroundHeaderImage,
       ),
     },
     Content: mataiWhetuContent.Content || defaultContent.Content,
@@ -538,7 +553,7 @@ function transformFishingPermitData(fishingPermitContent, defaultContent) {
         fishingPermitContent.HeaderSection?.EnglishTitle ||
         defaultContent.HeaderSection?.EnglishTitle,
       BackgroundHeaderImage: transformImage(
-        fishingPermitContent.HeaderSection?.BackgroundHeaderImage
+        fishingPermitContent.HeaderSection?.BackgroundHeaderImage,
       ),
     },
     Content: fishingPermitContent.Content || defaultContent.Content,
@@ -563,7 +578,7 @@ function transformRegisterData(registerContent, defaultContent) {
         registerContent.HeaderSection?.EnglishTitle ||
         defaultContent.HeaderSection?.EnglishTitle,
       BackgroundHeaderImage: transformImage(
-        registerContent.HeaderSection?.BackgroundHeaderImage
+        registerContent.HeaderSection?.BackgroundHeaderImage,
       ),
     },
     Content: registerContent.Content || defaultContent.Content,
@@ -617,7 +632,7 @@ function transformDocumentsData(documentsContent, defaultContent) {
         documentsContent.HeaderSection?.EnglishTitle ||
         defaultContent.HeaderSection?.EnglishTitle,
       BackgroundHeaderImage: transformImage(
-        documentsContent.HeaderSection?.BackgroundHeaderImage
+        documentsContent.HeaderSection?.BackgroundHeaderImage,
       ),
     },
     Documentation: transformedDocumentation,
@@ -692,7 +707,7 @@ export async function loadSiteContent() {
       return fetchContentType(
         config.contentType,
         { populate: config.populate },
-        true
+        true,
       );
     });
 

@@ -23,9 +23,23 @@ const ComponentLoader = ({ name }) => (
 );
 
 function Home() {
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState({
+    HeaderSection: {
+      TeReoTitle: "",
+      EnglishTitle: "",
+      BackgroundHeaderImage: { url: null, alternativeText: "" },
+    },
+    MihiSection: {
+      Title: "",
+      MihiShortened: "",
+      FullMihi: "",
+      Image: { url: null, alternativeText: "" },
+    },
+    Button: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showBelowFold, setShowBelowFold] = useState(false);
   const [isAppear, setAppear] = useState(false);
   const isMobile = window.innerWidth < 1024;
   const [isExpanded, setIsExpanded] = useState(false);
@@ -43,7 +57,7 @@ function Home() {
         const homeData = await cachedFetch(
           "home-content",
           () => getHomeContent(),
-          10 * 60 * 1000 // Cache for 10 minutes
+          10 * 60 * 1000, // Cache for 10 minutes
         );
         clearTimeout(slowLoadingTimeout);
         setContent(homeData);
@@ -76,10 +90,17 @@ function Home() {
   useEffect(() => {
     const appearTimeout = setTimeout(
       () => setAppear(true),
-      isMobile ? 500 : 2000
+      isMobile ? 500 : 2000,
     );
     return () => clearTimeout(appearTimeout);
   }, [isMobile]);
+
+  // Defer Posts + Footer until after first paint so they don't compete
+  // with the home content fetch on the critical path.
+  useEffect(() => {
+    const t = setTimeout(() => setShowBelowFold(true), 800);
+    return () => clearTimeout(t);
+  }, []);
 
   const expandMihi = () => setIsExpanded((prev) => !prev);
   const targetRef = useRef(null);
@@ -88,8 +109,10 @@ function Home() {
 
   if (loading)
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-base lg:text-lg">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-emerald-600 mx-auto"></div>
+        </div>
       </div>
     );
   if (error)
@@ -100,13 +123,6 @@ function Home() {
         </div>
       </div>
     );
-  if (!content)
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-base lg:text-lg">No content available</div>
-      </div>
-    );
-
   return (
     <div>
       <FadeInOnLoad delay={500} mobileDelay={200}>
@@ -231,7 +247,7 @@ function Home() {
                 {content.MihiSection?.MihiShortened
                   ? (() => {
                       return formatTextWithLineBreaks(
-                        content.MihiSection.MihiShortened
+                        content.MihiSection.MihiShortened,
                       );
                     })()
                   : ""}
@@ -262,7 +278,7 @@ function Home() {
                 {content.MihiSection?.FullMihi
                   ? (() => {
                       return formatTextWithLineBreaks(
-                        content.MihiSection.FullMihi
+                        content.MihiSection.FullMihi,
                       );
                     })()
                   : ""}
@@ -282,15 +298,19 @@ function Home() {
           </div>
         </FadeInSection>
 
-        <FadeInSection>
-          <Suspense fallback={<ComponentLoader name="Posts" />}>
-            <Posts />
-          </Suspense>
-        </FadeInSection>
+        {showBelowFold && (
+          <>
+            <FadeInSection>
+              <Suspense fallback={<ComponentLoader name="Posts" />}>
+                <Posts />
+              </Suspense>
+            </FadeInSection>
 
-        <Suspense fallback={<ComponentLoader name="Footer" />}>
-          <Footer />
-        </Suspense>
+            <Suspense fallback={<ComponentLoader name="Footer" />}>
+              <Footer />
+            </Suspense>
+          </>
+        )}
       </FadeInOnLoad>
     </div>
   );

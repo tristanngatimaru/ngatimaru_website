@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getNavigationData } from "../api/navigation";
 
 function Navbar() {
@@ -77,7 +76,7 @@ function Navbar() {
                 // Calculate distance from the center pair
                 const distanceFromCenter = Math.min(
                   Math.abs(index - leftCenter),
-                  Math.abs(index - rightCenter)
+                  Math.abs(index - rightCenter),
                 );
 
                 // Delay increases based on distance from center pair
@@ -95,13 +94,13 @@ function Navbar() {
 
               const animationDelay = getAnimationDelay(
                 index,
-                navigationItems.length
+                navigationItems.length,
               );
 
               return (
-                <Link
+                <a
                   key={item.id}
-                  to={item.href}
+                  href={item.href}
                   className="font-roboto-light text-gray-300 hover:scale-110 ease-in-out duration-200"
                 >
                   <div className="items-center flex flex-col">
@@ -127,7 +126,7 @@ function Navbar() {
                       </h3>
                     </div>
                   </div>
-                </Link>
+                </a>
               );
             })
           )}

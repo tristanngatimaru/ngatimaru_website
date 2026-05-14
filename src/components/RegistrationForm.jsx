@@ -23,9 +23,11 @@ const RegistrationForm = () => {
 
     // Hapu & Iwi Information
     PrincipleHapu: "",
+    PrincipleHapuOther: "",
     PrincipleOtherIwiAffiliation: "",
     PrincipleMarae: "",
     OtherHapu: "",
+    OtherHapuOther: "",
     OtherIwiAffiliation: "",
     OtherMarae: "",
     DecendantAffiliation: "",
@@ -99,6 +101,7 @@ const RegistrationForm = () => {
     "Ngati Matau",
     "Te Matahau",
     "Ngati Tahae",
+    "Other",
   ];
 
   const descendantAffiliationOptions = [
@@ -150,13 +153,6 @@ const RegistrationForm = () => {
       if (formData.PostalAddress && !formData.PostalAddressYes) {
         errors.push("Postal address details are required");
       }
-    }
-
-    // Validate Step 3 - Hapu & Iwi
-    if (currentStep === 3) {
-      if (!formData.PrincipleHapu) errors.push("Principal hapu is required");
-      if (!formData.DecendantAffiliation)
-        errors.push("Descendant affiliation is required");
     }
 
     // Validate Step 5 - Terms
@@ -211,10 +207,16 @@ const RegistrationForm = () => {
         PersonalWorkPhone: formData.PersonalWorkPhone,
         PersonalMobilePhone: formData.PersonalMobilePhone,
         PersonalEmail: formData.PersonalEmail,
-        PrincipleHapu: formData.PrincipleHapu,
+        PrincipleHapu:
+          formData.PrincipleHapu === "Other"
+            ? formData.PrincipleHapuOther
+            : formData.PrincipleHapu,
         PrincipleOtherIwiAffiliation: formData.PrincipleOtherIwiAffiliation,
         PrincipleMarae: formData.PrincipleMarae,
-        OtherHapu: formData.OtherHapu,
+        OtherHapu:
+          formData.OtherHapu === "Other"
+            ? formData.OtherHapuOther
+            : formData.OtherHapu,
         OtherIwiAffiliation: formData.OtherIwiAffiliation,
         OtherMarae: formData.OtherMarae,
         DecendantAffiliation: formData.DecendantAffiliation,
@@ -858,7 +860,7 @@ const RegistrationForm = () => {
           {/* Descendant Affiliation */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-3">
-              Descendant Affiliation *
+              Descendant Affiliation
             </label>
             <div className="space-y-3">
               {descendantAffiliationOptions.map((affiliation) => (
@@ -909,20 +911,23 @@ const RegistrationForm = () => {
                     </label>
                   ))}
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Principal Marae
-                </label>
-                <input
-                  type="text"
-                  value={formData.PrincipleMarae}
-                  onChange={(e) =>
-                    handleInputChange("PrincipleMarae", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
-                />
+                {/* Custom Hapu Input */}
+                {formData.PrincipleHapu === "Other" && (
+                  <div className="mt-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Please specify your Hapū
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.PrincipleHapuOther}
+                      onChange={(e) =>
+                        handleInputChange("PrincipleHapuOther", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="Enter your Hapū name"
+                    />
+                  </div>
+                )}
               </div>
 
               <div>
@@ -970,6 +975,23 @@ const RegistrationForm = () => {
                     </label>
                   ))}
                 </div>
+                {/* Custom Other Hapu Input */}
+                {formData.OtherHapu === "Other" && (
+                  <div className="mt-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Please specify your other Hapū
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.OtherHapuOther}
+                      onChange={(e) =>
+                        handleInputChange("OtherHapuOther", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                      placeholder="Enter your other Hapū name"
+                    />
+                  </div>
+                )}
               </div>
 
               <div>

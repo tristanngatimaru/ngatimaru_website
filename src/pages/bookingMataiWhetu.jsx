@@ -57,7 +57,15 @@ const MataiWhetu = () => {
     getMissingFields,
   } = useMataiWhetuForm();
 
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState({
+    HeaderSection: {
+      TeReoTitle: "",
+      EnglishTitle: "",
+      BackgroundHeaderImage: { url: null },
+    },
+    Content: "",
+    Tikanga: null,
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -81,8 +89,8 @@ const MataiWhetu = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading booking content...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-emerald-600"></div>
       </div>
     );
   }
@@ -93,14 +101,6 @@ const MataiWhetu = () => {
         <div className="text-xl">
           Error loading booking content. Please try again later.
         </div>
-      </div>
-    );
-  }
-
-  if (!content) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">No booking content available</div>
       </div>
     );
   }
