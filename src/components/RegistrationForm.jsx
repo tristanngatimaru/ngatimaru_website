@@ -26,7 +26,7 @@ const RegistrationForm = () => {
     PrincipleHapuOther: "",
     PrincipleOtherIwiAffiliation: "",
     PrincipleMarae: "",
-    OtherHapu: "",
+    OtherHapu: [],
     OtherHapuOther: "",
     OtherIwiAffiliation: "",
     OtherMarae: "",
@@ -82,25 +82,25 @@ const RegistrationForm = () => {
 
   // Predefined options from Strapi validation
   const hapuOptions = [
-    "Te Ahumua",
-    "Ngati Te Aute",
-    "Ngati Kuriuaua",
-    "Te uringahau",
-    "Ngati Rautao",
-    "Ngati Hikairo",
-    "Ngati Wawenga",
-    "Ngati Kotinga",
-    "Ngati Whanga",
-    "Ngati Pu",
+    "Ngati Hape",
     "Ngati Hauauru",
-    "Ngati Ua",
+    "Ngati Hikairo",
+    "Ngati Kotinga",
+    "Ngati Kuriuaua",
+    "Ngati Matau",
     "Ngati Naunau",
     "Ngati Pakira",
-    "Ngati Hape",
-    "Ngati Tumoana",
-    "Ngati Matau",
-    "Te Matahau",
+    "Ngati Pu",
+    "Ngati Rautao",
     "Ngati Tahae",
+    "Ngati Te Aute",
+    "Ngati Tumoana",
+    "Ngati Ua",
+    "Ngati Wawenga",
+    "Ngati Whanga",
+    "Te Ahumua",
+    "Te Matahau",
+    "Te uringahau",
     "Other",
   ];
 
@@ -213,10 +213,11 @@ const RegistrationForm = () => {
             : formData.PrincipleHapu,
         PrincipleOtherIwiAffiliation: formData.PrincipleOtherIwiAffiliation,
         PrincipleMarae: formData.PrincipleMarae,
-        OtherHapu:
-          formData.OtherHapu === "Other"
-            ? formData.OtherHapuOther
-            : formData.OtherHapu,
+        OtherHapu: formData.OtherHapu.map((h) =>
+          h === "Other" ? formData.OtherHapuOther : h,
+        )
+          .filter(Boolean)
+          .join(", "),
         OtherIwiAffiliation: formData.OtherIwiAffiliation,
         OtherMarae: formData.OtherMarae,
         DecendantAffiliation: formData.DecendantAffiliation,
@@ -929,23 +930,6 @@ const RegistrationForm = () => {
                   </div>
                 )}
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Other Principal Iwi Affiliation
-                </label>
-                <input
-                  type="text"
-                  value={formData.PrincipleOtherIwiAffiliation}
-                  onChange={(e) =>
-                    handleInputChange(
-                      "PrincipleOtherIwiAffiliation",
-                      e.target.value,
-                    )
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
-                />
-              </div>
             </div>
 
             {/* Other Affiliation */}
@@ -962,21 +946,27 @@ const RegistrationForm = () => {
                   {hapuOptions.map((hapu) => (
                     <label key={hapu} className="flex items-center">
                       <input
-                        type="radio"
-                        name="OtherHapu"
+                        type="checkbox"
                         value={hapu}
-                        checked={formData.OtherHapu === hapu}
-                        onChange={(e) =>
-                          handleInputChange("OtherHapu", e.target.value)
-                        }
-                        className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300"
+                        checked={formData.OtherHapu.includes(hapu)}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const current = formData.OtherHapu;
+                          handleInputChange(
+                            "OtherHapu",
+                            current.includes(val)
+                              ? current.filter((h) => h !== val)
+                              : [...current, val],
+                          );
+                        }}
+                        className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
                       />
                       <span className="ml-3 text-sm text-gray-700">{hapu}</span>
                     </label>
                   ))}
                 </div>
                 {/* Custom Other Hapu Input */}
-                {formData.OtherHapu === "Other" && (
+                {formData.OtherHapu.includes("Other") && (
                   <div className="mt-3">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Please specify your other Hapū
@@ -993,34 +983,36 @@ const RegistrationForm = () => {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Other Marae
-                </label>
-                <input
-                  type="text"
-                  value={formData.OtherMarae}
-                  onChange={(e) =>
-                    handleInputChange("OtherMarae", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
-                />
-              </div>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Other Marae
+              </label>
+              <input
+                type="text"
+                value={formData.OtherMarae}
+                onChange={(e) =>
+                  handleInputChange("OtherMarae", e.target.value)
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Other Iwi Affiliation
-                </label>
-                <input
-                  type="text"
-                  value={formData.OtherIwiAffiliation}
-                  onChange={(e) =>
-                    handleInputChange("OtherIwiAffiliation", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
-                />
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Other Iwi Affiliation
+              </label>
+              <input
+                type="text"
+                value={formData.OtherIwiAffiliation}
+                onChange={(e) =>
+                  handleInputChange("OtherIwiAffiliation", e.target.value)
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+              />
             </div>
           </div>
         </div>
